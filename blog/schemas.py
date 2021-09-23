@@ -1,26 +1,30 @@
 from blog.database import Base
 from pydantic import BaseModel
-from typing import List
-# sql db의 table = sqlalchemy의 class
+from typing import List, Optional
+# schemas: Pydantic Models
 
 class BlogBase(BaseModel):
   title: str
   body: str
 
-class Blog(BlogBase):
-  class Config():
-    orm_mode = True
-
-
-class User(BaseModel):
+class UserBase(BaseModel):
   name: str
   email: str
   password: str
+
+class User(UserBase):
+  class Config():
+    orm_mode = True
+
+class Blog(BlogBase):
+  class Config():
+    orm_mode = True
 
 class ShowUser(BaseModel):
   name: str
   email: str
   blogs: List[Blog]
+
   class Config():
     orm_mode = True
 
@@ -31,3 +35,14 @@ class ShowBlog(BaseModel):
 
   class Config():
     orm_mode = True
+
+class Login(BaseModel):
+  username: str
+  password: str
+
+class Token(BaseModel):
+  access_token: str
+  token_type: str
+
+class TokenData(BaseModel):
+  username: Optional[str] = None

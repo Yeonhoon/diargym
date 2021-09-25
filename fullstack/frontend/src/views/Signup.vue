@@ -8,12 +8,12 @@
           label='Name'>
         </v-text-field>
         <v-text-field
-          v-model= "upw"
-          label='Password'>
-        </v-text-field>
-        <v-text-field
           v-model= "uemail"
           label='Email'>
+        </v-text-field>
+        <v-text-field
+          v-model= "upw"
+          label='Password'>
         </v-text-field>
         <v-btn 
           @click= "addUser"
@@ -63,6 +63,7 @@ import axios from 'axios'
           this.name = null
           this.uemail = null
           this.password = null
+          this.$router.push({'name':'Home'})
         })
         .catch(error => {
           console.log(error)

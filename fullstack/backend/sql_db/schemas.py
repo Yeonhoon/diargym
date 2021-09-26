@@ -17,3 +17,14 @@ class User(UserBase):
 class Blog(BlogBase):
   class Config():
     orm_mode = True
+
+class ShowUser(BaseModel):
+  name: str
+  email: str
+  
+  class Config():
+    orm_mode = True
+
+class Login(BaseModel):
+  email: str
+  password: str

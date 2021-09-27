@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 
 class BlogBase(BaseModel):
   title: str
@@ -28,3 +28,11 @@ class ShowUser(BaseModel):
 class Login(BaseModel):
   email: str
   password: str
+
+# JWT tokens
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    email: Optional[str] = None

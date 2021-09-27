@@ -25,7 +25,7 @@
                     >
                       <v-text-field
                         prepend-icon="email"
-                        v-model="uemail"
+                        v-model= "uemail"
                         :error-messages="errors"
                         label="E-mail"
                         required

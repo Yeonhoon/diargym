@@ -1,7 +1,7 @@
 from fastapi import FastAPI, APIRouter, Depends, status, Response, HTTPException
 from sqlalchemy.orm import Session
 from ..sql_db import schemas, models, database
-from starlette.responses import RedirectResponse, Response
+from ..router import authentication
 from typing import List
 from ..hashing.hash import Hash
 import psycopg2 as pg
@@ -19,9 +19,10 @@ conn = pg.connect(
 
 cursor = conn.cursor()
 connect_db = database.get_db
-
+get_auth = Depends(authentication.get_current_user)
 @router.get('/', status_code=status.HTTP_200_OK)
-def show_users(db:Session=Depends(connect_db)):
+def show_users(db:Session=Depends(connect_db), 
+                get_current_user: schemas.User = get_auth):
     # data = db.query(models.User).all()
     data = db.execute('select uid, uemail from users').fetchall()
     return data
@@ -44,10 +45,10 @@ async def create_user(request: schemas.User, db:Session=Depends(connect_db)):
     return data
 
 @router.post('/signin', status_code = status.HTTP_200_OK)
-async def siginin(request: schemas.User, db:Session=Depends(connect_db)):
+async def siginin(request: schemas.Login, db:Session=Depends(connect_db)):
     # data = db.execute("select uemail, upw from users where uemail= :uemail and upw =:upw",
     #                     {'uemail':request.email, 'upw':request.password}).fetchone()
-    data = models.UsER(uemail = request.email,upw=request.password).first()
+    data = models.User(uemail = request.email,upw=request.password)
     if not data:
         raise  HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"등록되지 않은 이메일입니다.")

@@ -10,13 +10,21 @@
           color='primary'
         >
           Sign Up
-          </v-btn>
+        </v-btn>
         <v-btn
+          v-if = "!islogin"
           :to="{name:'Signin'}"
           color='primary'
         >
           Sign In
-          </v-btn>
+        </v-btn>
+        <v-btn
+          v-if = "islogin"
+          :to="{name:'write'}"
+          color='warning'
+        >
+          Sign In
+        </v-btn>
       </v-flex>
       <v-flex>
         <p>유저정보: {{userData}}</p>
@@ -29,7 +37,8 @@ import axios from 'axios'
   export default {
     data () {
       return {
-        userData: ''
+        userData: '',
+        isLogin: false
       }
     },
 

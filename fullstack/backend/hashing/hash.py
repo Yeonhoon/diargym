@@ -1,7 +1,6 @@
 from passlib.context import CryptContext
 
 
-
 # hashing password 만들기
 pwd_cxt = CryptContext(schemes=['bcrypt'], deprecated='auto')
 

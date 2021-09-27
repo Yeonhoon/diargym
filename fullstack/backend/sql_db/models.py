@@ -22,3 +22,4 @@ class Blog(Base):
     author = relationship('User', back_populates="blogs")
     
 
+

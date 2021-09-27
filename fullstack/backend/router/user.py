@@ -44,17 +44,6 @@ async def create_user(request: schemas.User, db:Session=Depends(connect_db)):
     # response = RedirectResponse(url='/home')
     return data
 
-@router.post('/signin', status_code = status.HTTP_200_OK)
-async def siginin(request: schemas.Login, db:Session=Depends(connect_db)):
-    # data = db.execute("select uemail, upw from users where uemail= :uemail and upw =:upw",
-    #                     {'uemail':request.email, 'upw':request.password}).fetchone()
-    data = models.User(uemail = request.email,upw=request.password)
-    if not data:
-        raise  HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"등록되지 않은 이메일입니다.")
-    else:
-        return data
-    
 @router.delete('/delete')
 def delete_user(id: int, db:Session=Depends(connect_db)):
     data = db.query(models.User).filter(models.User.uid == id)

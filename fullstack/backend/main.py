@@ -9,9 +9,10 @@ from .router import user, authentication
 app = FastAPI( )
 app.include_router(user.router)
 app.include_router(authentication.router)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['http://localhost:8080'],
+    allow_origins=['http://localhost:8080','http://172.21.42.190:8080'],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -78,15 +78,15 @@ import axios from 'axios'
     },
     methods:{
       signin(){
-        axios.post('/signin',{
-          email: this.uemail,
+        axios.post('/login',{
+          username: this.uemail,
           password: this.upw
         })
         .then(()=> {
+          this.$router.push({'name':'Home'})
           this.uemail= null
           this.upw = null
           this.isLoginError = false
-          this.$router.push({'name':'Home'})
         })
         .catch(error => {
           this.isLoginError = true

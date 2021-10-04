@@ -4,13 +4,13 @@
       <v-container fluid fill-height>
         <v-layout align-center justify-center>
           <v-flex xs12 sm8 md4>
-            <!-- <v-alert
+            <v-alert
               class="mb-3"
               :value="isLoginError"
               type="error" 
             >
               입력하신 값들을 확인해주세요!
-            </v-alert> -->
+            </v-alert>
             
             <v-card class="elevation-12">
               <v-toolbar dark color="primary">
@@ -29,10 +29,10 @@
                 >
                   <v-text-field
                     prepend-icon="person"
-                    v-model="uname"
+                    v-model="form.uname"
                     :counter="10"
                     :error-messages="errors"
-                    label="Name"
+                    label="ID"
                     required
                   ></v-text-field>
                 </validation-provider>
@@ -44,7 +44,7 @@
                 >
                   <v-text-field
                     prepend-icon="email"
-                    v-model="uemail"
+                    v-model="form.uemail"
                     :error-messages="errors"
                     label="E-mail"
                     required
@@ -57,7 +57,7 @@
                 >
                   <v-text-field 
                     prepend-icon="lock" 
-                    v-model= "upw1" 
+                    v-model="form.upw" 
                     label="Password" 
                     type="password"
                     :error-messages="errors"></v-text-field>
@@ -69,7 +69,7 @@
                 >
                   <v-text-field 
                     prepend-icon="lock" 
-                    v-model= "upw2" 
+                    v-model="form.upw2" 
                     label="Password" 
                     type="password"
                     :error-messages="errors"></v-text-field>
@@ -99,50 +99,38 @@
 </template>
 
 <script>
-// import {mapActions} from 'vuex'
+import {mapActions} from 'vuex'
 import 'material-design-icons-iconfont/dist/material-design-icons.css' 
-import axios from 'axios'
 import myMixin from '../mixins/index'
-
-  export default {
-    mixins:[myMixin],
-    data: () => ({
+export default {
+  mixins:[myMixin],
+  data: () => ({
+    form:{
       uname: null,
       uemail: null,
       upw1: null,
       upw2: null,
-      uidWarning: null,
-      upwWarning: null,
-      uemailWarning: null,
-    }),
-    props: {
-      source: String
     },
-    methods: {
-      addUser(){
-        if(this.uname===null | this.uemail === null){
-          console.log('입력해라')
-        }
-        else{
-          axios.post('/newuser',{
-            name: this.uname,
-            email : this.uemail,
-            password: this.upw1
-          })
-          .then(() => {
-            this.name = null
-            this.uemail = null
-            this.password = null
-            this.isLoginError = false
-            this.$router.push({'name':'Home'})
-          })
-          .catch(error => {
-            console.log(error)
-          })
-        }
-      },
+    isLoginError: false
+  }),
+  props: {
+    source: String
+  },
+  methods: {
+    ...mapActions(['register']),
+    async addUser(){
+      try {
+        await this.register(this.form)
+        this.$router.push({'name':'Home'})
+        this.isLoginError = false
+      }
+      catch (error) {
+        this.isLoginError = true
+        throw 'User name already exists.'
+      }
     },
-  }
+  },
+}
 </script>
 <style>
   .warnings {

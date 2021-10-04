@@ -20,14 +20,14 @@
                   <v-form>
                     <validation-provider
                       v-slot="{ errors }"
-                      name="email"
-                      rules="required|email"
+                      name="Name"
+                      rules="required"
                     >
                       <v-text-field
-                        prepend-icon="email"
-                        v-model= "form.uemail"
+                        prepend-icon="person"
+                        v-model="form.uname"
                         :error-messages="errors"
-                        label="E-mail"
+                        label="ID"
                         required
                       ></v-text-field>
                     </validation-provider>
@@ -38,7 +38,7 @@
                     >
                       <v-text-field 
                         prepend-icon="lock" 
-                        v-model= "form.upw" 
+                        v-model="form.upw" 
                         label="Password" 
                         type="password"
                         :error-messages="errors"></v-text-field>
@@ -50,7 +50,7 @@
                 <v-spacer></v-spacer>
                 <v-btn 
                   color="primary"
-                  @click="signin"
+                  @click="login"
                 >Login</v-btn>
               </v-card-actions>
             </v-card>
@@ -71,7 +71,7 @@ import {mapActions} from 'vuex'
       return {
         drawer: null,
         form: {
-          uemail: null,
+          uname: null,
           upw: null,
       },
         isLoginError: false
@@ -83,12 +83,19 @@ import {mapActions} from 'vuex'
     },
     methods:{
       ...mapActions(['logIn']),
-      async signin(){
+      async login(){
         const User = new FormData();
-        User.append('username', this.form.uemail);
+        User.append('username', this.form.uname);
         User.append('password', this.form.upw);
-        await this.logIn(User);
-        this.$router.push('/')
+        try{
+          await this.logIn(User);
+          console.log(this.form.uname)
+          this.$router.push('/')
+        }
+        catch (error){
+          this.isLoginError = true
+          throw "로그인 실패"
+        }
 
 
 

@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from typing import List, Optional
 
 class UserBase(BaseModel):
+  uid: str
   uname: str
   uemail: str
   upw: str
@@ -12,6 +13,7 @@ class User(UserBase):
 
 
 class ShowUser(BaseModel):
+  uid: str
   uname: str
   uemail: str
   

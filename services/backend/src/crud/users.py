@@ -13,7 +13,7 @@ router = APIRouter(
 conn = pg.connect(
     dbname='postgres', 
     user='postgres', 
-    password='Zpflrjs94!', 
+    password='postgres', 
     port='5432')
 cursor = conn.cursor()
 
@@ -31,7 +31,9 @@ async def create_user(request, db):
                         # produce_hash_password(request.password)))
     # print(data)
     try:
-        new_user = Users(uname= request.uname, 
+        new_user = Users(
+                uid=request.uid,
+                uname= request.uname, 
                 uemail = request.uemail,
                 upw= produce_hash_password(request.upw))
     except:

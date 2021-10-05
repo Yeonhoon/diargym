@@ -25,12 +25,12 @@
                 <validation-provider
                   v-slot="{ errors }"
                   name="Name"
-                  rules="required|max:10"
+                  rules="required|max:16"
                 >
                   <v-text-field
                     prepend-icon="person"
                     v-model="form.uname"
-                    :counter="10"
+                    :counter="16"
                     :error-messages="errors"
                     label="ID"
                     required

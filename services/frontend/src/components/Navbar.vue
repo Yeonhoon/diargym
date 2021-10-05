@@ -1,7 +1,6 @@
 <template>
   <div>
     <v-toolbar
-      app
       color="primary"
       dark
     >
@@ -27,12 +26,11 @@
       </div>
       <v-spacer></v-spacer>
       <v-toolbar-items v-if="isLogin" class="hidden-xs-only">
-        <v-btn text flat :to="{name:'Home'}" > <v-icon>mdi-home</v-icon>Home </v-btn>
-        <v-btn text flat @click="logout"> <v-icon>mdi-lock</v-icon> Logout</v-btn>
+        <v-btn text :to="{name:'Home'}" > <v-icon>mdi-home</v-icon>Home </v-btn>
+        <v-btn text @click="logout"> <v-icon>mdi-lock</v-icon> Logout</v-btn>
       </v-toolbar-items>
       <v-toolbar-items v-else >
         <v-btn text 
-          flat
           v-for = "item in menuItems"
           :key="item.title"
           :to="item.path"
@@ -139,7 +137,7 @@ export default {
       drawer : false,
       currentUser: null,
        menuItems: [
-          { title: 'Home', path: '/home', icon: 'home' },
+          { title: 'Home', path: '/', icon: 'home' },
           { title: 'Sign Up', path: '/register', icon: 'face' },
           { title: 'Sign In', path: '/login', icon: 'lock_open' }
         ],

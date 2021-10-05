@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <Navbar/> 
-    <v-menu 
+    <!-- <v-menu 
         class="hidden-md-and-up"
         bottom
         left
@@ -14,7 +14,7 @@
           <v-list-item :to="{name:'mypage'}">마이 페이지</v-list-item>
           <v-list-item @click="logout">로그아웃</v-list-item>
         </v-list>
-      </v-menu>
+      </v-menu> -->
     <v-main>
       <router-view/>
     </v-main>

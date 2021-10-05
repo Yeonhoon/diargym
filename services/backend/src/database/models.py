@@ -20,10 +20,10 @@ def get_db():
 
 class Users(Base):
   __tablename__ = 'users'
-  uid = Column(Integer, primary_key= True, index =True)
-  uname = Column(String)
-  uemail = Column(String)
-  upw = Column(String)
+  uid = Column(String(length=20), primary_key = True, index =True)
+  uname = Column(String, nullable=False)
+  uemail = Column(String, nullable=False)
+  upw = Column(String, nullable=False)
 
   posts = relationship('Posts', back_populates='users')
 
@@ -31,8 +31,8 @@ class Users(Base):
 class Posts(Base):
   __tablename__ = 'posts'
   pid = Column(Integer, primary_key=True, index=True)
-  ptitle = Column(String)
-  pcontent = Column(String)
+  ptitle = Column(String, nullable=False)
+  pcontent = Column(String,nullable=False)
   author = Column(Integer, ForeignKey('users.uid'))
   
   users = relationship('Users', back_populates='posts')

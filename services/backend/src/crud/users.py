@@ -10,12 +10,12 @@ import psycopg2 as pg
 router = APIRouter(
     tags=['users']
 )
-conn = pg.connect(
-    dbname='postgres', 
-    user='postgres', 
-    password='postgres', 
-    port='5432')
-cursor = conn.cursor()
+# conn = pg.connect(
+#     dbname='postgres', 
+#     user='postgres', 
+#     password='postgres', 
+#     port='5432')
+# cursor = conn.cursor()
 
 pwd_cxt = CryptContext(schemes=['bcrypt'], deprecated='auto')
 connect_db = get_db

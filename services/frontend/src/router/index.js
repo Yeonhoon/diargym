@@ -3,7 +3,8 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Signup from '../views/Signup.vue'
 import Signin from '../views/Signin.vue'
-import MyPage from '../views/Mypage.vue'
+import Diary from '../views/Diary.vue'
+import Profile from '../views/Profile.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -30,9 +31,16 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
+
   {
-    path:'/users/whoami',
-    name: MyPage
+    path:'/diary',
+    name: 'Diary',
+    component: Diary
+  },
+  {
+    path:'/profile',
+    name: 'Profile',
+    component:Profile
   }
 ]
 

@@ -26,11 +26,12 @@
       </div>
       <v-spacer></v-spacer>
       <v-toolbar-items v-if="isLogin" class="hidden-xs-only">
-        <v-btn text :to="{name:'Home'}" > <v-icon>mdi-home</v-icon>Home </v-btn>
+        <v-btn exact text :to="{name:'Home'}" > <v-icon>mdi-home</v-icon>Home </v-btn>
         <v-btn text @click="logout"> <v-icon>mdi-lock</v-icon> Logout</v-btn>
       </v-toolbar-items>
       <v-toolbar-items v-else >
         <v-btn text 
+          exact
           v-for = "item in menuItems"
           :key="item.title"
           :to="item.path"
@@ -84,7 +85,7 @@
           v-if="isLogin"
           active-class="deep-blue--text text--accent-4"
         >
-          <v-list-item
+          <v-list-item exact
             :to="{name:'Home'}"
           >
             <v-list-item-title>Home</v-list-item-title>
@@ -106,15 +107,10 @@
         <v-list-item-group
           v-else
         >
-          <v-list-item
+          <v-list-item exact
             :to="{name:'Home'}"
           >
             <v-list-item-title>Home</v-list-item-title>
-          </v-list-item>
-          <v-list-item
-            @click="login"
-          >
-            <v-list-item-title>Login</v-list-item-title>
           </v-list-item>
 
         </v-list-item-group>
@@ -154,7 +150,7 @@ export default {
 
   },
   mounted(){
-    this.currentUser = this.$store.getters.stateUser.uname;
+    this.currentUser = this.$store.getters.stateUser.uid;
   }
 }
 </script>

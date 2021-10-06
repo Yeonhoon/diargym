@@ -65,15 +65,16 @@ async def get_current_user(token: str= Depends(security), db: Session=Depends(co
   try: 
       # 사용자를 증명하기 위해 jwt를 해독함(decode)
       payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-      uname : str = payload.get('sub')
-      if uname is None:
+      uid : str = payload.get('sub')
+      if uid is None:
         raise credentials_exception
-      token_data = TokenData(uname = uname)
+      token_data = TokenData(uid = uid)
+      print(token_data)
   except JWTError:
       raise credentials_exception
     
   try:
-    user = db.query(Users).filter(Users.uname == token_data.uname).first()
+    user = db.query(Users).filter(Users.uid == token_data.uid).first()
   except:
     raise credentials_exception
   

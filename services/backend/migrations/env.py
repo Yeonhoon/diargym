@@ -12,8 +12,9 @@ config = context.config
 if not config.get_main_option('sqlalchemy.url'):
     config.set_main_option('sqlalchemy.url',
                         'postgresql://{username}:{pw}@{host}:{port}/{db_name}'.format(
-                            username='postgres', pw='postgres',host="127.0.0.1",port="5432",db_name="postgres"
+                            username='postgres', pw='postgres',host="172.19.0.2",port="5432",db_name="postgres"
                         ))
+                        #172.19.0.2
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 fileConfig(config.config_file_name)

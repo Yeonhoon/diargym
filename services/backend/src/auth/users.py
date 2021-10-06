@@ -11,10 +11,10 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
-async def get_user(uname, db):
+async def get_user(uid, db):
     # sql = "select * from users"
     # data= db.execute(sql).fetchall()
-    data = db.query(Users).filter(Users.uname == uname).first()
+    data = db.query(Users).filter(Users.uid == uid).first()
     if not data:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

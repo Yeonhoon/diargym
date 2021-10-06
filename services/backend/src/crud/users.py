@@ -48,17 +48,18 @@ async def create_user(request, db):
     # response = RedirectResponse(url='/home')
 
 # @router.delete('/delteuser', status_code=status.HTTP_200_OK)
-async def delete_user(uname:str, current_user, db) -> Status:
-    db_user = db.query(Users).filter(Users.uname == uname).first()
+async def delete_user(uid:str, current_user, db) -> Status:
+    db_user = db.query(Users).filter(Users.uid == uid).first()
+    
     if not db_user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                        detail=f"User '{uname}' not found")
+                        detail=f"User '{uid}' not found")
 
-    if db_user.uname == current_user.uname:
-        deleted_count = db.query(Users).filter(Users.uname==uname).delete()
+    if db_user.uid == current_user.uid:
+        deleted_count = db.query(Users).filter(Users.uid==uid).delete()
         if not deleted_count:
-            raise HTTPException(status_code=404, detail=f"User {uname} not found")
-        return Status(message=f"Deleted user {uname}")  # UPDATED
+            raise HTTPException(status_code=404, detail=f"User {uid} not found")
+        return Status(message=f"Deleted user {uid}")  # UPDATED
         # db_user.delete(synchronize_session=False)
         # db.commit()
     # return f"User '{current_user}' deleted"

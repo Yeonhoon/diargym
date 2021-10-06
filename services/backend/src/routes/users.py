@@ -22,13 +22,11 @@ router = APIRouter(
   tags=['users']
 )
 
-@router.get('/getuser/{uname}')
-async def get_a_user(uname:str, db:Session=Depends(connect_db)):
-    data = get_user(uname, db)
+@router.get('/getuser/{uid}')
+async def get_a_user(uid:str, db:Session=Depends(connect_db)):
+    data = get_user(uid, db)
     return await data
     
-
-
 @router.post('/register', 
     status_code=status.HTTP_201_CREATED,
     # response_model=ShowUser,
@@ -41,7 +39,6 @@ async def login(request: OAuth2PasswordRequestForm = Depends(),
                 db: Session=Depends(connect_db)):
     user = await validate_user(request,db)
     
-
     if not user:
       raise HTTPException(
         status_code= status.HTTP_404_NOT_FOUND,
@@ -49,9 +46,9 @@ async def login(request: OAuth2PasswordRequestForm = Depends(),
         headers={"WWW-Authenticate": "Bearer"},
       )
     
-    access_token = create_access_token(data={"sub":user.uname})
+    access_token = create_access_token(data={"sub":user.uid})
     token = jsonable_encoder(access_token)
-    content = {"message": f"You've successfully logged in. Welcome back, {user.uname}!"}
+    content = {"message": f"You've successfully logged in. Welcome back, {user.uid}!"}
     response = JSONResponse(content=content)
     response.set_cookie(
         "Authorization",
@@ -66,18 +63,18 @@ async def login(request: OAuth2PasswordRequestForm = Depends(),
 
 @router.get("/users/whoami", dependencies=[Depends(get_current_user)],
             response_model=User,
-            response_model_include=['uname'])
+            response_model_include=['uid'])
 async def read_users_me(current_user: User = Depends(get_current_user)):
     return current_user
 
 @router.delete(
-    "/user/{user_id}",
+    "/user/{uid}",
     response_model=Status,
     # responses={404: {"model": HTTPNotFoundError}},
     dependencies=[Depends(get_current_user)],
 )
 async def delete_user(
-    user_id: str, current_user: Status = Depends(get_current_user),
+    uid: str, current_user: Status = Depends(get_current_user),
     db: Session=Depends(connect_db)
 ) -> Status:
-    return await crud.delete_user(user_id, current_user, db)
+    return await crud.delete_user(uid, current_user, db)

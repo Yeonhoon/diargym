@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-toolbar
+    <v-app-bar
       color="primary"
       dark
     >
@@ -57,7 +57,7 @@
       </v-menu> -->
 
      
-    </v-toolbar>
+    </v-app-bar>
     <v-navigation-drawer
       v-model="drawer"
       absolute

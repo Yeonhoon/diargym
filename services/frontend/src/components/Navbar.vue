@@ -101,6 +101,16 @@
           >
             <v-list-item-title>My page</v-list-item-title>
           </v-list-item>
+          <v-list-item
+            to="/diary"
+          >
+            <v-list-item-title>Diary</v-list-item-title>
+          </v-list-item>
+          <v-list-item
+            to="/dashboard"
+          >
+            <v-list-item-title>Dashboard</v-list-item-title>
+          </v-list-item>
 
           
         </v-list-item-group>

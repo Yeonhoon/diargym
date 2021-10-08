@@ -1,26 +1,37 @@
 <template>
     <v-app>
-        <div>
+        <v-row>
+            <v-col cols="12" sm="5">
+                <v-date-picker 
+                    v-model="form.date" 
+                    elevation="10"
+                    full-width    
+                >
+                </v-date-picker>
+            </v-col>
+            <v-col cols="12" sm="1"></v-col>
+            <v-col cols="12" sm="6">
+                <div>
             <v-select
                 label="대분류"
                 outlined
                 required
                 :items="catBig"
-                v-model="big"
+                v-model="form.big"
             ></v-select>
             <v-select
                 label="중분류"
                 outlined
                 required
                 :items="catMid"
-                v-model="mid"
+                v-model="form.mid"
             ></v-select>
             <v-select
                 label="소분류"
                 outlined
                 required
                 :items="catSmall"
-                v-model="small"
+                v-model="form.small"
             >
             </v-select>
         </div>
@@ -81,9 +92,13 @@
                 @click="submit"
             ><v-icon left>mdi-pencil</v-icon>
                 저장
-            </v-btn>
+            </v-btn> 
+            </div>
+            </v-col>
+            
 
-        </div>
+        </v-row>
+    
     </v-app>
    
 </template>
@@ -93,15 +108,26 @@ export default {
         catBig:['케이블','머신','바벨','덤벨','맨몸'],
         catMid:['가슴','등','이두','삼두','하체','코어','어깨'],
         catSmall:['3세트','4세트','5세트','장연훈바부'],
-    
-        big:'',
-        mid:'',
-        small:'',
+        form:{
+            date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+            big:'',
+            mid:'',
+            small:'',
+
+        },
         setFields:[],
     }),
     methods:{
         submit(){
-            console.log(this.big)
+            let diaryForm = new FormData();
+            diaryForm.append('big',this.form.Big)
+            diaryForm.append('mid',this.form.mid)
+            diaryForm.append('small',this.form.small)
+            diaryForm.append('date',this.form.date)
+            for(let key of diaryForm.keys()){
+                console.log(key)
+            }
+
         },
         addSet(){
             this.setFields.push({

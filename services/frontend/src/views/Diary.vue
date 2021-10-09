@@ -7,13 +7,11 @@
                 </DiaryChart>
             </v-flex>
             <v-flex mt-10 pa-12>
-                <v-row >
-                    <v-col cols="12" sm="12">
+                <v-col cols="12" sm="12">
                         <DiaryInput>
 
                         </DiaryInput>
-                    </v-col>
-                </v-row>
+                </v-col>
             </v-flex>
 
         </v-layout>

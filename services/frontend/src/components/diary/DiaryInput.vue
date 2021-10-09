@@ -48,6 +48,7 @@
                     <v-text-field
                         outlined
                         placeholder="무게"
+                        required
                         :label="value.lab1"
                         v-model="value.weight"
                     >
@@ -57,6 +58,7 @@
                     <v-text-field
                         outlined
                         placeholder="반복횟수"
+                        required
                         :label="value.lab2"
                         v-model="value.reps"
                     >
@@ -64,7 +66,7 @@
                 </v-col>
                 <v-col cols="12" sm="1" >
                     <v-btn 
-                        class="mt-3"
+                        class="mt-2"
                         color="error"
                         rounded
                         outlined
@@ -113,7 +115,6 @@ export default {
             big:'',
             mid:'',
             small:'',
-
         },
         setFields:[],
     }),
@@ -124,8 +125,10 @@ export default {
             diaryForm.append('mid',this.form.mid)
             diaryForm.append('small',this.form.small)
             diaryForm.append('date',this.form.date)
-            for(let key of diaryForm.keys()){
-                console.log(key)
+            diaryForm.append('records',this.setFields)
+            
+            for(let v of diaryForm.values()){
+                console.log(v)
             }
 
         },

@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
 
-DATABASE_URL = 'postgresql://postgres:postgres@172.19.0.2:5432/postgres'
+DATABASE_URL = 'postgresql://postgres:postgres@172.18.0.2:5432/postgres'
 
 engine = create_engine(DATABASE_URL)
 

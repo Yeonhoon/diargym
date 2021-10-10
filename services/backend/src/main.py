@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 # import uvicorn
-from src.routes import users,posts, test
+from src.routes import users,posts, records
 # def create_app():
 #     c = conf()
 #     app = FastAPI()
@@ -20,7 +20,7 @@ app.add_middleware(
 
 app.include_router(users.router)
 app.include_router(posts.router)
-app.include_router(test.router)
+app.include_router(records.router)
 @app.get('/')
 def home():
     return "Hello FastAPI!"

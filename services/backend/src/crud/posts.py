@@ -1,6 +1,5 @@
 from os import stat
-from fastapi import HTTPException, APIRouter, status
-from fastapi.param_functions import Depends
+from fastapi import HTTPException, APIRouter, status, Depends
 from psycopg2 import connect
 from src.database.models import Posts,get_db
 from src.schemas.posts import Post, ShowPost
@@ -15,7 +14,6 @@ connect_db = get_db
 async def get_posts(db):
     return await db.query(Posts).all()
 
-# @router.get('/post/{pid}')
 async def get_post(pid: int, db: Session=Depends(connect_db)):
     return await db.query(Posts).filter(Posts.pid == pid).all()
 

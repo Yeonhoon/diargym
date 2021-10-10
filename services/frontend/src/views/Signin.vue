@@ -87,7 +87,7 @@ import {mapActions} from 'vuex'
         const User = new FormData();
         User.append('username', this.form.uname);
         User.append('password', this.form.upw);
-        try{
+        try {
           await this.logIn(User);
           this.$router.push('/')
         }

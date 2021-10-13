@@ -16,12 +16,12 @@ connect_db = get_db
 # @router.post('/uploadfile')
 # async def create_upload_file(files: List[UploadFile]=File(...)):
 #     return {'filenames': [file.filename for file in files]}
-
-@router.get('/getrecords', dependencies=[Depends(get_current_user)])
+@router.get('/getrecords', dependencies=[Depends(get_current_user)],
+            response_model=List[ShowRecord],
+            response_model_exclude=['rid','ruserid'])
 async def get_records(current_user: ShowUser=Depends(get_current_user), db: Session=Depends(connect_db)):
     data = get_all_records(current_user,db)
     return await data
-
 
 @router.post('/adddiary') 
 async def add_records(request: RecordBase, 

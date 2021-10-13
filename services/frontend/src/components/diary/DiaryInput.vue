@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <v-form v-model="readytoSubmit">
+        <v-form>
             <v-row>
                 <v-col cols="12" sm="5">
                     <v-date-picker 
@@ -95,7 +95,7 @@
 
                             <v-select
                                 label="단위"
-                                :items="units"
+                                :items="weightunit"
                                 :error-messages="errors"
                                 v-model="value.unit"
                             >
@@ -142,7 +142,6 @@
                     class="ma-2 white--text" 
                     color="primary" 
                     large
-                    :disabled="!readytoSubmit"
                     @click="submit"
                 ><v-icon left>mdi-pencil</v-icon>
                     저장
@@ -163,7 +162,7 @@ export default {
         catLarge:['케이블','머신','바벨','덤벨','맨몸'],
         catMid:['가슴','등','어깨', '이두','삼두','하체','코어'],
         catSmall:'',
-        units: ['kg','lb'],
+        weightunit: ['kg','lb'],
         form:{
             date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
             large:'',
@@ -176,24 +175,23 @@ export default {
         setFields:[],
         diaryNotFilled: false,
         diarySuccess: false,
-        readytoSubmit:false,
         warningMsg:'',
-        elapse: null,
     }),
     methods:{
         async submit(){
-
             if (this.form.large==="" || this.form.mid === "" || this.form.small === ""){
-                this.warningMsg = "운동종류가 입력되지 않았습니다!"
                 this.diaryNotFilled = true
-                this.readytoSubmit = false
+                this.warningMsg = "운동종류가 입력되지 않았습니다!"
             }
             else if (this.setFields.length === 0){
                 this.diaryNotFilled = true
-                this.readytoSubmit = false
                 this.warningMsg = "세트가 입력되지 않았습니다!"
             }
-            else{
+            else {
+                this.diarySuccess= true
+                this.diaryNotFilled=false
+                this.warningMsg = ""
+
                 for (var j=0; j < this.setFields.length; j++){
                     this.form.weight = this.form.weight + this.setFields[j]['weight'] + " "
                     this.form.unit = this.form.unit + this.setFields[j]['unit'] + " "
@@ -208,20 +206,22 @@ export default {
                     'runit': this.form.unit,
                     'rrep': this.form.reps
                 })
-                this.diarySuccess= true
-                this.diaryNotFilled=false
-                this.warningMsg = ""
+                .then(
+                    this.setFields= [],
+                    this.form.weight= "",
+                    this.form.unit="",
+                    this.form.reps=""
+
+                )
                 // timer
                 let timer = this.submit.timer
                 if (timer) {
                     clearTimeout(timer)
                 }
                 this.submit.timer = setTimeout(()=>{
-                    this.readytoSubmit= false
                     this.diarySuccess = false
                     this.form.small = ''
-                    this.setFields= []
-                }, 2000)
+                }, 3000)
             }
         },
         addSet(){

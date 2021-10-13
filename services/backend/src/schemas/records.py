@@ -23,15 +23,22 @@ class RecordBase(BaseModel):
     #                     rrep: int=Form(...)):
     #     super().__init__(rdate, rlarge, rmid, rsmall, rweight, runit, rrep)
 
-
 class Record(RecordBase):
   class Config():
     orm_mode = True
 
 
-class ShowRecord(BaseModel):
-    ruser: str
+class ShowRecord(RecordBase):
+    rid : Optional[int]=None
+    ruserid:Optional[str]=None
+    # rdate: str
     rdate: date
+    rlarge: str
+    rmid: str
+    rsmall: str
+    rweight: str
+    runit: str
+    rrep: str
   
     class Config():
       orm_mode = True

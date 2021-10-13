@@ -20,11 +20,11 @@ def upgrade():
     op.create_table('records',
         sa.Column('rid', sa.Integer, primary_key=True, index=True, autoincrement=True),
         sa.Column('ruserid', sa.String(length=20)),
-        sa.Column('rdate',sa.DateTime),
+        sa.Column('rdate',sa.Date),
         sa.Column('rlarge', sa.String(length=100), nullable=False),
         sa.Column('rmid', sa.String(length=100), nullable=False),
         sa.Column('rsmall', sa.String(length=100), nullable=False),
-        sa.Column('rweight',sa.Float, nullable=False),
+        sa.Column('rweight',sa.Float, nullable=True),
         sa.Column('runit', sa.String, nullable=False),
         sa.Column('rrep', sa.Integer, nullable=False)
     )

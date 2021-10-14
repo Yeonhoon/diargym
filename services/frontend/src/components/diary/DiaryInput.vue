@@ -63,7 +63,6 @@
             <validation-observer
                     ref="observer"
             >
-            
                 <div
                     v-for="(value, i) in setFields"
                     :key="i"
@@ -222,6 +221,8 @@ export default {
                     this.diarySuccess = false
                     this.form.small = ''
                 }, 3000)
+                // 화면 새로고침
+                window.location.reload();
             }
         },
         addSet(){

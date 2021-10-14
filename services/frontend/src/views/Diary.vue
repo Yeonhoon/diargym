@@ -2,8 +2,9 @@
     <v-container>
         <v-layout column>
             <v-flex mt-10>
+                <h1>최근 일주일 운동기록</h1>
+                <h5>단위:볼륨(중량 * 반복 수)</h5>
                 <DiaryChart
-                    :chartData="this.chartData"
                 >
 
                 </DiaryChart>
@@ -21,51 +22,11 @@
 </template>
 <script>
 import DiaryInput from '../components/diary/DiaryInput.vue'
-import DiaryChart from '../components/BarChart.vue'
-import axios from 'axios'
+import DiaryChart from '../components/diary/DiaryChart.vue'
 // import DiaryCalendar from '../components/diary/DiaryCalendar.vue'
 export default {
-    data: () => ({
-        rawData:'',
-        chartData:[],
-        chartLabel:[],
-        datasetsData:[],
-        datasetsLabel:[],
-        labels : [],
-        
-    }),
     components:{
         DiaryInput, DiaryChart
-    },
-    async mounted(){
-       await axios.get('/getrecords')
-       .then(response => {
-           for(var i=0; i<response.data.length; i++){
-               this.labels.push(response.data[i]['rdate'])
-               this.datasetsLabel.push(response.data[i]['rmid']),
-               this.datasetsData.push(response.data[i]['rweight']*response.data[i]['rrep'])
-            }
-            this.chartData.push({
-                data:this.datasetsData,
-                labels:this.labels,
-                label:this.datasetsLabel,
-                ackgroundColor: '#f87979',
-                pointBackgroundColor: 'white',
-                borderWidth: 1,
-                pointBorderColor: '#249EBF',
-            })
-
-           console.log(this.labels)
-           console.log(this.chartData)
-           this.rawData = response.data //[0]['rdate']
-           console.log("부모: ", this.rawData)
-       })
-       
-    },
-    computed:{
-        dataExtract(){
-            return this.rawData
-        }
     },
     // async mounted(){
     //     await console.log(this.rawData)

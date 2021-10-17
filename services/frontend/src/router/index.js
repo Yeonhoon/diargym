@@ -5,6 +5,7 @@ import Signup from '../views/Signup.vue'
 import Signin from '../views/Signin.vue'
 import Diary from '../views/Diary.vue'
 import Profile from '../views/Profile.vue'
+import Dashboard from '../views/Dashboard.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -36,6 +37,11 @@ const routes = [
     path:'/diary',
     name: 'Diary',
     component: Diary
+  },
+  {
+    path:'/dashboard',
+    name:'Dashboard',
+    component: Dashboard
   },
   {
     path:'/profile',

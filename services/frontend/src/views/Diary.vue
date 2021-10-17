@@ -1,19 +1,18 @@
 <template>
     <v-container>
         <v-layout column>
-            <v-flex mt-10>
-                <h1>최근 일주일 운동기록</h1>
-                <h5>단위:볼륨(중량 * 반복 수)</h5>
+            <v-flex mt-8>
+                
                 <DiaryChart
                 >
 
                 </DiaryChart>
             </v-flex>
-            <v-flex mt-10 pa-12>
+            <v-flex pa-5>
                 <v-col cols="12" sm="12">
-                        <DiaryInput>
+                    <DiaryInput>
 
-                        </DiaryInput>
+                    </DiaryInput>
                 </v-col>
             </v-flex>
 

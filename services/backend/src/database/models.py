@@ -42,7 +42,7 @@ class Records(Base):
     __tablename__ = 'records'
     rid = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     ruserid = Column(String(length=20), ForeignKey('users.uid'))
-    rdate = Column(Date)
+    rdate = Column(String)
     rlarge = Column(String(length=100), nullable=False)
     rmid = Column(String(length=100), nullable=False)
     rsmall = Column(String(length=100), nullable=False)

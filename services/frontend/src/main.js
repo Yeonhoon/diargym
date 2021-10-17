@@ -2,13 +2,12 @@ import Vue from 'vue'
 import axios from 'axios'
 import App from './App.vue'
 import router from './router'
-import vuetify from './plugins/vuetify'
 import store from './store'
+import vuetify from './plugins/vuetify'
 
 
 // import VueCookies from 'vue-cookies'
 Vue.config.productionTip = false
-
 // Vue.use(VueCookies)
 // Vue.$cookies.config('7d')
 axios.defaults.withCredentials = true;
@@ -25,10 +24,13 @@ axios.defaults.baseURL = 'http://localhost:5000/';
 //   }
 // });
 
+const EventBus = new Vue();
+
 new Vue({
   router,
   vuetify,
   axios,
   store,
+  EventBus,
   render: h => h(App)
 }).$mount('#app')

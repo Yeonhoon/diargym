@@ -15,6 +15,10 @@
             <v-btn :to="{name:'Signup'}" color='primary'>Sign Up</v-btn>
             <v-btn :to="{name:'Signin'}" color='primary'>Sign In</v-btn>
           </p>
+          <p v-else>
+            <v-btn :to="{name:'Diary'}" color='primary'>운동일지 작성</v-btn>
+            <v-btn :to="{name:'Dashboard'}" color>아카이브</v-btn>
+          </p>
       </v-flex>
     </v-layout>
   </v-container>
@@ -35,28 +39,15 @@ import {mapActions} from 'vuex'
         return this.$store.getters.isAuthenticated
       }
     },
-
     methods: {
       ...mapActions(['logOut']),
       async logout(){
         await this.logOut();
         this.$router.push("About")
-
       },
-      // getData() {
-      //   axios.get('/')
-      //   .then((res) => {
-      //     this.msg = res.msg
-      //   })
-      //   .catch(error => {
-      //     console.log(error)
-      //   })
-      // }
-
     },
     // created(){
     //   this.getData();
     // }
-
   }
 </script>

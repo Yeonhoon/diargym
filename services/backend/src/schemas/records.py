@@ -31,8 +31,7 @@ class Record(RecordBase):
 class ShowRecord(RecordBase):
     rid : Optional[int]=None
     ruserid:Optional[str]=None
-    # rdate: str
-    rdate: date
+    rdate: str
     rlarge: str
     rmid: str
     rsmall: str

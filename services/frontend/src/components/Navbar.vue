@@ -5,57 +5,41 @@
       dark
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
+     
       <v-spacer></v-spacer>
-      <v-toolbar-items v-if="isLogin" class="hidden-xs-only">
-        <v-btn exact text :to="{name:'Home'}" > <v-icon>mdi-home</v-icon>Home </v-btn>
-        <v-btn text @click="logout"> <v-icon>mdi-lock</v-icon> Logout</v-btn>
-      </v-toolbar-items>
-      <v-toolbar-items v-else >
-        <v-btn text 
-          exact
-          v-for = "item in menuItems"
-          :key="item.title"
-          :to="item.path"
-        >
-          <v-icon left>{{item.icon}}</v-icon>
-          {{item.title}}
-
-        </v-btn>
-      </v-toolbar-items>
-      <!-- <v-menu 
-        class="hidden-md-and-up"
-        bottom
-        left
-        offset-y>
-        <template
-          v-slot: activator="{on}">
-          <v-btn icon><v-icon v-on="on">mdi-account</v-icon></v-btn>
+      <v-menu>
+        <template v-slot:activator="{on, attrs}">
+          <v-btn
+            text
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-icon>mdi-account</v-icon>
+          </v-btn>
         </template>
-        <v-list>
-          <v-list-item :to="{name:'mypage'}">마이 페이지</v-list-item>
-          <v-list-item @click="logout">로그아웃</v-list-item>
+        <v-list
+          v-if="isLogin"
+        >
+          <v-list-item>
+            <v-list-item-title :to="{name:'Home'}">Home</v-list-item-title>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-title @click="logout">logout</v-list-item-title>
+          </v-list-item>
         </v-list>
-      </v-menu> -->
+        <v-list v-else>
+          <v-list-item
+            v-for = "item in menuItems"
+            :key="item.title"
+            :to="item.path"
+          >
+            <v-list-item-title>
+              {{item.title}}
+            </v-list-item-title>
 
+          </v-list-item>
+        </v-list>
+      </v-menu>
      
     </v-app-bar>
     <v-navigation-drawer

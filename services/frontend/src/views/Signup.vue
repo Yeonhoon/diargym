@@ -88,7 +88,8 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click="addUser">Sign Up</v-btn>
+                <v-btn text color="red darken-1" :to="{name:'Home'}">취소</v-btn>
+                <v-btn text color="primary" @click="addUser">가입</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>

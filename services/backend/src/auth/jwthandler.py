@@ -45,7 +45,7 @@ class OAuth2PasswordBearerCookie(OAuth2):
             if self.auto_error:
                 raise HTTPException(
                     status_code=401,
-                    detail="Not authenticateddddd!!!!!!!!!!!!!1",
+                    detail="Not authenticateddddd!!!!!!!!!!!!!",
                     headers={"WWW-Authenticate": "Bearer"},
                 )
             else:

@@ -18,7 +18,6 @@ export default {
         }
     },
     created(){
-        console.log("자식: ", 'created')
     },
     // computed:{
     //     GetData(){

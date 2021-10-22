@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Response
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
@@ -22,7 +22,7 @@ router = APIRouter(
   tags=['users']
 )
 
-@router.get('/getuser/{uid}')
+@router.get('/checkid/{uid}')
 async def get_a_user(uid:str, db:Session=Depends(connect_db)):
     data = get_user(uid, db)
     return await data

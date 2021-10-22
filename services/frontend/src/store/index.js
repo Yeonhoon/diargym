@@ -13,8 +13,8 @@ export default new Vuex.Store({
     records,
   },
   plugins: [createPersistedState({
-    kye:'keyname',
-    path:['user'],
+    key:'keyname',
+    path:['users'],
     storage: window.localStorage
   })]
 })

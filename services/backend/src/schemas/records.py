@@ -5,11 +5,11 @@ from typing import List, Optional, Type
 from datetime import date, datetime
 from fastapi import Form
 import inspect
-from sqlalchemy.sql import annotation
+
+# from sqlalchemy.sql import annotation
 
 
 class RecordBase(BaseModel):
-    # ruserid: str
     rdate: str
     rlarge: str
     rmid: str
@@ -29,8 +29,7 @@ class Record(RecordBase):
 
 
 class ShowRecord(RecordBase):
-    rid : Optional[int]=None
-    ruserid:Optional[str]=None
+    ruserid:str
     rdate: str
     rlarge: str
     rmid: str

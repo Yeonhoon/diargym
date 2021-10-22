@@ -41,7 +41,7 @@ extend('password', {
 
 export default {
     components:{
-          ValidationObserver, ValidationProvider,
+      ValidationObserver, ValidationProvider,
     },
 
 }

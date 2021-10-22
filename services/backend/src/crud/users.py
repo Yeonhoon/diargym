@@ -26,10 +26,6 @@ def produce_hash_password(password: str):
 
 
 async def create_user(request, db):
-    # sql = "insert into users (uname, uemail, upw) values(%s, %s, %s)"
-    # cursor.execute(sql, (request.name, request.email, 
-                        # produce_hash_password(request.password)))
-    # print(data)
     try:
         new_user = Users(
                 uid=request.uid,
@@ -47,7 +43,13 @@ async def create_user(request, db):
     return "sign up success"
     # response = RedirectResponse(url='/home')
 
-# @router.delete('/delteuser', status_code=status.HTTP_200_OK)
+async def check_user(uid:str, db):
+    userid = db.query(Users).filteR(Users.uid == uid).first()
+
+    return userid
+
+
+
 async def delete_user(uid:str, current_user, db) -> Status:
     db_user = db.query(Users).filter(Users.uid == uid).first()
     

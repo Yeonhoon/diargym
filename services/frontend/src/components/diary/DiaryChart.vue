@@ -23,15 +23,15 @@ import {mapGetters} from 'vuex'
         chartLabel:[],
         dates : [],
         datasets:[], 
-        backgroundColor:['#F69588', '#889FF6', '#73C470', '#E6C2EC']
+        backgroundColor:['#F69588', '#889FF6', '#73C470', '#E6C2EC','#C2ECE9','#747171']
         
     }),
     async created() {
-      return await this.$store.dispatch('getRecords');
+      return await this.$store.dispatch('getChartRecords');
     },
 
     computed:{
-      ...mapGetters({records:'stateRecords'}),
+      ...mapGetters({records:'stateChartRecords'}),
       checkRecords(){
         return this.records
       }
@@ -39,14 +39,15 @@ import {mapGetters} from 'vuex'
 
     async mounted(){
       for(var i=0; i<this.records.length; i++){
+        if(this.records[i]['type'] ==='volume'){
           this.dates.push(this.records[i]['rdate'])
-          this.chartData.push(this.records[i]['volume'])
+          this.chartData.push(this.records[i]['value'])
           this.chartLabel.push(this.records[i]['category'])
+        }
       }
 
-      let date = [...new Set(this.dates)]
+      let date = [...new Set(this.dates)].sort()
       let category = [...new Set(this.chartLabel)]
-
     //dataset 넣기
     for(var j=0; j<category.length; j++){
       this.datasets.push({
@@ -54,27 +55,51 @@ import {mapGetters} from 'vuex'
         backgroundColor:this.backgroundColor[j],
         data:this.chartData.slice(date.length * j, date.length * (j+1) )
       })
-    }
+    } 
 
       this.datacollection={
-        labels: date,
+        labels: date, // 최근 7일 데이터만 보여주기
         datasets:this.datasets
-          
       },
       this.options={
           responsive:true,
           scales:{
-              xAxes:[{
-                  stacked:true,
-              }],
-              yAxes:[{
-
-                  stacked:true
-              }]
+            xAxes:[{
+              stacked:true,
+              scaleLabel:{
+                display:true,
+                labelString:'일자'
+              }
+              
+            }],
+            yAxes:[{
+              stacked:true,
+              scaleLabel:{
+                // display:true,
+                // labelString:''
+              },
+              ticks:{
+                beginAtZero: true,
+                userCallback: (value)=>{
+                  value = value.toString();
+                  value=value.split(/(?=(?:...)*$)/);
+                  value = value.join(',');
+                  return value
+                },
+              }
+            }]
           },
           legend:{
             display:true
-          }
+          },
+          // plugins:{
+          //   datalabels:{
+          //     formatter: (value)=>{
+          //       return value +"vol"
+          //     }
+          //   }
+          // }
+
       }
 
        

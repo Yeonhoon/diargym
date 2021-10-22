@@ -7,12 +7,16 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
      
       <v-spacer></v-spacer>
+      <v-btn text icon @click="toHome">
+        <v-icon>mdi-home</v-icon>
+      </v-btn>
       <v-menu>
         <template v-slot:activator="{on, attrs}">
           <v-btn
             text
             v-bind="attrs"
             v-on="on"
+            rounded
           >
             <v-icon>mdi-account</v-icon>
           </v-btn>
@@ -20,16 +24,19 @@
         <v-list
           v-if="isLogin"
         >
-          <v-list-item>
-            <v-list-item-title :to="{name:'Home'}">Home</v-list-item-title>
+          <v-list-item 
+            v-for="item in menuLogins"
+            :key="item.title"
+            :to="item.path">
+            <v-list-item-title>{{item.title}}</v-list-item-title>
           </v-list-item>
-          <v-list-item>
-            <v-list-item-title @click="logout">logout</v-list-item-title>
+          <v-list-item  @click="logout">
+            <v-list-item-title>logout</v-list-item-title>
           </v-list-item>
         </v-list>
         <v-list v-else>
           <v-list-item
-            v-for = "item in menuItems"
+            v-for ="item in menuItems"
             :key="item.title"
             :to="item.path"
           >
@@ -55,7 +62,7 @@
           <v-list-item-subtitle
              v-if="isLogin"
           >
-            {{this.currentUser}}님 반갑습니다!
+            {{currentUser}}님 반갑습니다!
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -118,25 +125,37 @@
 export default {
   name: 'NavBar',
   computed: {
-    isLogin: function() {
+    isLogin () {
       return this.$store.getters.isAuthenticated;
+    },
+    currentUser (){
+      return this.$store.getters.stateUser.uid;
+
     }
   },
   data(){
     return{
       drawer : false,
-      currentUser: null,
-       menuItems: [
-          { title: 'Home', path: '/', icon: 'home' },
+      menuItems: [
+          // { title: 'Home', path: '/', icon: 'home' },
           { title: 'Sign Up', path: '/register', icon: 'face' },
           { title: 'Sign In', path: '/login', icon: 'lock_open' }
         ],
+      menuLogins:[
+          // { title: 'Home', path: '/', icon: 'home' },
+          { title: 'Diary', path: '/diary', icon: 'face' },
+          { title: 'Dashboard', path: '/dashboard', icon: 'lock_open' }
+      ]
     }
   },
   methods:{
+    toHome(){
+      this.$router.push('/')
+    },
+
     async logout(){
       await this.$store.dispatch('logOut');
-      this.$router.push('/login');
+      this.$router.push('/');
     },
     async login(){
       this.$router.push('/')
@@ -144,7 +163,7 @@ export default {
 
   },
   mounted(){
-    this.currentUser = this.$store.getters.stateUser.uid;
+    
   }
 }
 </script>

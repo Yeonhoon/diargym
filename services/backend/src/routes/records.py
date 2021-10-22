@@ -7,7 +7,8 @@ from src.crud.records import (
     add_record, 
     get_tables_record, 
     get_tables_record_date,
-    update_record
+    update,
+    delete
     )
 from src.schemas.records import Record, ShowRecord, RecordBase
 from typing import List
@@ -28,14 +29,14 @@ async def add_records(request: RecordBase,
 
 @router.get('/records', dependencies=[Depends(get_current_user)],
             response_model=List[ShowRecord],
-            response_model_exclude=['rid','ruserid'])
+            response_model_exclude=['ruserid'])
 async def get_records(current_user: ShowUser=Depends(get_current_user), db: Session=Depends(connect_db)):
     data = get_all_records(current_user,db)
     return await data
 
 @router.get('/tables', dependencies=[Depends(get_current_user)],
                     response_model=List[ShowRecord],
-                    response_model_exclude=['rid','ruserid'])
+                    response_model_exclude=['ruserid'])
 async def get_tables_records(current_user: ShowUser=Depends(get_current_user), db: Session=Depends(connect_db)):
     data = get_tables_record(current_user, db)
     return await data
@@ -48,13 +49,18 @@ async def get_tables_records(rdate, current_user: ShowUser=Depends(get_current_u
     data = get_tables_record_date(current_user, db, rdate)
     return await data
 
+@router.delete('/delete/{rid}', dependencies=[Depends(get_current_user)])
+async def delete_record(rid:int, current_user: ShowUser=Depends(get_current_user), db: Session=Depends(connect_db)):
+    print(rid)
+    data = delete(rid, current_user, db)
+    return await data
 
 @router.patch('/update/{rid}')
 async def update_record(rid, 
-                    request: RecordBase,
+                    request: ShowRecord,
                     current_user: ShowUser=Depends(get_current_user), 
                     db: Session=Depends(connect_db)):
 
-    data = update_record(rid, request, current_user, db)
+    data = update(rid, request, current_user, db)
     return await data
 

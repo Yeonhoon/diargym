@@ -1,9 +1,9 @@
 <script>
-import {Bar, mixins} from 'vue-chartjs'
+import {Line, mixins} from 'vue-chartjs'
 
 export default {
-    name: 'Barchart',
-    extends: Bar,
+    name: 'LineChart',
+    extends: Line,
     mixins: [mixins.reactiveProp], //chartData가 변경되었을 때 다시 갱신.
     props: {
         chartData: {
@@ -17,13 +17,8 @@ export default {
     },
     created(){
     },
-    // computed:{
-    //     GetData(){
-    //         return this.chartData, this.chartOptions
-    //     }
-    // },
-    mounted(){
 
+    mounted(){
         this.renderChart(this.chartData, this.chartOptions)
             
 

@@ -10,15 +10,13 @@
           with Vue.js & FastAPI & PostgreSQL
         </blockquote>
       </v-flex>
-      <v-flex sm6 offset-sm3 class="d-flex justify-center" mt-5>
-          <p v-if="!isLogin">
-            <v-btn :to="{name:'Signup'}" color='primary'>Sign Up</v-btn>
-            <v-btn :to="{name:'Signin'}" color='primary'>Sign In</v-btn>
-          </p>
-          <p v-else>
-            <v-btn :to="{name:'Diary'}" color='primary'>운동일지 작성</v-btn>
-            <v-btn :to="{name:'Dashboard'}" color>아카이브</v-btn>
-          </p>
+      <v-flex sm6 offset-sm3 class="d-flex justify-center" mt-5 v-if="!isLogin">
+        <v-btn :to="{name:'Signup'}" color='primary' text>Sign Up</v-btn>
+        <v-btn :to="{name:'Signin'}" color='primary' text >Sign In</v-btn>
+      </v-flex>
+      <v-flex sm6 offset-sm3 class="d-flex justify-center" mt-5 v-else>
+            <v-btn :to="{name:'Diary'}" color='primary' text>운동일지 작성</v-btn>
+            <v-btn :to="{name:'Dashboard'}" color="error" text>대시보드</v-btn>
       </v-flex>
     </v-layout>
   </v-container>

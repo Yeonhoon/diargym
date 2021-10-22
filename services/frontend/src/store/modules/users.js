@@ -2,13 +2,13 @@ import axios from 'axios';
 
 const state = {
   user: null,
+  checkid: null,
 };
 
 const getters = {
   isAuthenticated: state => !!state.user,
   stateUser: state => state.user,
 };
-
 
 const actions = {
   async register({dispatch}, form) {
@@ -17,6 +17,10 @@ const actions = {
     UserForm.append('username', form.uname);
     UserForm.append('password', form.upw1);
     await dispatch('logIn', UserForm);
+  },
+  async checkID({commit},uid){
+    let {data} = await axios.get('/checkid', uid)
+    await commit('setCheckID',data)
   },
   async logIn({dispatch}, user) {
     await axios.post('/login', user);
@@ -31,8 +35,8 @@ const actions = {
     await axios.delete(`user/${id}`);
   },
   async logOut({commit}) {
-    let user = null;
-    commit('logout', user);
+    // await axios.post('/logout')
+    commit('logout');
   }
 };
 
@@ -41,8 +45,12 @@ const mutations = {
     state.user = username;
   },
   logout(state, user){
-    state.user = user;
+    localStorage.removeItem(user)
+    state.user = null
   },
+  setCheckID(state, id){
+    state.checkid= id;
+  }
 };
 
 export default {

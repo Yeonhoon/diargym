@@ -16,7 +16,9 @@
                 <v-toolbar-title>Sign in</v-toolbar-title>
               </v-toolbar>
               <v-card-text>
-                <validation-observer>
+                <validation-observer
+                  ref="observer"
+                >
                   <v-form>
                     <validation-provider
                       v-slot="{ errors }"
@@ -40,18 +42,29 @@
                         prepend-icon="lock" 
                         v-model="form.upw" 
                         label="Password" 
-                        type="password"
-                        :error-messages="errors"></v-text-field>
+                        :type="showpw ?'text' :'password'"
+                        :append-icon="showpw ? 'mdi-eye' :'mdi-eye-off'"
+                        :error-messages="errors"
+                        @click:append="showpw = !showpw"  
+                      ></v-text-field>
                     </validation-provider>
                   </v-form>
                 </validation-observer>
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
+                <v-btn
+                  text
+                  color="error"
+                  @click="cancel"
+                >
+                  취소
+                </v-btn>
                 <v-btn 
+                  text
                   color="primary"
                   @click="login"
-                >Login</v-btn>
+                >로그인</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -74,8 +87,8 @@ import {mapActions} from 'vuex'
           uname: null,
           upw: null,
       },
-        isLoginError: false
-
+        isLoginError: false,
+        showpw:false,
       }
     },
     props: {
@@ -87,19 +100,18 @@ import {mapActions} from 'vuex'
         const User = new FormData();
         User.append('username', this.form.uname);
         User.append('password', this.form.upw);
-        try {
-          await this.logIn(User);
-          this.$router.push('/')
+        this.$refs.observer.validate()
+        .then(val=>{
+          if(val){
+            this.logIn(User)
+            this.$router.push('/')
+          }
         }
-        catch (error){
-          this.isLoginError = true
-          throw "로그인 실패"
-        }
+        )
 
-
-
-
-
+      },
+      cancel(){
+        this.$router.push('/')
       }
     }
   }

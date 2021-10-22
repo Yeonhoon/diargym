@@ -8,7 +8,7 @@
                 class="justify-center mt-3"
             >
                 <v-dialog
-                    v-model="dialog"
+                    v-model="recordDialog"
                     max-width="400"
                     scrollable
                 >
@@ -25,104 +25,117 @@
 
                     </template>
                     <!-- show modals -->
-                    <v-card>
-                        <v-card-title>운동 정보 입력</v-card-title>
-                        <v-divider></v-divider>
-                        <v-card-text>
-                        <v-menu
-                            v-model="menu2"
-                            :close-on-content-click="false"
-                            :nudge-right="40"
-                            transition="scale-transition"
-                            offset-y
-                            min-width="auto"
-                        >
-                        <template v-slot:activator="{on, attrs}">
-                            <v-text-field
-                                class="mt-5"
-                                v-model="form.date"
-                                label="운동일자"
-                                prepend-icon="mdi-calendar"
-                                readonly
-                                v-bind="attrs"
-                                v-on="on"
+                    <form-dialog
+                        :headerTitle=this.headerTitle
+                        @cancel="hideDialog"
+                        @add="addSet"
+                        @submit="submit"
+                    >
+                        <template v-slot:body>
+                            <v-menu
+                                v-model="menu2"
+                                :close-on-content-click="false"
+                                :nudge-right="40"
+                                transition="scale-transition"
+                                offset-y
+                                min-width="auto"
                             >
-                            </v-text-field>
-                        </template>
-                            <v-date-picker 
-                                width="250"
-                                v-model="form.date" 
-                                @input="menu2 = false"    
-                            >
-                            </v-date-picker>
-                        </v-menu>
-                        <v-select
-                            label="대분류"
-                            outlined
-                            required
-                            :items="catLarge"
-                            v-model="form.large"
-                        ></v-select>
-                        <v-select
-                            label="중분류"
-                            outlined
-                            required
-                            :items="catMid"
-                            v-model="form.mid"
-                        ></v-select>
-                        <v-text-field
-                            required
-                            label="종류"
-                            outlined
-                            v-model="form.small"
-                            hint="벤치프레스, 스쿼트, 풀업..." 
-                        >
-                        </v-text-field>
-                        <validation-observer
-                            ref="observer"
-                        >
-                        <div
-                            v-for="(value, i) in setFields"
-                            :key="i"
-                        >
-                            <v-row>
-                                <v-col cols="4">
-                                <validation-provider
-                                        v-slot="{ errors }"
-                                        rules="required"
-                                        name ="무게"
+                                <template v-slot:activator="{on, attrs}">
+                                <v-text-field
+                                    class="mt-5"
+                                    v-model="form.date"
+                                    label="운동일자"
+                                    prepend-icon="mdi-calendar"
+                                    readonly
+                                    v-bind="attrs"
+                                    v-on="on"
                                 >
-                                    <v-text-field
+                                </v-text-field>
+                                </template>
+                                    <v-date-picker 
+                                    width="250"
+                                    v-model="form.date" 
+                                    @input="menu2 = false"    
+                                    >
+                                    </v-date-picker>
+                                </v-menu>
+                                <v-select
+                                    label="대분류"
+                                    outlined
+                                    required
+                                    :items="catLarge"
+                                    v-model="form.large"
+                                ></v-select>
+                                <v-select
+                                    label="중분류"
+                                    outlined
+                                    required
+                                    :items="catMid"
+                                    v-model="form.mid"
+                                ></v-select>
+                                <v-text-field
+                                    required
+                                    label="종류"
+                                    outlined
+                                    v-model="form.small"
+                                    hint="벤치프레스, 스쿼트, 풀업..." 
+                                >
+                                </v-text-field>
+                                <validation-observer
+                                 ref="observer"
+                                >
+                            <div
+                                v-for="(value, i) in setFields"
+                                :key="i"
+                            >
+                                <v-col cols="6">
+                                    <v-btn text 
+                                        @click="removeSet(i)"
+                                        color="error"
+                                        plain
+                                        rounded
+                                    >
+                                        set {{i+1}}
+                                    </v-btn>
+                                </v-col>
+                                <v-row>
+                                    <v-col cols="4">
+                                    <validation-provider
+                                    v-slot="{ errors }"
+                                    rules="required"
+                                    name ="무게"
+                                    >
+                                        <v-text-field
                                         placeholder="무게"
                                         required
                                         :error-messages="errors"
                                         :label="value.lab1"
                                         v-model="value.weight"
-                                    >
-                                    </v-text-field>
-                                </validation-provider>
-                                </v-col>
-                                <v-col cols="4">
-                                <validation-provider
+                                        >
+                                        </v-text-field>
+                                    </validation-provider>
+                                    </v-col>
+                                    <v-col cols="4">
+                                    <validation-provider
                                     v-slot="{ errors }"
                                     rules="required"
                                     name ="단위"
-                                >
-                                    <v-select
+                                    >
+                                        <v-select
                                         label="단위"
                                         :items="weightunit"
                                         :error-messages="errors"
                                         v-model="value.unit"
+                                        >
+                                        </v-select>
+                                    </validation-provider>
+                                    </v-col>
+                                    <v-col cols="4">
+                                    <validation-provider
+                                        v-slot="{ errors }"
+                                        rules="required"
+                                        name ="반복횟수"
                                     >
-                                    </v-select>
-                                </validation-provider>
-                                </v-col>
-                                <v-col cols="4">
-                                <validation-provider
-                                    v-slot="{ errors }"
-                                    rules="required"
-                                    name ="반복횟수"
-                                >
                                     <v-text-field
                                         placeholder="횟수"
                                         required
@@ -131,72 +144,36 @@
                                         v-model="value.reps"
                                     >
                                     </v-text-field>
-                                </validation-provider>
-                                </v-col>
-                                <v-col cols="6">
-                                    <v-btn text 
-                                        @click="removeSet(i)"
-                                        color="error"
-                                        small
-                                        plain
-                                >set {{i+1}}</v-btn>
-                                </v-col>
-                            </v-row>
-                        <v-divider></v-divider>
-                        </div>
-                    
-                    </validation-observer>
-                    <span>
-                        <v-alert
+                                    </validation-provider>
+                                    </v-col>
+                                </v-row>
+                            <v-divider></v-divider>
+                            </div>
+                        </validation-observer>
+                        <span>
+                            <v-alert
                             v-if="diaryNotFilled"
                             color="red lighten-2"
                             prominent
                             dense
                             type="error"
                             elevation=2
-                        >
-                            {{warningMsg}}
-                        </v-alert>
-                        <v-alert
+                            >
+                                {{ warningMsg }}
+                            </v-alert>
+                            <v-alert
                             v-if="diarySuccess"
                             dense
                             text
                             type="success"
                             :value="diarySuccess"
-                        >
-                            "저장 성공!"
-                        </v-alert>
+                            >
+                                "저장 성공!"
+                            </v-alert>
 
-                    </span>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer>
-                    </v-spacer>
-                    <v-btn
-                        color="red darken-1"
-                        text
-                        @click="dialog=false"
-                    >
-                        취소
-                    </v-btn>
-                    <v-btn 
-                        class="ma-2 " 
-                        color="blue darken-1"
-                        text
-                        @click="addSet">
-                    
-                        세트 추가
-                    </v-btn>
-                    <v-btn 
-                        class="ma-2 white--text" 
-                        color="blue darken-1"
-                        text
-                        @click="submit"
-                    >
-                        저장
-                    </v-btn> 
-                </v-card-actions>
-                </v-card>
+                        </span>
+                        </template>
+                    </form-dialog>
             </v-dialog>
         </v-row>
         </v-form>
@@ -204,11 +181,17 @@
 </template>
 <script>
 import {mapActions} from 'vuex'
-// import axios from 'axios'
+import FormDialog from '../dialogs/FormDialog.vue'
 import myMixin from '../../mixins/index'
 export default {
     mixins:[myMixin],
+    name:"DiaryInput",
+    components:{
+        FormDialog
+    },
     data: () => ({
+        recordDialog:false,
+        headerTitle:"운동일지 기록",
         catLarge:['케이블','머신','바벨','덤벨','맨몸'],
         catMid:['가슴','등','어깨', '이두','삼두','하체','코어'],
         catSmall:'',
@@ -222,15 +205,20 @@ export default {
             unit:'',
             reps:'',
         },
-        dialog:false,
+
         menu2: false,
         setFields:[],
         diaryNotFilled: false,
         diarySuccess: false,
         warningMsg:'',
-    }),
+        }),
     
     methods:{
+        hideDialog(){
+            this.recordDialog=false
+            this.diarySuccess=false
+            this.diaryNotFilled=false
+        },
         ...mapActions(['submitRecords']),
         async submit(){
             if (this.form.large==="" || this.form.mid === "" || this.form.small === ""){
@@ -246,11 +234,19 @@ export default {
                 this.diaryNotFilled=false
                 this.warningMsg = ""
 
-                for (var j=0; j < this.setFields.length; j++){
-                    this.form.weight = this.form.weight + this.setFields[j]['weight'] + " "
+                for (var j=0; j<this.setFields.length; j++){
                     this.form.unit = this.form.unit + this.setFields[j]['unit'] + " "
                     this.form.reps = this.form.reps + this.setFields[j]['reps'] + " "
+                    if(this.setFields[j]['unit']==='lb'){    
+                        this.form.weight = this.form.weight + this.setFields[j]['weight']*0.45 + " "
+                    }
+                    else if (this.setFields[j]['unit']==='kg'){
+                        this.form.weight = this.form.weight + this.setFields[j]['weight'] + " "
+                    }
                 }
+                
+                //단위 맞춰주기
+
                 let submitData = {
                     'rdate': this.form.date,
                     'rlarge': this.form.large,
@@ -277,7 +273,7 @@ export default {
                     this.diarySuccess = false
                     this.form.small = ''
                 }, 2000)
-                this.dialog=false
+                this.recordDialog=false
                 // 화면 새로고침
                 window.location.reload();
             }
@@ -299,4 +295,3 @@ export default {
 }
 
 </script>
-

@@ -5,8 +5,16 @@ import Signup from '../views/Signup.vue'
 import Signin from '../views/Signin.vue'
 import Diary from '../views/Diary.vue'
 import Profile from '../views/Profile.vue'
-import Dashboard from '../views/Dashboard.vue'
+// import Dashboard from '../views/Dashboard.vue'
+import state from '../store/index'
 Vue.use(VueRouter)
+
+// const requireAuth=() => (to,from,next)=>{
+//   if(state.getters.isAuthenticated){
+//     return next()
+//   }
+//   else next('/login')
+// }
 
 const routes = [
   {
@@ -17,12 +25,12 @@ const routes = [
   {
     path: "/register",
     name: 'Signup',
-    component: Signup
+    component: Signup,
   },
   {
     path: "/login",
     name: 'Signin',
-    component: Signin
+    component: Signin,
   },
   {
     path: '/about',
@@ -36,17 +44,21 @@ const routes = [
   {
     path:'/diary',
     name: 'Diary',
-    component: Diary
+    component: Diary,
+    meta:{requiresAuth: true}
   },
   {
     path:'/dashboard',
     name:'Dashboard',
-    component: Dashboard
+    component: () => import(/* webpackChunkName: "about" */ '../views/Dashboard.vue'),
+    meta:{requiresAuth: true}
+
   },
   {
     path:'/profile',
     name: 'Profile',
-    component:Profile
+    component:Profile,
+    meta:{requiresAuth: true}
   }
 ]
 
@@ -55,5 +67,19 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+
+router.beforeEach((to,from,next)=>{
+  if (to.matched.some(record => record.meta.requireAuth)){
+    if(state.getters.isAuthenticated){
+      next();
+      return
+    }
+    next('/login');
+  } else {
+    next();
+  }
+})
+
 
 export default router

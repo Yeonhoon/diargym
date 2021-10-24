@@ -20,7 +20,7 @@ async def get_user(uid, db):
             status_code=status.HTTP_404_NOT_FOUND,
             detail="사용자가 없습니다."
         )
-    return data.uid
+    return data
 
 async def validate_user(request, db):
     try:

@@ -27,7 +27,7 @@ import {mapGetters} from 'vuex'
         
     }),
     async created() {
-      return await this.$store.dispatch('getChartRecords');
+      this.$store.dispatch('getChartRecords');
     },
 
     computed:{

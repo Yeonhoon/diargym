@@ -4,6 +4,8 @@
     <pie-chart
       :chartData=this.dataCollections
       :chartOptions=this.options
+      :width="300"
+      :height="300"
     >
     </pie-chart>
   </div>
@@ -17,7 +19,9 @@ export default {
     },
   data: () => ({
       dataCollections:null,
-      options:null,
+      options:{
+        // maintainAspectRatio:true,
+      },
       backgroundColor:['#F69588', '#889FF6', '#73C470', '#E6C2EC','#C2ECE9','#747171']
   }),
   computed:{

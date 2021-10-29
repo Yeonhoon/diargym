@@ -1,7 +1,14 @@
 t<template>
   <v-container>
-    <v-layout wrap row>
-      <v-flex class="d-justify-center mt-10">
+    <v-layout>
+      <v-flex>
+        <dash-bar
+          :data =getTableData
+        ></dash-bar>
+      </v-flex>
+    </v-layout>
+    <v-layout row>
+      <v-flex class="mt-10">
         <Calendar
           @date=getDateData 
         >
@@ -14,15 +21,18 @@ t<template>
 
         </data-table>
       </v-flex>
-      <v-flex mt-8>
-        <dash-line>
-
-        </dash-line>
+    </v-layout>
+    <v-layout row wrap>
+      <v-flex class="pa-5">
+        <v-card height="500px">
+          <dash-line></dash-line>
+        </v-card>
       </v-flex>
-      <v-flex class="d-justify-center mt-10">
-        <pie-chart></pie-chart>
+      <v-flex class="pa-5">
+        <v-card height="500px">
+          <pie-chart></pie-chart>
+        </v-card>
       </v-flex>
-      
     </v-layout>
   </v-container>
 </template>
@@ -32,14 +42,15 @@ import DataTable from '../components/dashboard/DataTable.vue'
 import Calendar from '../components/dashboard/Calendar.vue'
 import PieChart from '../components/dashboard/DashPie.vue'
 import DashLine from '../components/dashboard/DashLine.vue'
+import DashBar from '../components/dashboard/DashBar.vue'
 // import axios from 'axios'
 import { mapGetters } from 'vuex'
   export default {
     components:{
       DataTable, Calendar, 
       PieChart,
-      DashLine
-      //Calendar2
+      DashLine,
+      DashBar
     }, 
     data: () => ({
       search:'',

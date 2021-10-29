@@ -7,7 +7,7 @@
         header-color="primary"
         :events=getUniqueDates
         event-color="red lighten-1"
-        width=300
+        width=350
         
     >
     <div style="display:none;">{{changeDate}}</div>

@@ -4,6 +4,8 @@
     <line-chart
       :chartData=ChartRecords
       :chartOptions=this.options
+      :width="300"
+      :height="300"
     >
     </line-chart>
   </div>
@@ -17,7 +19,9 @@ export default {
     },
     data:()=>({
       datacollection:null,
-      options:null,
+      options:{
+        // maintainAspectRatio:true
+      },
       
     }),
 

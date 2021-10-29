@@ -25,9 +25,7 @@ import {mapGetters} from 'vuex'
       datasets:[], 
       backgroundColor:['#F69588', '#889FF6', '#73C470', '#E6C2EC','#C2ECE9','#747171']
     }),
-    async created() {
-      this.getCharts()
-    },
+
     methods:{
       getCharts(){
         return this.$store.dispatch('getChartRecords')

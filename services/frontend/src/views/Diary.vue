@@ -28,16 +28,13 @@ export default {
         DiaryInput, DiaryChart
     },
     async created(){
-        this.$store.dispatch("getChartRecords")
+        this.getchart()
+    },
+    methods:{
+        getchart(){
+            this.$store.dispatch("getChartRecords")
+        }
     }
-    // async mounted(){
-    //     await console.log(this.rawData)
-    // }
-    // mounted(){
-    //     for(var i=0; i<this.rawData.data.length;i++){
-    //            console.log(i)
-    //            this.chartData.append({key:'Date', value:this.rawData.data[i]['rdate']})
-    //        }
-    // }
+    
 }
 </script>

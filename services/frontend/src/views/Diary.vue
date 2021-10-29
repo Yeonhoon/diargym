@@ -27,6 +27,9 @@ export default {
     components:{
         DiaryInput, DiaryChart
     },
+    async created(){
+        this.$store.dispatch("getChartRecords")
+    }
     // async mounted(){
     //     await console.log(this.rawData)
     // }

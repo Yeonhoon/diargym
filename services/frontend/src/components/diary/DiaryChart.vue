@@ -10,24 +10,28 @@
   </div>
 </template>
 <script>
-import BarChart from "../BarChart.vue"
+import BarChart from "../charts/BarChart.vue"
 import {mapGetters} from 'vuex'
   export default {
     name: 'DiaryBarChart',
     components: {BarChart},
    data: () => ({
-        datacollection:null,
-        options:null,
-        rawData:[],
-        chartData:[],
-        chartLabel:[],
-        dates : [],
-        datasets:[], 
-        backgroundColor:['#F69588', '#889FF6', '#73C470', '#E6C2EC','#C2ECE9','#747171']
-        
+      datacollection:null,
+      options:null,
+      rawData:[],
+      chartData:[],
+      chartLabel:[],
+      dates : [],
+      datasets:[], 
+      backgroundColor:['#F69588', '#889FF6', '#73C470', '#E6C2EC','#C2ECE9','#747171']
     }),
     async created() {
-      this.$store.dispatch('getChartRecords');
+      this.getCharts()
+    },
+    methods:{
+      getCharts(){
+        return this.$store.dispatch('getChartRecords')
+      }
     },
 
     computed:{
@@ -49,13 +53,13 @@ import {mapGetters} from 'vuex'
       let date = [...new Set(this.dates)].sort()
       let category = [...new Set(this.chartLabel)]
     //dataset 넣기
-    for(var j=0; j<category.length; j++){
-      this.datasets.push({
-        label:category[j],
-        backgroundColor:this.backgroundColor[j],
-        data:this.chartData.slice(date.length * j, date.length * (j+1) )
-      })
-    } 
+      for(var j=0; j<category.length; j++){
+        this.datasets.push({
+          label:category[j],
+          backgroundColor:this.backgroundColor[j],
+          data:this.chartData.slice(date.length * j, date.length * (j+1) )
+        })
+      } 
 
       this.datacollection={
         labels: date, // 최근 7일 데이터만 보여주기

@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@amcharts/amcharts4": "^4.10.22",
+    "@vue/composition-api": "^1.2.4",
     "chart.js": "^2.9.4",
     "chartjs": "^0.3.24",
     "circular-json": "^0.5.9",

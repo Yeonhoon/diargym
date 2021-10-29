@@ -3,18 +3,23 @@ import axios from 'axios';
 const state = {
   records: null,
   tableRecords: null,
+  tableRawRecords: null,
+  rmidRecords: null,
+  rsmallRecords: null,
   category:null,
-  lineChartRecords:null,
-
-   dates:null,
+  dashLineData:null,
+  dates:null,
 }
 
 const getters = {
   stateChartRecords: state => state.records, //그래프를 위한 운동기록 저장.
-  stateTableRecords: state => state.tableRecords, //테이블을 위한 운동기록 저장?
+  stateTableRecords: state => state.tableRecords, //테이블을 전체기록 운동기록 저장
+  stateTableRawRecords: state => state.tableRawRecords,
   // stateHeaders: state => state.headers,
   stateDates: state => state.dates,
-  stateLineChartRecords: state => state.lineChartRecords
+  stateLineChartRecords: state => state.dashLineData,
+  stateRmidRecords: state => state.rmidRecords,
+  stateRsmallRecords: state => state.rsmallRecords,
 }
 
 const actions = {
@@ -23,18 +28,17 @@ const actions = {
   async submitRecords({dispatch},data){
     console.log(data)
     await axios.post('records',data);
-    await dispatch('getChartRecords'); 
-    await dispatch('getTableRecords');
+    await dispatch('getChartRecords'); //추가된 기록 가져오기(차트용)
+    await dispatch('getTableRecords'); //추가된 기록 가져오기(테이블용)
   },
   // 운동기록 수정
   async updateRecord({dispatch},data){
     console.log(data)
     await axios.patch(`update/${data.rid}`,data)
     await dispatch('getSpecificDateRecord', data.rdate)
-    await dispatch('extractDate')
-    await dispatch('getChartRecords')
+    await dispatch('getChartRecords') // 수정된 기록 가져오기
   },
-  //운동기록 가져오기
+  // diary: 운동기록 가져오기
   async getChartRecords({commit}){
     let {data} = await axios.get('records');
     commit('setChartRecords', data);
@@ -43,26 +47,21 @@ const actions = {
   //테이블 운동기록
   async getTableRecords({commit}){
     let {data} = await axios.get('tables');
-    commit('setTable', data)
+    commit('setTable', data) // 테이블 전체 기록
+    commit('setSpecific',data) // 세부 데이터 저장: rmid, rsmall, rdate
   },
   
-  //datepicker 위한 날짜 추출
-  async extractDate({commit}){
-    let {data} = await axios.get('tables');
-    commit('setDate',data)
+  //특정일자의 운동기록 추출
+  async getSpecificDateRecord({commit},date){
+    let {data} = await axios.get(`tables/${date}`)
+    commit('setOnedayRecord', data)
+    commit('setSpecificCategory',data)
   },
 
-  //특정일자의 운동기록 추출
-  async getSpecificDateRecord({dispatch,commit},date){
-    let {data} = await axios.get(`tables/${date}`)
-    commit('setOnedayRecord',data)
-    await dispatch('extractDate')
-  },
   // 운동기록 삭제
   async deleteRecord({dispatch},data){
     await axios.delete(`delete/${data.rid}`)
     await dispatch('getSpecificDateRecord', data.rdate)
-    await dispatch('extractDate')
     await dispatch('getChartRecords')
   },
   
@@ -93,46 +92,25 @@ const mutations = {
       categorySet.push(record[i].rmid)
     }
     state.tableRecords = tableData
-    
-    // chart 데이터 저장하기
-  //   let uniqueCategory = [...new Set(categorySet)]
-  //   const lineChartData=[]
-  //   for(var j=0; j<state.records.length; j++){
-  //     if(uniqueCategory.includes(state.records[j]['category'])){
-  //       lineChartData.push(state.records[j])
-  //     }
-  //   }
-  //   var dates=[]
-  //   var chartData=[]
-  //   var chartLabel=[]
-  //   var datasets=[]
-  //   var backgroundColor=['#F69588', '#889FF6', '#73C470', '#E6C2EC']
-  //   for(var l=0; l<lineChartData.length; l++){
-  //     if(lineChartData[l]['type'] ==='rrep' && lineChartData[l]['value']!==0){
-  //       dates.push(lineChartData[l]['rdate'])
-  //       chartData.push(lineChartData[l]['value'])
-  //       chartLabel.push(lineChartData[l]['category'])
-  //     }
-  //     // console.log("date: ", dates, "\n", "category: ", chartLabel, "\n", "data: ", chartData)
-  //   }
+  },
+  setSpecificCategory(state,record){
+    //1. 필요한 카테고리 찾기
+    const category = []
+    for(var i=0; i<record.length; i++){
+      category.push(record[i].rmid)
+    }
+    let categorySet = [... new Set(category)]
 
-  //   let date = [...new Set(dates)].sort()
-  //   let category = [...new Set(chartLabel)]
-  //   // let datacollection ={}
-  // //dataset 넣기
-  //   for(var k=0; k<category.length; k++){
-  //     datasets.push({
-  //       label:category[k],
-  //       fill:false,
-  //       borderColor:backgroundColor[k],
-  //       data:chartData
-  //     })
-  //   }
-  //   let datacollection={
-  //     labels: date,
-  //     datasets:datasets
-  //   }
-  //   state.lineChartRecords = datacollection
+    //2. state에서 카테고리에 맞는 데이터 뽑아내기
+    let allTableRecords = state.tableRawRecords
+    const lineChartData = []
+    for(var j=0; j<allTableRecords.length;j++){
+      if(categorySet.includes(allTableRecords[j]['rmid'])){
+        lineChartData.push(allTableRecords[j])
+      }
+    }
+    state.dashLineData = lineChartData
+    
   },
   
   setTable(state, record){
@@ -150,16 +128,35 @@ const mutations = {
       })
     }
     state.tableRecords = tableData
+    state.tableRawRecords = tableData
   },
-
-  setDate(state,record){
+  setSpecific(state, record){
+    const rmidArr = []
+    const rsmallArr = []
     const datelist=[]
-    for(var i=0; i < record.length;i++){
-      datelist.push(record[i].rdate)
+    const rmidCounts= {}
+    const rsmallCounts = {}
+    for(var j=0; j<record.length; j++){
+      rmidArr.push(record[j].rmid)
+      rsmallArr.push(record[j].rsmall)
+      datelist.push(record[j].rdate) 
     }
     const uniqueDates = [...new Set(datelist)]
+    rmidArr.forEach((x)=>{rmidCounts[x] = (rmidCounts[x] || 0) + 1});
+    rsmallArr.forEach((x)=>{rsmallCounts[x] = (rsmallCounts[x] || 0) + 1});
     state.dates=uniqueDates
-  }
+    state.rmidRecords = rmidCounts
+    state.rsmallRecords = rsmallArr 
+  },
+
+  // setDate(state,record){
+  //   const datelist=[]
+  //   for(var i=0; i < record.length;i++){
+  //     datelist.push(record[i].rdate)
+  //   }
+  //   const uniqueDates = [...new Set(datelist)]
+  //   state.dates=uniqueDates
+  // }
 };
 
 export default{

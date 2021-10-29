@@ -27,11 +27,7 @@ import { mapGetters } from 'vuex'
         // uniqueDates:[],
         isDateChanged:false,
         date2:null,
-
       }
-    },
-    created(){
-      this.$store.dispatch("extractDate")
     },
 
     computed:{

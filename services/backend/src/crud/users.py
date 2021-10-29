@@ -1,5 +1,7 @@
 from fastapi import HTTPException, APIRouter,status, Depends, Response
 from sqlalchemy.orm import Session
+from sqlalchemy.sql.elements import Null
+from sqlalchemy.sql.expression import null
 from starlette.status import HTTP_302_FOUND, HTTP_404_NOT_FOUND
 from passlib.context import CryptContext
 from src.schemas.users import User, ShowUser
@@ -44,11 +46,15 @@ async def create_user(request, db):
     # response = RedirectResponse(url='/home')
 
 async def check_user(uid:str, db):
-    userid = db.query(Users).filteR(Users.uid == uid).first()
+    userid = db.query(Users).filter(Users.uid == uid).first()
+    # print(userid.uid)
+    if userid:
+        response:int=0
 
-    return userid
+    else:
+        response:int=1
 
-
+    return response
 
 async def delete_user(uid:str, current_user, db) -> Status:
     db_user = db.query(Users).filter(Users.uid == uid).first()

@@ -5,7 +5,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from starlette.routing import Router
 from src.crud import users as crud
-from src.auth.users import validate_user, get_user
+from src.auth.users import validate_user
 from src.auth.jwthandler import create_access_token
 from src.schemas.token import Status
 from src.schemas.users import ShowUser, User
@@ -23,8 +23,8 @@ router = APIRouter(
 )
 
 @router.get('/checkid/{uid}')
-async def get_a_user(uid:str, db:Session=Depends(connect_db)):
-    data = get_user(uid, db)
+async def check_user(uid:str, db:Session=Depends(connect_db)):
+    data = crud.check_user(uid, db)
     return await data
     
 @router.post('/register', 

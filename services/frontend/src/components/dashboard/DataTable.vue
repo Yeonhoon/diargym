@@ -1,179 +1,181 @@
 <template>
-  <v-data-table
-    :headers=headers
-    :items=getData
-    :search="search"
-    class="elevation-2"
-    sort-by="rdate"
-    loading=true
-    loading-text="운동기록이 존재하지 않습니다."
-  >
-    <template v-slot:top>
-      <v-toolbar flat>
-        <v-toolbar-title>운동기록 테이블</v-toolbar-title>
-        <v-divider
-          vertical
-          inset
-          class='mx-4'
-        ></v-divider>
-        <v-btn 
-          text
-          color="green darken-2"
-          @click="getAllData"
-        >
-          전체 기록
-        </v-btn>
-        <v-dialog
-          v-model="dialog"
-          max-width="400"
-          scrollable
-        >
-          <template v-slot:activator="{on,attrs}">
-            <v-btn
-              text
-              color="blue darken-3"
-              @click="addRecord"
-              v-bind="attrs"
-              v-on="on"
-
-            >
-              기록 추가
-            </v-btn>
-          </template>
-          <!-- dialog Input -->
-          <form-dialog
-            :headerTitle=headerTitle
-            :isAdd=false
-            @submit="save"
-            @cancel="cancel"
+  <div>
+    <h3 class="text-center">운동기록 테이블</h3>
+    <v-data-table
+      :headers=headers
+      :items=getData
+      :search="search"
+      class="elevation-2"
+      sort-by="rdate"
+      loading=true
+      loading-text="운동기록이 존재하지 않습니다."
+    >
+      <template v-slot:top>
+        <v-toolbar flat>
+          <!-- <v-divider
+            vertical
+            inset
+            class='mx-4'
+          ></v-divider> -->
+          <v-btn 
+            text
+            color="green darken-2"
+            @click="getAllData"
           >
-            <template v-slot:body>
-              <v-menu
-                v-model="menu2"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                min-width="auto"
-              >
-              <template v-slot:activator="{on, attrs}">
-              <v-text-field
-                class="mt-5"
-                v-model="editedItem.rdate"
-                label="운동일자"
-                prepend-icon="mdi-calendar"
-                readonly
+            전체 기록
+          </v-btn>
+          <v-dialog
+            v-model="dialog"
+            max-width="400"
+            scrollable
+          >
+            <template v-slot:activator="{on,attrs}">
+              <v-btn
+                text
+                color="blue darken-3"
+                @click="addRecord"
                 v-bind="attrs"
                 v-on="on"
+
               >
-              </v-text-field>
+                기록 추가
+              </v-btn>
+            </template>
+            <!-- dialog Input -->
+            <form-dialog
+              :headerTitle=headerTitle
+              :isAdd=false
+              @submit="save"
+              @cancel="cancel"
+            >
+              <template v-slot:body>
+                <v-menu
+                  v-model="menu2"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                >
+                <template v-slot:activator="{on, attrs}">
+                <v-text-field
+                  class="mt-5"
+                  v-model="editedItem.rdate"
+                  label="운동일자"
+                  prepend-icon="mdi-calendar"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                </v-text-field>
+                </template>
+                  <v-date-picker 
+                  width="250"
+                  v-model="editedItem.rdate" 
+                  @input="menu2 = false"    
+                  >
+                  </v-date-picker>
+                </v-menu>
+                <v-select
+                  label="대분류"
+                  outlined
+                  required
+                  :items="catLarge"
+                  v-model="editedItem.rlarge"
+                ></v-select>
+                <v-select
+                  label="중분류"
+                  outlined
+                  required
+                  :items="catMid"
+                  v-model="editedItem.rmid"
+                ></v-select>
+                <v-text-field
+                  required
+                  label="종류"
+                  outlined
+                  v-model="editedItem.rsmall"
+                  hint="벤치프레스, 스쿼트, 풀업..." 
+                >
+                </v-text-field>
+              
+                <v-text-field
+                  label="무게"
+                  required
+                  v-model="editedItem.rweight"
+                >
+                </v-text-field>
+
+                <v-select
+                  label="단위"
+                  :items=weightunit
+                  v-model="editedItem.runit"
+                  >
+                </v-select>
+                
+
+                <v-text-field
+                  label="반복횟수"
+                  placeholder="횟수"
+                  required
+                  v-model="editedItem.rrep"
+                >
+                </v-text-field>
+                
               </template>
-                <v-date-picker 
-                width="250"
-                v-model="editedItem.rdate" 
-                @input="menu2 = false"    
-                >
-                </v-date-picker>
-              </v-menu>
-              <v-select
-                label="대분류"
-                outlined
-                required
-                :items="catLarge"
-                v-model="editedItem.rlarge"
-              ></v-select>
-              <v-select
-                label="중분류"
-                outlined
-                required
-                :items="catMid"
-                v-model="editedItem.rmid"
-              ></v-select>
-              <v-text-field
-                required
-                label="종류"
-                outlined
-                v-model="editedItem.rsmall"
-                hint="벤치프레스, 스쿼트, 풀업..." 
-              >
-              </v-text-field>
-            
-              <v-text-field
-                label="무게"
-                required
-                v-model="editedItem.rweight"
-              >
-              </v-text-field>
-
-              <v-select
-                label="단위"
-                :items=weightunit
-                v-model="editedItem.runit"
-                >
-              </v-select>
-              
-
-              <v-text-field
-                label="반복횟수"
-                placeholder="횟수"
-                required
-                v-model="editedItem.rrep"
-              >
-              </v-text-field>
-              
-            </template>
-          </form-dialog>
-        </v-dialog>
-        <v-dialog
-          v-model="dialogDelete"
-          width="400px"
-        >
-          <alert-dialog
-            :headerTitle=alertDialogTitle
-            @cancel="cancleDelete"
-            @confirm="removeRecordComfirm"
+            </form-dialog>
+          </v-dialog>
+          <v-dialog
+            v-model="dialogDelete"
+            width="400px"
           >
-            <template v-slot:alert>
-              <v-alert 
-                type="error"
-                prominent
-                outlined
-                border="top"
-              >
-                이 운동기록을 삭제하시겠습니까?
-              </v-alert>
-            </template>
-          </alert-dialog>
-        </v-dialog>
-        <v-spacer></v-spacer>
-        <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="Search"
-          single-line
-          hide-details
-        ></v-text-field>
-      </v-toolbar>
-    </template>
-    <template v-slot:[`item.actions`]="{ item }">
-      <v-icon
-        small
-        class="mr-2"
-        color="black darken-2"
-        @click="editRecord(item)"
-      >
-        mdi-pencil
-      </v-icon>
-      <v-icon
-        small
-        color="red darken-2"
-        @click="removeRecord(item)"
-      >
-        mdi-delete
-      </v-icon>
-    </template>
-     
-  </v-data-table>
+            <alert-dialog
+              :headerTitle=alertDialogTitle
+              @cancel="cancleDelete"
+              @confirm="removeRecordComfirm"
+            >
+              <template v-slot:alert>
+                <v-alert 
+                  type="error"
+                  prominent
+                  outlined
+                  border="top"
+                >
+                  이 운동기록을 삭제하시겠습니까?
+                </v-alert>
+              </template>
+            </alert-dialog>
+          </v-dialog>
+          <v-spacer></v-spacer>
+          <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-toolbar>
+      </template>
+      <template v-slot:[`item.actions`]="{ item }">
+        <v-icon
+          small
+          class="mr-2"
+          color="black darken-2"
+          @click="editRecord(item)"
+        >
+          mdi-pencil
+        </v-icon>
+        <v-icon
+          small
+          color="red darken-2"
+          @click="removeRecord(item)"
+        >
+          mdi-delete
+        </v-icon>
+      </template>
+      
+    </v-data-table>
+  </div>
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
@@ -302,11 +304,9 @@ export default {
         // console.log("삭제대상 아이템:", this.editedItem)
       })
     }
-
   },
-
   computed:{
-    ...mapGetters({ data:'stateTableRecords'}), //headers: 'stateHeaders',
+    ...mapGetters(["stateTableRecords"]), //headers: 'stateHeaders',
     // //헤더 가져오기
     // getHeaders(){
     //   return this.headers
@@ -314,8 +314,11 @@ export default {
     // 데이터 가져오기
     getData(){
       // console.log(this.data)
-      return this.data
-    }
+      return this.stateTableRecords
+    },
+    // AllData(){
+    //   return this.stateTableRecords
+    // }
   },
 }
 </script>

@@ -12,7 +12,7 @@
               입력하신 값들을 확인해주세요!
             </v-alert>
             
-            <v-card class="elevation-6" ref="form">
+            <v-card class="elevation-6" ref="form" width="100%">
               <v-toolbar dark color="primary">
                 <v-toolbar-title>Sign Up</v-toolbar-title>
                 <v-spacer></v-spacer>
@@ -27,30 +27,31 @@
                   name="ID"
                   rules="required|max:16"
                 >
-                <v-row>
-                  <v-col cols=8>
-                    <v-text-field
-                      prepend-icon="mdi-key"
-                      v-model="form.uid"
-                      :counter="16"
-                      :error-messages="errors"
-                      label="아이디"
-                      required
-                      ></v-text-field>
-                  </v-col>
-                  <v-col cols=3>
+                  <v-text-field
+                    class="pr-5 pl-5"
+                    prepend-icon="mdi-key"
+                    v-model="form.uid"
+                    :counter="16"
+                    :error-messages="errors"
+                    label="아이디"
+                    required
+                  ></v-text-field>
                     <v-dialog
                       v-model="dialog"
                     >
                       <template v-slot:activator="{on,attr}">
-                      <v-btn 
-                        text color="red darken-3"
-                        @click="duplicationCheck"
-                        v-bind="attr"
-                        v-on="on"
-                      >
-                        중복확인
-                      </v-btn>
+                        <v-btn 
+                          text 
+                          color="red darken-3"
+                          @click="duplicationCheck"
+                          v-bind="attr"
+                          v-on="on"
+                          width="70%"
+                          class="ml-14"
+                          outlined
+                        >
+                          중복확인
+                        </v-btn>
                       </template>
                       <v-card>
                         <v-card-title>아이디 확인</v-card-title>
@@ -63,8 +64,6 @@
                         </v-card-actions>
                       </v-card>
                     </v-dialog>
-                  </v-col>
-                </v-row>
                 </validation-provider>
 
                 <validation-provider
@@ -78,6 +77,7 @@
                     :counter="16"
                     :error-messages="errors"
                     label="이름"
+                    class="pr-5 pl-5"
                     required
                   ></v-text-field>
                 </validation-provider>
@@ -92,6 +92,7 @@
                     v-model="form.uemail"
                     :error-messages="errors"
                     label="이메일"
+                    class="pr-5 pl-5"
                     required
                   ></v-text-field>
                 </validation-provider>
@@ -104,6 +105,7 @@
                     prepend-icon="lock" 
                     v-model="form.upw" 
                     label="비밀번호" 
+                    class="pr-5 pl-5"
                     :type="showpw ?'text' :'password'"
                     :append-icon="showpw ? 'mdi-eye' :'mdi-eye-off'"
                     :error-messages="errors"
@@ -118,7 +120,8 @@
                   <v-text-field 
                     prepend-icon="lock" 
                     v-model="form.upw2" 
-                    label="비밀번호 재입력" 
+                    label="비밀번호 재입력"
+                    class="pr-5 pl-5" 
                     :type="showpw ?'text' :'password'"
                     :append-icon="showpw ? 'mdi-eye' :'mdi-eye-off'"
                     :error-messages="errors"
@@ -129,9 +132,14 @@
             </validation-observer>
               </v-card-text>
               <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn text color="error" :to="{name:'Home'}">취소</v-btn>
-                <v-btn text color="primary" @click="submit">가입</v-btn>
+                <!-- <v-spacer></v-spacer> -->
+                <!-- <v-btn text color="red" :to="{name:'Home'}">취소</v-btn> -->
+                <v-btn text color="primary"
+                  width="80%"
+                  class="ml-10"
+                  @click="submit">
+                    가입
+                </v-btn>
               </v-card-actions>
             </v-card>
             <!-- {{checkResult}} -->

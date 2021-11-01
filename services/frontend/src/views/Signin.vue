@@ -52,17 +52,19 @@
                 </validation-observer>
               </v-card-text>
               <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn
+                <!-- <v-spacer></v-spacer> -->
+                <!-- <v-btn
                   text
                   color="error"
                   @click="cancel"
                 >
                   취소
-                </v-btn>
+                </v-btn> -->
                 <v-btn 
                   text
                   color="primary"
+                  width="80%"
+                  class="ml-10"
                   @click="login"
                 >로그인</v-btn>
               </v-card-actions>

@@ -5,7 +5,7 @@
       dark
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-     
+      DIARGYM
       <v-spacer></v-spacer>
       <v-btn text icon @click="toHome">
         <v-icon>mdi-home</v-icon>
@@ -57,7 +57,7 @@
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="text-h6">
-            "Application"
+            DIARGYM
           </v-list-item-title>
           <v-list-item-subtitle
              v-if="isLogin"
@@ -130,7 +130,6 @@ export default {
     },
     currentUser (){
       return this.$store.getters.stateUser.uid;
-
     }
   },
   data(){

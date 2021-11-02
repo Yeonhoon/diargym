@@ -36,6 +36,10 @@ services:
       - POSTGRES_INITDB_ARGS=--encoding=UTF-8
     volumes:
       - postgres_data:/var/lib/postgresql/data
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> dev
 volumes:
   postgres_data: {}

@@ -16,14 +16,22 @@
   >
     취소
   </v-btn>
+  <v-btn 
+    v-if="isAdd"
+    color="red"
+    rounded
+    text
+    @click="$emit('remove')"
+  >
+    <v-icon>mdi-minus</v-icon>
+  </v-btn>
   <v-btn
     v-if="isAdd"
     class="ma-2 " 
     color="blue darken-1"
-    text
+    text rounded
     @click="$emit('add')">
-
-    세트 추가
+    <v-icon>mdi-plus</v-icon>
   </v-btn>
     <v-btn 
       class="ma-2 white-text" 

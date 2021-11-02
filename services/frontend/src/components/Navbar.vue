@@ -1,11 +1,24 @@
 <template>
   <div>
+    <thankyou-dialog
+      v-if="getDialogToggle"
+      :dialog="getDialogToggle"
+      :emoji="getDialogInfo.emoji"
+      :title="getDialogInfo.title"
+      :firstLineText="getDialogInfo.firstLineText"
+      :secondLineText="getDialogInfo.secondLineText"
+    >
+    </thankyou-dialog>
     <v-app-bar
       color="primary"
       dark
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-     
+      <span>
+      <v-icon>mdi-dumbbell</v-icon>
+      DIARGYM
+
+      </span>
       <v-spacer></v-spacer>
       <v-btn text icon @click="toHome">
         <v-icon>mdi-home</v-icon>
@@ -57,7 +70,7 @@
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="text-h6">
-            "Application"
+            DIARGYM
           </v-list-item-title>
           <v-list-item-subtitle
              v-if="isLogin"
@@ -76,34 +89,19 @@
           v-if="isLogin"
           active-class="deep-blue--text text--accent-4"
         >
-          <v-list-item exact
-            :to="{name:'Home'}"
-          >
-            <v-list-item-title>Home</v-list-item-title>
-          </v-list-item>
-
           <v-list-item
-            @click="logout"
+            v-for="item in drawerLogins"
+            :key="item.title"
+            :to="item.path"
+            link
           >
-            <v-list-item-title>Logout</v-list-item-title>
+            <v-list-item-icon>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item-content>
           </v-list-item>
-          <v-list-item
-            to="/profile"
-          >
-            <v-list-item-title>My page</v-list-item-title>
-          </v-list-item>
-          <v-list-item
-            to="/diary"
-          >
-            <v-list-item-title>Diary</v-list-item-title>
-          </v-list-item>
-          <v-list-item
-            to="/dashboard"
-          >
-            <v-list-item-title>Dashboard</v-list-item-title>
-          </v-list-item>
-
-          
         </v-list-item-group>
         <v-list-item-group
           v-else
@@ -118,19 +116,24 @@
       </v-list>
     </v-navigation-drawer>
   </div>
+
+
 </template>
 
 
 <script>
+import ThankyouDialog from './dialogs/ThankyouDialog.vue';
+import { mapGetters } from 'vuex'
 export default {
+  components: { ThankyouDialog },
   name: 'NavBar',
   computed: {
+    ...mapGetters(['getDialogToggle', 'getDialogInfo']),
     isLogin () {
       return this.$store.getters.isAuthenticated;
     },
     currentUser (){
       return this.$store.getters.stateUser.uid;
-
     }
   },
   data(){
@@ -138,13 +141,19 @@ export default {
       drawer : false,
       menuItems: [
           // { title: 'Home', path: '/', icon: 'home' },
-          { title: 'Sign Up', path: '/register', icon: 'face' },
-          { title: 'Sign In', path: '/login', icon: 'lock_open' }
-        ],
+        { title: 'Sign Up', path: '/register', icon: 'face' },
+        { title: 'Sign In', path: '/login', icon: 'lock_open' }
+      ],
       menuLogins:[
           // { title: 'Home', path: '/', icon: 'home' },
           { title: 'Diary', path: '/diary', icon: 'face' },
           { title: 'Dashboard', path: '/dashboard', icon: 'lock_open' }
+      ],
+      drawerLogins:[
+        {title: 'Home', path:'/', icon: 'mdi-home-variant'},
+        {title: 'Diary', path:'/diary', icon: 'mdi-notebook-edit'},
+        {title: 'Dashboard', path:'/dashboard', icon: 'mdi-view-dashboard'},
+        {title: 'My Page', path:'/profile', icon: 'mdi-weight-lifter'},
       ]
     }
   },

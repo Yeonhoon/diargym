@@ -12,9 +12,9 @@
               입력하신 값들을 확인해주세요!
             </v-alert>
             
-            <v-card class="elevation-6" ref="form">
+            <v-card class="elevation-6" ref="form" width="100%">
               <v-toolbar dark color="primary">
-                <v-toolbar-title>Sign Up</v-toolbar-title>
+                <v-toolbar-title>회원가입</v-toolbar-title>
                 <v-spacer></v-spacer>
               </v-toolbar>
               <v-card-text>
@@ -27,44 +27,43 @@
                   name="ID"
                   rules="required|max:16"
                 >
-                <v-row>
-                  <v-col cols=8>
-                    <v-text-field
-                      prepend-icon="mdi-key"
-                      v-model="form.uid"
-                      :counter="16"
-                      :error-messages="errors"
-                      label="아이디"
-                      required
-                      ></v-text-field>
-                  </v-col>
-                  <v-col cols=3>
+                  <v-text-field
+                    class="pr-5 pl-5"
+                    prepend-icon="mdi-key"
+                    v-model="form.uid"
+                    :counter="16"
+                    :error-messages="errors"
+                    label="아이디"
+                    required
+                  ></v-text-field>
                     <v-dialog
                       v-model="dialog"
                     >
                       <template v-slot:activator="{on,attr}">
-                      <v-btn 
-                        text color="red darken-3"
-                        @click="duplicationCheck"
-                        v-bind="attr"
-                        v-on="on"
-                      >
-                        중복확인
-                      </v-btn>
+                        <v-btn 
+                          text 
+                          color="red darken-3"
+                          @click="duplicationCheck"
+                          v-bind="attr"
+                          v-on="on"
+                          width="70%"
+                          class="ml-14"
+                          outlined
+                        >
+                          중복확인
+                        </v-btn>
                       </template>
-                      <v-card>
-                        <v-card-title>아이디 확인</v-card-title>
-                        <v-card-text>
-                          <v-alert type="error" dense outlined>{{checkMessage}}</v-alert>
-                        </v-card-text>
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn text color="primary" @click="dialog=false">확인</v-btn>
-                        </v-card-actions>
-                      </v-card>
+                      <alert-dialog
+                        :headerTitle="`아이디 중복확인`"
+                        :isCancelNeeds=false
+                        @confirm="dialog=false"
+                      >
+                        <template v-slot:alert>
+                          <v-alert v-if="idCheck" type="success" >{{checkMessage}}</v-alert>
+                          <v-alert v-else type="error" dense>{{checkMessage}}</v-alert>
+                        </template>
+                      </alert-dialog>
                     </v-dialog>
-                  </v-col>
-                </v-row>
                 </validation-provider>
 
                 <validation-provider
@@ -78,6 +77,7 @@
                     :counter="16"
                     :error-messages="errors"
                     label="이름"
+                    class="pr-5 pl-5"
                     required
                   ></v-text-field>
                 </validation-provider>
@@ -92,6 +92,7 @@
                     v-model="form.uemail"
                     :error-messages="errors"
                     label="이메일"
+                    class="pr-5 pl-5"
                     required
                   ></v-text-field>
                 </validation-provider>
@@ -104,6 +105,7 @@
                     prepend-icon="lock" 
                     v-model="form.upw" 
                     label="비밀번호" 
+                    class="pr-5 pl-5"
                     :type="showpw ?'text' :'password'"
                     :append-icon="showpw ? 'mdi-eye' :'mdi-eye-off'"
                     :error-messages="errors"
@@ -118,7 +120,8 @@
                   <v-text-field 
                     prepend-icon="lock" 
                     v-model="form.upw2" 
-                    label="비밀번호 재입력" 
+                    label="비밀번호 재입력"
+                    class="pr-5 pl-5" 
                     :type="showpw ?'text' :'password'"
                     :append-icon="showpw ? 'mdi-eye' :'mdi-eye-off'"
                     :error-messages="errors"
@@ -129,12 +132,15 @@
             </validation-observer>
               </v-card-text>
               <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn text color="error" :to="{name:'Home'}">취소</v-btn>
-                <v-btn text color="primary" @click="submit">가입</v-btn>
+                <!-- <v-btn text color="red" :to="{name:'Home'}">취소</v-btn> -->
+                <v-btn text color="primary"
+                  width="80%"
+                  class="ml-10"
+                  @click="submit">
+                  가입
+                </v-btn>
               </v-card-actions>
             </v-card>
-            <!-- {{checkResult}} -->
           </v-flex>
         </v-layout>
       </v-container>
@@ -144,10 +150,12 @@
 
 <script>
 import axios from 'axios'
+import AlertDialog from '../components/dialogs/AlertDialog.vue'
 import { mapActions } from 'vuex'
 import 'material-design-icons-iconfont/dist/material-design-icons.css' 
 import myMixin from '../mixins/index'
 export default {
+  components: { AlertDialog },
   mixins:[myMixin],
   data: () => ({
     form:{
@@ -162,6 +170,7 @@ export default {
     signupForm:false,
     isSignupError: false,
     checkMessage:null,
+    idCheck:false,
   }),
 
    methods: {
@@ -171,15 +180,17 @@ export default {
         axios.get('/checkid/'+this.form.uid)
         .then(res=>{
           if(res.data===1){
+            this.idCheck=true
             this.checkMessage="가입가능한 아이디입니다!"
           }
           else if(res.data ===0){
-            this.checkMessage="이미 가입되어있는 아이디입니다!"
+            this.idCheck=false
+            this.checkMessage="이미 가입된 아이디입니다!"
             this.form.uid=null
           }
         })
       }
-      else{
+      else if(this.form.uid === null){
         this.checkMessage='아이디를 입력하세요!'
       }
         
@@ -189,7 +200,17 @@ export default {
       .then((val)=>{
         if(val){
           this.register(this.form)
-          this.$router.push({'name':'Home'})
+          .then(()=>{
+            let dialogInfo = {
+              emoji: "🙏🏻",
+              title: "회원가입이 완료되었습니다!",
+              firstLineText: "이용해주셔서 감사합니다",
+              secondLineText: "by DiarGym",
+              // timeout:2000,
+            }
+            this.$store.dispatch('openDialog', dialogInfo)
+            this.$router.push({'name':'Signin'})
+          })
         }
       })
     },

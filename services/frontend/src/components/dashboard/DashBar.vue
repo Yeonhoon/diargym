@@ -1,30 +1,28 @@
 <template>
     <div>
         <v-row>
-            <v-col>
-            <h3>선택</h3>
-            <p v-for="(value) in this.checkboxList" :key=value.rmid>
-                <v-radio-group
-                  v-model="selectedCat"
-                  @change="drawChart"
-                >
-                  <v-radio 
-                    :label='value.rmid'
-                    :value='value.rmid'
-                  ></v-radio>
-
-                </v-radio-group>
-            </p>
-            </v-col>
-            <v-col>
-                <bar-chart
-                  :chartData=this.datacollection
-                  :chartOptions=this.options
-                >
-
-                </bar-chart>
-
-            </v-col>
+          <v-col class="pl-10 pt-10">
+              <h3>종류 선택</h3>
+          <p v-for="(value) in this.checkboxList" :key=value.rmid>
+            <v-radio-group
+              v-model="selectedCat"
+              @change="drawChart"
+            >
+              <v-radio 
+                :label='value.rmid'
+                :value='value.rmid'
+              ></v-radio>
+            </v-radio-group>
+          </p>
+          </v-col>
+          <v-col class="pa-7">
+            <bar-chart
+              id="barChart"
+              :chartData=this.datacollection
+              :chartOptions=this.options
+            >
+            </bar-chart>
+          </v-col>
         </v-row>
     </div>
 </template>
@@ -44,7 +42,8 @@ export default {
     selectedCat:null,
     datacollection:null,
     options:null,
-    backgroundColor:['#F69588', '#889FF6', '#73C470', '#E6C2EC','#C2ECE9','#747171']
+    backgroundColor:['#F69588', '#889FF6', '#73C470', '#E6C2EC','#C2ECE9','#747171'],
+    barChart:null,
     // chartData:[],
   }),
 

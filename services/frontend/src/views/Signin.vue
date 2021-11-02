@@ -108,7 +108,6 @@ import {mapActions} from 'vuex'
           }
         }
         )
-
       },
       cancel(){
         this.$router.push('/')

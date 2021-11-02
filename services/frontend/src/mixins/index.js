@@ -35,7 +35,7 @@ extend('password', {
   validate(value, {target}){
     return value === target;
   },
-  message: 'Password Does not Match'
+  message: '비밀번호가 다릅니다!'
   
 })
 

@@ -1,13 +1,14 @@
 <template>
-  <v-container mt-15>
+  <v-container mt-10>
     <v-layout col wrap>
       <v-flex xs12 class='d-flex justify-center'>
-        <h1>Welcome!</h1>
+        <h1>DIARGYM</h1>
       </v-flex>
       <v-flex xs12 class="d-flex justify-center">
         <blockquote class="blockquote">
-          Test Web Application by Yeonhoon <br>
-          with Vue.js & FastAPI & PostgreSQL
+          운동기록을 기록해두고 <br>
+          체계적으로 관리하세요! 
+          <!-- with Vue.js & FastAPI & PostgreSQL -->
         </blockquote>
       </v-flex>
       <v-flex sm6 offset-sm3 class="d-flex justify-center" mt-5 v-if="!isLogin">

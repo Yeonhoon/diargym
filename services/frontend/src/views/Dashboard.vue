@@ -2,9 +2,12 @@ t<template>
   <v-container>
     <v-layout>
       <v-flex>
-        <dash-bar
-          :data =getTableData
-        ></dash-bar>
+        <v-card class='mt-10 mb-5' elevation="5">
+          <dash-bar
+            :data =getTableData
+          ></dash-bar>
+
+        </v-card>
       </v-flex>
     </v-layout>
     <v-layout row>

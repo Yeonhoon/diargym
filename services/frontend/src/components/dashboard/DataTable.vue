@@ -9,6 +9,7 @@
       sort-by="rdate"
       loading=true
       loading-text="운동기록이 존재하지 않습니다."
+      mobile-breakpoint="0"
     >
       <template v-slot:top>
         <v-toolbar flat>
@@ -131,6 +132,7 @@
           >
             <alert-dialog
               :headerTitle=alertDialogTitle
+              :isCancelNeeds=true
               @cancel="cancleDelete"
               @confirm="removeRecordComfirm"
             >
@@ -199,14 +201,14 @@ export default {
     catSmall:'',
     weightunit: ['kg','lb','sec'],
     headers:[
-      { text:'일자',align:'center',sortable:true, value:'rdate'},
-      { text: '대분류', value: 'rlarge' },
-      { text: '중분류', value: 'rmid' },
-      { text: '소분류', value: 'rsmall' },
-      { text: '무게', value: 'rweight' },
-      { text: '단위', value: 'runit' },
-      { text: '반복횟수', value: 'rrep' },
-      { text: '수정/삭제', value:'actions', sortable:false },
+      { text:'일자',align:'center',sortable:true, value:'rdate', width:"110px"},
+      { text: '대분류', value: 'rlarge', width:"100px" },
+      { text: '중분류', value: 'rmid', width:"100px" },
+      { text: '종류', value: 'rsmall', width:"100px" },
+      { text: '무게', value: 'rweight', width:"80px" },
+      { text: '단위', value: 'runit', width:"80px" },
+      { text: '횟수', value: 'rrep', width:"80px" },
+      { text: '수정/삭제', value:'actions', sortable:false, width:"100px" },
    ],
     form:{
       date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),

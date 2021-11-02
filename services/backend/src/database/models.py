@@ -5,7 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.sql.sqltypes import Date
 
-DATABASE_URL = 'postgresql://postgres:postgres@localhost:5432/postgres'
+DATABASE_URL = 'postgresql://postgres:postgres@db:5432/postgres'
 
 engine = create_engine(DATABASE_URL)
 

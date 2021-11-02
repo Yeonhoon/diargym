@@ -1,8 +1,6 @@
 <template>
   <v-card>
-    <v-footer
-      absolute
-    >
+    <v-footer>
       <v-card
         flat
         tile
@@ -10,7 +8,7 @@
         class="text-center"
       >
         <v-card-text class="black--text">
-          {{ new Date().getFullYear() }} — <strong>GYM DIARY</strong>
+          {{ new Date().getFullYear() }} — <strong>DIARGYM</strong>
           <p>All right reserved.</p>
           <blockquote><v-icon>mdi-email</v-icon> danjang0123@gmail.com</blockquote>
         </v-card-text>

@@ -9,7 +9,7 @@ import psycopg2 as pg
 import pandas as pd
 
 connect_db = get_db
-conn = pg.connect(dbname="postgres", user="postgres",password="postgres")
+# conn = pg.connect(dbname="postgres", user="postgres",password="postgres")
 
 async def get_all_records(current_user, db):
     rawData = db.query(Records).filter(Records.ruserid==current_user.uid)

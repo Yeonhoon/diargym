@@ -14,7 +14,7 @@
             
             <v-card class="elevation-6" ref="form" width="100%">
               <v-toolbar dark color="primary">
-                <v-toolbar-title>Sign Up</v-toolbar-title>
+                <v-toolbar-title>회원가입</v-toolbar-title>
                 <v-spacer></v-spacer>
               </v-toolbar>
               <v-card-text>
@@ -53,16 +53,16 @@
                           중복확인
                         </v-btn>
                       </template>
-                      <v-card>
-                        <v-card-title>아이디 확인</v-card-title>
-                        <v-card-text>
-                          <v-alert type="error" dense outlined>{{checkMessage}}</v-alert>
-                        </v-card-text>
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn text color="primary" @click="dialog=false">확인</v-btn>
-                        </v-card-actions>
-                      </v-card>
+                      <alert-dialog
+                        :headerTitle="`아이디 중복확인`"
+                        :isCancelNeeds=false
+                        @confirm="dialog=false"
+                      >
+                        <template v-slot:alert>
+                          <v-alert v-if="idCheck" type="success" >{{checkMessage}}</v-alert>
+                          <v-alert v-else type="error" dense>{{checkMessage}}</v-alert>
+                        </template>
+                      </alert-dialog>
                     </v-dialog>
                 </validation-provider>
 
@@ -132,17 +132,15 @@
             </validation-observer>
               </v-card-text>
               <v-card-actions>
-                <!-- <v-spacer></v-spacer> -->
                 <!-- <v-btn text color="red" :to="{name:'Home'}">취소</v-btn> -->
                 <v-btn text color="primary"
                   width="80%"
                   class="ml-10"
                   @click="submit">
-                    가입
+                  가입
                 </v-btn>
               </v-card-actions>
             </v-card>
-            <!-- {{checkResult}} -->
           </v-flex>
         </v-layout>
       </v-container>
@@ -152,10 +150,12 @@
 
 <script>
 import axios from 'axios'
+import AlertDialog from '../components/dialogs/AlertDialog.vue'
 import { mapActions } from 'vuex'
 import 'material-design-icons-iconfont/dist/material-design-icons.css' 
 import myMixin from '../mixins/index'
 export default {
+  components: { AlertDialog },
   mixins:[myMixin],
   data: () => ({
     form:{
@@ -170,6 +170,7 @@ export default {
     signupForm:false,
     isSignupError: false,
     checkMessage:null,
+    idCheck:false,
   }),
 
    methods: {
@@ -179,15 +180,17 @@ export default {
         axios.get('/checkid/'+this.form.uid)
         .then(res=>{
           if(res.data===1){
+            this.idCheck=true
             this.checkMessage="가입가능한 아이디입니다!"
           }
           else if(res.data ===0){
-            this.checkMessage="이미 가입되어있는 아이디입니다!"
+            this.idCheck=false
+            this.checkMessage="이미 가입된 아이디입니다!"
             this.form.uid=null
           }
         })
       }
-      else{
+      else if(this.form.uid === null){
         this.checkMessage='아이디를 입력하세요!'
       }
         
@@ -197,7 +200,17 @@ export default {
       .then((val)=>{
         if(val){
           this.register(this.form)
-          this.$router.push({'name':'Home'})
+          .then(()=>{
+            let dialogInfo = {
+              emoji: "🙏🏻",
+              title: "회원가입이 완료되었습니다!",
+              firstLineText: "이용해주셔서 감사합니다",
+              secondLineText: "by DiarGym",
+              // timeout:2000,
+            }
+            this.$store.dispatch('openDialog', dialogInfo)
+            this.$router.push({'name':'Signin'})
+          })
         }
       })
     },

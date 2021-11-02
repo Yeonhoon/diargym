@@ -9,11 +9,12 @@
     <v-card-actions>
     <v-spacer></v-spacer>
     <v-btn
-        color="red darken-1"
-        text
-        @click="$emit('cancel')"
+      color="red darken-1"
+      text
+      v-if="isCancelNeeds"
+      @click="$emit('cancel')"
     >
-        취소
+      취소
      </v-btn>
     <v-btn 
       class="ma-2 white-text" 
@@ -33,6 +34,10 @@ export default {
     headerTitle:{
       type: String,
       default: null
+    },
+    isCancelNeeds:{
+      type: Boolean,
+      default: false
     }
   },
   name: "AlertDialog",

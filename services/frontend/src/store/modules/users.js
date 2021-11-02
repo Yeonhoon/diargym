@@ -15,7 +15,7 @@ const actions = {
     let UserForm = new FormData();
     UserForm.append('username', form.uname);
     UserForm.append('password', form.upw1);
-    await dispatch('logIn', UserForm);
+    await dispatch('logIn',UserForm);
   },
   async logIn({dispatch}, user) {
     await axios.post('/login', user);
@@ -31,7 +31,7 @@ const actions = {
   },
   async logOut({commit}) {
     // await axios.post('/logout')
-    commit('logout');
+    await commit('logout');
   }
 };
 

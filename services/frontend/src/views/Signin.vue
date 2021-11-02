@@ -6,14 +6,14 @@
           <v-flex xs12 sm8 md4>
             <v-alert
               class="mb-3"
-              :value="isLoginError"
+              v-if="isLoginError"
               type="error" 
             >
-              이메일 혹은 비밀번호가 올바르지 않습니다!
+              이메일 혹은 비밀번호가 틀립니다!
             </v-alert>
             <v-card class="elevation-12">
               <v-toolbar dark color="primary">
-                <v-toolbar-title>Sign in</v-toolbar-title>
+                <v-toolbar-title>로그인</v-toolbar-title>
               </v-toolbar>
               <v-card-text>
                 <validation-observer
@@ -106,7 +106,15 @@ import {mapActions} from 'vuex'
         .then(val=>{
           if(val){
             this.logIn(User)
-            this.$router.push('/')
+            .then(res=>{
+              console.log(res)
+              this.$router.push('/')
+              this.isLoginError=false
+            })
+            .catch(err=>{
+              this.isLoginError=true
+              console.loG(err)
+            })
           }
         }
         )

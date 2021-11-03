@@ -10,6 +10,7 @@
           </bar-chart>
         </v-col>
         <v-col class="pl-10 pt-10">
+          <h3>선택</h3>
         <p v-for="(value) in this.checkboxList" :key=value.rmid>
           <v-radio-group
             v-model="selectedCat"

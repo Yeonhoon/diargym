@@ -4,7 +4,7 @@ t<template>
       <v-flex>
         <v-card class='mt-10 mb-5' elevation="5">
           <v-card-title  class='mt-5 d-flex justify-center'>
-            <h3>종류 선택</h3>
+            <h3>부위별 세부운동 그래프</h3>
           </v-card-title>
           <v-divider class="mx-4"></v-divider>
           <v-card-text>
@@ -41,7 +41,13 @@ t<template>
     <v-layout row wrap>
       <v-flex class="pa-5">
         <v-card height="500px">
-          <dash-line></dash-line>
+          <v-card-title class='d-flex justify-center'>
+            <h3>부위별 반복수 추세</h3>
+          </v-card-title>
+          <v-divider class="mx-4"></v-divider>
+          <v-card-text>
+            <dash-line></dash-line>
+          </v-card-text>
         </v-card>
       </v-flex>
       <v-flex class="pa-5">

@@ -1,25 +1,53 @@
 <template>
-  <v-container mt-10>
+  <v-container mt-10 fluid>
     <v-layout col wrap>
       <v-flex xs12 class='d-flex justify-center'>
         <h1>DIARGYM</h1>
       </v-flex>
       <v-flex xs12 class="d-flex justify-center">
         <blockquote class="blockquote">
-          운동기록을 기록해두고 <br>
+          운동기록을 적어두세요!<br>
           체계적으로 관리하세요! 
           <!-- with Vue.js & FastAPI & PostgreSQL -->
         </blockquote>
       </v-flex>
+    </v-layout>
+    <v-row v-if="isLogin" align="center" justify="center">
+      <v-col>
+        <div class="text-center">
+          <div class="my-2">
+            <v-btn :to="{name:'Diary'}" plain color='red lighten-1' rounded large width="250" >운동일지 작성</v-btn>
+          </div>
+          <div class="my-2">
+              <v-btn :to="{name:'Dashboard'}" plain color='primary' rounded large width="250">대시보드</v-btn>
+          </div>
+        </div>
+      </v-col>
+    </v-row>
+    <v-row v-else align="center" justify="center">
+      <v-col>
+        <div class="text-center">
+          <div class="my-2">
+            <v-btn :to="{name:'Signin'}" plain color='red lighten-1' rounded large width="250">로그인</v-btn>
+          </div>
+          <div class="my-2 pt-3">
+              <v-btn :to="{name:'Signup'}" plain color='primary' rounded large width="250">회원가입</v-btn>
+          </div>
+        </div>
+      </v-col>
+    </v-row>
       <v-flex sm6 offset-sm3 class="d-flex justify-center" mt-5 v-if="!isLogin">
-        <v-btn :to="{name:'Signup'}" color='primary' text>Sign Up</v-btn>
-        <v-btn :to="{name:'Signin'}" color='primary' text >Sign In</v-btn>
+
       </v-flex>
       <v-flex v-else sm6 offset-sm3 class="d-flex justify-center" mt-5>
-        <v-btn :to="{name:'Diary'}" color='primary' text>운동일지 작성</v-btn>
-        <v-btn :to="{name:'Dashboard'}" color="error" text>대시보드</v-btn>
+        <v-row>
+          
+        </v-row>
+        <v-row>
+          
+
+        </v-row>
       </v-flex>
-    </v-layout>
   </v-container>
 </template>
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="mx-auto overflow-hidden">
     <Navbar/> 
     <v-sheet
       class="overflow-y-auto"
@@ -9,8 +9,8 @@
         <router-view/>
       </v-main>
     </v-sheet>
-    <Footer/>
-
+      <!-- <Footer/> -->
+  
   </v-app>
 
 
@@ -19,11 +19,11 @@
 
 <script>
 import Navbar from '@/components/Navbar.vue'
-import Footer from '@/components/Footer.vue'
+// import Footer from '@/components/Footer.vue'
 export default {
   name: 'App',
   components:{
-    Navbar, Footer
+    Navbar
   },
 };
 </script>

@@ -1,5 +1,5 @@
 
-import { required, digits, email, max, regex } from 'vee-validate/dist/rules'
+import { required, digits, email, max, regex, integer, alpha_num } from 'vee-validate/dist/rules'
 import { extend, ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
 
 setInteractionMode('eager')
@@ -7,6 +7,11 @@ setInteractionMode('eager')
 extend('digits', {
   ...digits,
   message: '{_field_} needs to be {length} digits. ({_value_})',
+})
+
+extend('alpha_num',{
+  ...alpha_num,
+  message:'{_field_}는 영문과 숫자 조합이어야 합니다.'
 })
 
 extend('required', {
@@ -26,7 +31,12 @@ extend('regex', {
 
 extend('email', {
   ...email,
-  message: '올바른 이메일 형식이 아닙니다.',
+  message: '올바른 이메일 형식이 아닙니다!',
+})
+
+extend('integer',{
+  ...integer,
+  message: "숫자만 입력해주세요!"
 })
 
 

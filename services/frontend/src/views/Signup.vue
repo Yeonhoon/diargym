@@ -25,7 +25,7 @@
                 <validation-provider
                   v-slot="{ errors }"
                   name="ID"
-                  rules="required|max:16"
+                  rules="required|max:16|alpha_num"
                 >
                   <v-text-field
                     class="pr-5 pl-5"

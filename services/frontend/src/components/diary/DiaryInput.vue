@@ -120,7 +120,7 @@
                   <v-col cols="3">
                   <validation-provider
                     v-slot="{ errors }"
-                    rules="required"
+                    rules="required|integer"
                     name ="반복횟수"
                   >
                   <v-text-field
@@ -134,12 +134,19 @@
                   </validation-provider>
                   </v-col>
                   <v-col cols="3">
+                    <validation-provider
+                      v-slot="{ errors }"
+                      rules="required|integer"
+                      name ="세트수"
+                    >
                     <v-text-field
                       v-model="value.count"
                       placeholder="세트수"
                       label="sets"
+                      :error-messages="errors"
                     >
                     </v-text-field>
+                    </validation-provider>
                   </v-col>
                 </v-row>
               <v-divider></v-divider>

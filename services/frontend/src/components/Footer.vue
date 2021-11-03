@@ -1,6 +1,5 @@
 <template>
   <v-footer
-    fixed
     padless
     bottom
   >

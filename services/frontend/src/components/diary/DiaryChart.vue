@@ -41,10 +41,11 @@ import {mapGetters} from 'vuex'
       for(var i=0; i<this.records.length; i++){
         if(this.records[i]['type'] ==='volume'){
           this.dates.push(this.records[i]['rdate'])
-          this.chartData.push(this.records[i]['value'])
+          this.chartData.push(Math.round(this.records[i]['value']))
           this.chartLabel.push(this.records[i]['category'])
         }
       }
+      console.log(this.chartData)
 
       let date = [...new Set(this.dates)].sort()
       let category = [...new Set(this.chartLabel)]

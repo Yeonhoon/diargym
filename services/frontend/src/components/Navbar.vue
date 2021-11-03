@@ -1,73 +1,69 @@
 <template>
-  <v-container>
-    <v-card
-      class="overflow-hidden"
+  <div>
+    <thankyou-dialog
+      v-if="getDialogToggle"
+      :dialog="getDialogToggle"
+      :emoji="getDialogInfo.emoji"
+      :title="getDialogInfo.title"
+      :firstLineText="getDialogInfo.firstLineText"
+      :secondLineText="getDialogInfo.secondLineText"
     >
-      <thankyou-dialog
-        v-if="getDialogToggle"
-        :dialog="getDialogToggle"
-        :emoji="getDialogInfo.emoji"
-        :title="getDialogInfo.title"
-        :firstLineText="getDialogInfo.firstLineText"
-        :secondLineText="getDialogInfo.secondLineText"
-      >
-      </thankyou-dialog>
-      <v-app-bar
-        dark
-      >
-        <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-        <span>
-        <v-icon>mdi-dumbbell</v-icon>
-          DIARGYM
-        </span>
-        <v-spacer></v-spacer>
-        <v-btn text icon @click="toHome">
-          <v-icon>mdi-home</v-icon>
-        </v-btn>
-        <v-menu>
-          <template v-slot:activator="{on, attrs}">
-            <v-btn
-              text
-              v-bind="attrs"
-              v-on="on"
-              rounded
-            >
-              <v-icon>mdi-account</v-icon>
-            </v-btn>
-          </template>
-          <v-list
-            v-if="isLogin"
+    </thankyou-dialog>
+    <v-app-bar
+      dark
+    >
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <span>
+      <v-icon>mdi-dumbbell</v-icon>
+        DIARGYM
+      </span>
+      <v-spacer></v-spacer>
+      <v-btn text icon @click="toHome">
+        <v-icon>mdi-home</v-icon>
+      </v-btn>
+      <v-menu>
+        <template v-slot:activator="{on, attrs}">
+          <v-btn
+            text
+            v-bind="attrs"
+            v-on="on"
+            rounded
           >
-            <v-list-item 
-              v-for="item in menuLogins"
-              :key="item.title"
-              :to="item.path">
-              <v-list-item-title>{{item.title}}</v-list-item-title>
-            </v-list-item>
-            <v-list-item  @click="logout">
-              <v-list-item-title>logout</v-list-item-title>
-            </v-list-item>
-          </v-list>
-          <v-list v-else>
-            <v-list-item
-              v-for ="item in menuItems"
-              :key="item.title"
-              :to="item.path"
-            >
-              <v-list-item-title>
-                {{item.title}}
-              </v-list-item-title>
+            <v-icon>mdi-account</v-icon>
+          </v-btn>
+        </template>
+        <v-list
+          v-if="isLogin"
+        >
+          <v-list-item 
+            v-for="item in menuLogins"
+            :key="item.title"
+            :to="item.path">
+            <v-list-item-title>{{item.title}}</v-list-item-title>
+          </v-list-item>
+          <v-list-item  @click="logout">
+            <v-list-item-title>logout</v-list-item-title>
+          </v-list-item>
+        </v-list>
+        <v-list v-else>
+          <v-list-item
+            v-for ="item in menuItems"
+            :key="item.title"
+            :to="item.path"
+          >
+            <v-list-item-title>
+              {{item.title}}
+            </v-list-item-title>
 
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </v-app-bar>
-    </v-card>
-    <div>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </v-app-bar>
     <v-navigation-drawer
       v-model="drawer"
-      absolute
       temporary
+      absolute
+      bottom
     >
       <v-list-item>
         <v-list-item-content>
@@ -75,7 +71,7 @@
             DIARGYM
           </v-list-item-title>
           <v-list-item-subtitle
-             v-if="isLogin"
+            v-if="isLogin"
           >
             {{currentUser}}님 반갑습니다!
           </v-list-item-subtitle>
@@ -133,10 +129,6 @@
       </v-list>
     </v-navigation-drawer>
   </div>
-  </v-container>
-  
-
-
 </template>
 
 
@@ -159,6 +151,7 @@ export default {
     return{
       isDark: false,
       drawer : false,
+      fab: false,
       menuItems: [
           // { title: 'Home', path: '/', icon: 'home' },
         { title: 'Sign Up', path: '/register', icon: 'face' },

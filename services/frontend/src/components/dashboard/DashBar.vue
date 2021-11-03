@@ -1,29 +1,28 @@
 <template>
     <div>
-        <v-row>
-          <v-col class="pl-10 pt-10">
-              <h3>종류 선택</h3>
-          <p v-for="(value) in this.checkboxList" :key=value.rmid>
-            <v-radio-group
-              v-model="selectedCat"
-              @change="drawChart"
-            >
-              <v-radio 
-                :label='value.rmid'
-                :value='value.rmid'
-              ></v-radio>
-            </v-radio-group>
-          </p>
-          </v-col>
-          <v-col class="pa-7">
-            <bar-chart
-              id="barChart"
-              :chartData=this.datacollection
-              :chartOptions=this.options
-            >
-            </bar-chart>
-          </v-col>
-        </v-row>
+      <v-row>
+        <v-col class="pa-3">
+          <bar-chart
+            id="barChart"
+            :chartData=this.datacollection
+            :chartOptions=this.options
+          >
+          </bar-chart>
+        </v-col>
+        <v-col class="pl-10 pt-10">
+        <p v-for="(value) in this.checkboxList" :key=value.rmid>
+          <v-radio-group
+            v-model="selectedCat"
+            @change="drawChart"
+          >
+            <v-radio 
+              :label='value.rmid'
+              :value='value.rmid'
+            ></v-radio>
+          </v-radio-group>
+        </p>
+        </v-col>
+      </v-row>
     </div>
 </template>
 <script>
@@ -77,8 +76,6 @@ export default {
           data: volumes.slice(labels.length*j, labels.length*(j+1))
          })
        }
-        console.log(datasets)
-      
       this.datacollection={
           labels: labels,
           datasets: datasets
@@ -110,6 +107,12 @@ export default {
                 },
               }
             }]
+          },
+          tooltips:{
+            enabled:true,
+            callbacks: {
+              title: (tooltipItem, data) => data['datasets'][0]['data'][tooltipItem['index']],
+            }
           },
           legend:{
             display:true

@@ -1,67 +1,69 @@
 <template>
-  <div>
-    <thankyou-dialog
-      v-if="getDialogToggle"
-      :dialog="getDialogToggle"
-      :emoji="getDialogInfo.emoji"
-      :title="getDialogInfo.title"
-      :firstLineText="getDialogInfo.firstLineText"
-      :secondLineText="getDialogInfo.secondLineText"
+  <v-container>
+    <v-card
+      class="overflow-hidden"
     >
-    </thankyou-dialog>
-    <v-app-bar
-      color="primary"
-      dark
-    >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <span>
-      <v-icon>mdi-dumbbell</v-icon>
-      DIARGYM
-
-      </span>
-      <v-spacer></v-spacer>
-      <v-btn text icon @click="toHome">
-        <v-icon>mdi-home</v-icon>
-      </v-btn>
-      <v-menu>
-        <template v-slot:activator="{on, attrs}">
-          <v-btn
-            text
-            v-bind="attrs"
-            v-on="on"
-            rounded
+      <thankyou-dialog
+        v-if="getDialogToggle"
+        :dialog="getDialogToggle"
+        :emoji="getDialogInfo.emoji"
+        :title="getDialogInfo.title"
+        :firstLineText="getDialogInfo.firstLineText"
+        :secondLineText="getDialogInfo.secondLineText"
+      >
+      </thankyou-dialog>
+      <v-app-bar
+        dark
+      >
+        <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+        <span>
+        <v-icon>mdi-dumbbell</v-icon>
+          DIARGYM
+        </span>
+        <v-spacer></v-spacer>
+        <v-btn text icon @click="toHome">
+          <v-icon>mdi-home</v-icon>
+        </v-btn>
+        <v-menu>
+          <template v-slot:activator="{on, attrs}">
+            <v-btn
+              text
+              v-bind="attrs"
+              v-on="on"
+              rounded
+            >
+              <v-icon>mdi-account</v-icon>
+            </v-btn>
+          </template>
+          <v-list
+            v-if="isLogin"
           >
-            <v-icon>mdi-account</v-icon>
-          </v-btn>
-        </template>
-        <v-list
-          v-if="isLogin"
-        >
-          <v-list-item 
-            v-for="item in menuLogins"
-            :key="item.title"
-            :to="item.path">
-            <v-list-item-title>{{item.title}}</v-list-item-title>
-          </v-list-item>
-          <v-list-item  @click="logout">
-            <v-list-item-title>logout</v-list-item-title>
-          </v-list-item>
-        </v-list>
-        <v-list v-else>
-          <v-list-item
-            v-for ="item in menuItems"
-            :key="item.title"
-            :to="item.path"
-          >
-            <v-list-item-title>
-              {{item.title}}
-            </v-list-item-title>
+            <v-list-item 
+              v-for="item in menuLogins"
+              :key="item.title"
+              :to="item.path">
+              <v-list-item-title>{{item.title}}</v-list-item-title>
+            </v-list-item>
+            <v-list-item  @click="logout">
+              <v-list-item-title>logout</v-list-item-title>
+            </v-list-item>
+          </v-list>
+          <v-list v-else>
+            <v-list-item
+              v-for ="item in menuItems"
+              :key="item.title"
+              :to="item.path"
+            >
+              <v-list-item-title>
+                {{item.title}}
+              </v-list-item-title>
 
-          </v-list-item>
-        </v-list>
-      </v-menu>
-     
-    </v-app-bar>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-app-bar>
+    </v-card>
+    <div>
     <v-navigation-drawer
       v-model="drawer"
       absolute
@@ -79,6 +81,14 @@
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
+      <v-switch
+        class="pl-5"
+        inset
+        :label="$vuetify.theme.dark ?'밝게' :'어둡게'"
+        v-model="$vuetify.theme.dark"
+        persistent-hint
+      >
+      </v-switch>
       <v-divider></v-divider>
 
       <v-list
@@ -107,15 +117,24 @@
           v-else
         >
           <v-list-item exact
-            :to="{name:'Home'}"
+            v-for="item in drawersNotLogins"
+            :key="item.title"
+            :to="item.path"
+            link
           >
-            <v-list-item-title>Home</v-list-item-title>
+            <v-list-item-icon>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item-content>
           </v-list-item>
-
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
   </div>
+  </v-container>
+  
 
 
 </template>
@@ -138,6 +157,7 @@ export default {
   },
   data(){
     return{
+      isDark: false,
       drawer : false,
       menuItems: [
           // { title: 'Home', path: '/', icon: 'home' },
@@ -151,9 +171,14 @@ export default {
       ],
       drawerLogins:[
         {title: 'Home', path:'/', icon: 'mdi-home-variant'},
+        {title: 'About', path:'/about', icon: 'mdi-information'},
         {title: 'Diary', path:'/diary', icon: 'mdi-notebook-edit'},
         {title: 'Dashboard', path:'/dashboard', icon: 'mdi-view-dashboard'},
         {title: 'My Page', path:'/profile', icon: 'mdi-weight-lifter'},
+      ],
+      drawersNotLogins:[
+        {title: 'Home', path:'/', icon: 'mdi-home-variant'},
+        {title: 'About', path:'/about', icon: 'mdi-information'},
       ]
     }
   },

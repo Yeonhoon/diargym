@@ -1,13 +1,19 @@
 <template>
   <v-app>
     <Navbar/> 
-    
-    <v-main>
-      <router-view/>
-    </v-main>
+    <v-sheet
+      class="overflow-y-auto"
+      max-height="800"
+    >
+      <v-main>
+        <router-view/>
+      </v-main>
+    </v-sheet>
     <Footer/>
 
   </v-app>
+
+
 
 </template>
 

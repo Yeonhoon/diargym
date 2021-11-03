@@ -1,31 +1,25 @@
 <template>
-  <v-app
-    height="50%"
-  >
-    <v-form>
-      <v-col class='d-flex justify-center mb-5' >
-        <h1>운동일지 작성</h1>
-      </v-col>
-      <v-row
-        class="justify-center mt-3"
+  <v-form>
+    <v-row
+      class="justify-center mt-15"
+    >
+      <v-dialog
+        v-model="recordDialog"
+        max-width="400"
+        scrollable
       >
-        <v-dialog
-          v-model="recordDialog"
-          max-width="400"
-          scrollable
-        >
-          <template v-slot:activator="{on,attrs}">
-            <v-btn
-              color="primary"
-              text
-              v-bind="attrs"
-              v-on="on"
-            >
-              <v-icon>mdi-pen</v-icon>
-              기록 추가
-            </v-btn>
+        <template v-slot:activator="{on,attrs}">
+          <v-btn
+            color="primary"
+            text
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-icon>mdi-pen</v-icon>
+            기록 추가
+          </v-btn>
 
-          </template>
+        </template>
           <!-- show modals -->
           <form-dialog
             :headerTitle=this.headerTitle
@@ -177,8 +171,7 @@
           </form-dialog>
       </v-dialog>
     </v-row>
-    </v-form>
-  </v-app>
+  </v-form>
 </template>
 <script>
 import {mapActions} from 'vuex'

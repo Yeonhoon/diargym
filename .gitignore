@@ -1,3 +1,5 @@
 node_modules
-__pychche__
+/__pychche__
 blog_env
+*.pyc
+*.yaml, *.yml

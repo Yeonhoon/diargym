@@ -1,7 +1,5 @@
 <template>
-  <div class='diary-chart'>
-    <h1>최근 일주일 운동기록</h1>
-    <p>단위:볼륨(중량 * 반복 수)</p>
+  <div>
     <bar-chart
       :chartData=this.datacollection
       :chartOptions=this.options
@@ -91,6 +89,14 @@ import {mapGetters} from 'vuex'
               }
             }]
           },
+          tooltips:{
+            enabled:true,
+            callbacks: {
+              title: (tooltipItem, data) => data['datasets'][0]['data'][tooltipItem['index']],
+              // label: (tooltipItem, data) => data['datasets'][0]['data'][tooltipItem['index']]
+            }
+          },
+
           legend:{
             display:true
           },

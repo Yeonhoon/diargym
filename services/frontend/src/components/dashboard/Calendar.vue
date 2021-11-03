@@ -4,7 +4,7 @@
         v-model="date" 
         elevation="10"
         color="green lighten-1"
-        header-color="primary"
+        header-color="black"
         :events=getUniqueDates
         event-color="red lighten-1"
         width=350

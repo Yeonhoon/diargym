@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h3 class="text-center">운동기록 테이블</h3>
     <v-data-table
       :headers=headers
       :items=getData

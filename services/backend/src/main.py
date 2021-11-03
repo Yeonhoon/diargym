@@ -12,7 +12,7 @@ app=FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://118.67.132.200:8080"],
+    allow_origins=["http://localhost:8080"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -21,8 +21,6 @@ app.add_middleware(
 app.include_router(users.router)
 app.include_router(posts.router)
 app.include_router(records.router)
-@app.get('/')
-def home():
-    return "Hello FastAPI!"
+
 
 

@@ -12,7 +12,7 @@
               이메일 혹은 비밀번호가 틀립니다!
             </v-alert>
             <v-card class="elevation-12">
-              <v-toolbar dark color="primary">
+              <v-toolbar dark>
                 <v-toolbar-title>로그인</v-toolbar-title>
               </v-toolbar>
               <v-card-text>
@@ -62,11 +62,13 @@
                 </v-btn> -->
                 <v-btn 
                   text
-                  color="primary"
-                  width="80%"
-                  class="ml-10"
+                  color="error"
+                  width="100%"
                   @click="login"
-                >로그인</v-btn>
+                >
+                  <!-- class="ml-10" -->
+                  로그인
+                </v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -106,8 +108,7 @@ import {mapActions} from 'vuex'
         .then(val=>{
           if(val){
             this.logIn(User)
-            .then(res=>{
-              console.log(res)
+            .then(()=>{
               this.$router.push('/')
               this.isLoginError=false
             })

@@ -3,9 +3,15 @@ t<template>
     <v-layout>
       <v-flex>
         <v-card class='mt-10 mb-5' elevation="5">
-          <dash-bar
-            :data =getTableData
-          ></dash-bar>
+          <v-card-title  class='mt-5 d-flex justify-center'>
+            <h3>종류 선택</h3>
+          </v-card-title>
+          <v-divider class="mx-4"></v-divider>
+          <v-card-text>
+            <dash-bar
+              :data =getTableData
+            ></dash-bar>
+          </v-card-text>
 
         </v-card>
       </v-flex>
@@ -18,11 +24,18 @@ t<template>
         </Calendar>
       </v-flex>
       <v-flex mt-8>
-        <data-table
-          @allData=getTableRecords
-        >
-
-        </data-table>
+        <v-card>
+          <v-card-title class='d-flex justify-center'>
+            <h3>운동기록 테이블</h3>
+          </v-card-title>
+          <v-divider class="mx-4"></v-divider>
+          <v-card-text>
+            <data-table
+              @allData=getTableRecords
+            >
+            </data-table>
+          </v-card-text>
+        </v-card>
       </v-flex>
     </v-layout>
     <v-layout row wrap>

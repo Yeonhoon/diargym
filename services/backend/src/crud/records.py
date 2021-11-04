@@ -59,7 +59,7 @@ async def dashbar_records(category, current_user, db):
     pivoted= df.pivot_table(index='rdate',columns=['rmid','rsmall'],values=['volume'],fill_value=0).reset_index()
     melted = pivoted.melt(id_vars=['rdate'])
     melted.rename(columns={None:'type'}, inplace=True)
-    melted.sort_values(['rdate'], inplace=True)
+    melted.sort_values(['rsmall','rdate'], inplace=True)
     
     # print(melted.groupby(['rdate','rmid'])['value'].mean())
     json = melted.to_json(orient="records")

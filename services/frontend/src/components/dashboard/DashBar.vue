@@ -73,20 +73,26 @@ export default {
         catArr.push(a.rsmall)
         volArr.push(a.value)
       }
-      let dateSet = [...new Set(dateArr)]
+      console.log(volArr)
+      let dateSet = [...new Set(dateArr)].sort()
       let catSet = [...new Set(catArr)]
-      // console.log(dateArr)
-      // console.log(catArr)
-      // console.log(volArr)
 
       for (var b=0; b<catSet.length; b++){
-        datasets.push({
-          label:catSet[b],
-          backgroundColor: this.backgroundColor[b],
-          data: volArr.slice(dateSet.length*b, dateSet.length*(b+1))
+        if (dateSet.length===1){
+          datasets.push({
+            label:catSet[b],
+            backgroundColor: this.backgroundColor[b],
+            data: volArr.slice(b+0,b+1)
         })
+        } else {
+          datasets.push({
+            label:catSet[b],
+            backgroundColor: this.backgroundColor[b],
+            data: volArr.slice(catSet.length*b, catSet.length*(b+1))
+          })
+        }
       }
-
+      console.log(datasets)
       this.datacollection={
         labels: dateSet,
         datasets: datasets
@@ -100,7 +106,6 @@ export default {
                 display:true,
                 labelString:'일자'
               }
-              
             }],
             yAxes:[{
               stacked:true,
@@ -110,12 +115,6 @@ export default {
               },
               ticks:{
                 beginAtZero: true,
-                userCallback: (value)=>{
-                  value = value.toString();
-                  value=value.split(/(?=(?:...)*$)/);
-                  value = value.join(',');
-                  return value
-                },
               }
             }]
           },
@@ -123,9 +122,12 @@ export default {
             enabled:true,
             callbacks: {
               title: (tooltipItem, data) => data['datasets'][0]['data'][tooltipItem['index']],
-              label:(tooltipItem, data) => {
-                // console.log(data.datasets[tooltipItem.index].label)
-                return data.datasets[tooltipItem.index].label+": "+ tooltipItem.yLabel + 'kg'}
+              label: (tooltipItem, data) => {
+                var x= tooltipItem.index
+                // console.log(data.datasets[tooltipItem.datasetIndex].label || '')
+                return data.datasets[x].label+ ": "+ Math.round(tooltipItem.yLabel,1).toLocaleString() + 'kg'
+              }
+              
             }
           },
           legend:{

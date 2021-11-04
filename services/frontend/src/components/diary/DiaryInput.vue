@@ -238,13 +238,14 @@ export default {
 
         for (var j=0; j<this.setFields.length; j++){
           for(var k=0; k<this.setFields[j].count; k++){
-            this.form.unit = this.form.unit + this.setFields[j]['unit'] + " "
             this.form.reps = this.form.reps + this.setFields[j]['reps'] + " "
-            if(this.setFields[j]['unit']==='lb'){  
+            if(this.setFields[j]['unit']==='lb'){
               this.form.weight = this.form.weight + this.setFields[j]['weight']*0.45 + " "
+              this.form.unit = this.form.unit + 'kg' + " "
             }
             else if (this.setFields[j]['unit']==='kg'){
               this.form.weight = this.form.weight + this.setFields[j]['weight'] + " "
+              this.form.unit = this.form.unit + this.setFields[j]['unit'] + " "
             }
           }
         }

@@ -23,7 +23,7 @@ axios.interceptors.response.use(undefined, function(error){
 
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'http://localhost:5050/';
+axios.defaults.baseURL = 'http://118.67.132.200:5000/';
 
 new Vue({
   router,

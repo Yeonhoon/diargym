@@ -94,7 +94,12 @@ import {mapGetters} from 'vuex'
             enabled:true,
             callbacks: {
               title: (tooltipItem, data) => data['datasets'][0]['data'][tooltipItem['index']],
-              // label: (tooltipItem, data) => data['datasets'][0]['data'][tooltipItem['index']]
+              label: (tooltipItem, data) => {
+                var x= tooltipItem.index
+                // console.log(data.datasets[tooltipItem.datasetIndex].label || '')
+                return data.datasets[x].label+ ": "+ Math.round(tooltipItem.yLabel,1).toLocaleString() + 'kg'
+              }
+              
             }
           },
 

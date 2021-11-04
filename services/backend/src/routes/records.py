@@ -7,6 +7,7 @@ from src.crud.records import (
     add_record, 
     get_tables_record, 
     get_tables_record_date,
+    dashbar_records,
     update,
     delete
     )
@@ -48,6 +49,15 @@ async def get_tables_records(rdate, current_user: ShowUser=Depends(get_current_u
                             ):
     data = get_tables_record_date(current_user, db, rdate)
     return await data
+
+@router.get('/dashbar/{category}', dependencies=[Depends(get_current_user)],
+                    response_model=List[ShowRecord],
+                    response_model_exclude=['rid','ruserid'])
+async def get_dashbar_records(category, current_user: ShowUser=Depends(get_current_user), 
+                            db: Session=Depends(connect_db)):
+    data = dashbar_records(category, current_user, db)
+    return await data
+
 
 @router.delete('/delete/{rid}', dependencies=[Depends(get_current_user)])
 async def delete_record(rid:int, current_user: ShowUser=Depends(get_current_user), db: Session=Depends(connect_db)):

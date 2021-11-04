@@ -50,6 +50,20 @@ async def get_tables_record_date(current_user,db, rdate):
     json = df.to_json(orient="records")
     return Response(content=json, media_type='application/json')
 
+async def dashbar_records(category, current_user, db):
+    rawData = db.query(Records).filter(Records.ruserid==current_user.uid)
+    df = pd.read_sql(rawData.statement, rawData.session.bind)
+    df= df[df['rmid']==category]
+    df['rdate'] = df['rdate'].astype('str')
+    df['volume']=df['rweight']*df['rrep']
+    pivoted= df.pivot_table(index='rdate',columns=['rmid','rsmall'],values=['volume'],fill_value=0).reset_index()
+    melted = pivoted.melt(id_vars=['rdate'])
+    melted.rename(columns={None:'type'}, inplace=True)
+    melted.sort_values(['rdate'], inplace=True)
+    
+    # print(melted.groupby(['rdate','rmid'])['value'].mean())
+    json = melted.to_json(orient="records")
+    return Response(content=json, media_type='application/json')
 
 async def add_record(request, current_user, db):
     w = request.rweight.rstrip()

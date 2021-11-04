@@ -9,7 +9,6 @@ t<template>
           <v-divider class="mx-4"></v-divider>
           <v-card-text>
             <dash-bar
-              :data =getTableData
             ></dash-bar>
           </v-card-text>
 
@@ -84,7 +83,6 @@ import { mapGetters } from 'vuex'
     // dispatch로 데이터 state에 저장하기
     async created() {
       this.getTableRecords()
-      //  this.$store.dispatch('extractDate')
     },
 
     computed:{

@@ -14,7 +14,7 @@
         <p v-for="(value) in this.checkboxList" :key=value.rmid>
           <v-radio-group
             v-model="selectedCat"
-            @change="drawChart"
+            @change="plotDashBar"
           >
             <v-radio 
               :label='value.rmid'
@@ -28,15 +28,9 @@
 </template>
 <script>
 import BarChart from '../charts/BarChart.vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   components: { BarChart },
-  props:{
-      data:{
-          type: Array,
-          default:null,
-      }
-  },
   data: () => ({
     checkboxList:[],
     selectedCat:null,
@@ -46,42 +40,58 @@ export default {
     barChart:null,
     // chartData:[],
   }),
+  props:{
+    barData:{
+      type: Array,
+      default: null,
+    }
+  },
 
   computed:{
-    ...mapGetters(['stateTableRawRecords']),
+    ...mapGetters(['stateTableRawRecords','getDashBar']),
     getRecords(){
-        return this.stateTableRawRecords
+      return this.stateTableRawRecords
     },
+    getDashBarData(){
+      return this.getDashBar
+    }
+  },
+  watch:{
+    
   },
 
   methods:{
-    drawChart(){
-      const dates=[]
-      const category=[]
-      const volumes=[]
-      const datasets=[]
-      
-      for(var i of this.getRecords){
-          if(i.rmid === this.selectedCat){
-            dates.push(i.rdate)
-            category.push(i.rsmall)
-            volumes.push(i.rweight * i.rrep)
-          }
+    ...mapActions(['importDashBar']),
+    async plotDashBar(){
+      await this.importDashBar(this.selectedCat)
+      const dateArr = []
+      const catArr = []
+      const volArr = []
+      const datasets = []
+      for(var a of this.getDashBarData) {
+        dateArr.push(a.rdate)
+        catArr.push(a.rsmall)
+        volArr.push(a.value)
       }
-        let labels= [...new Set(dates)].sort()
-        let categorySet = [...new Set(category)]
-      for(var j=0; j<categorySet.length; j++){
+      let dateSet = [...new Set(dateArr)]
+      let catSet = [...new Set(catArr)]
+      // console.log(dateArr)
+      // console.log(catArr)
+      // console.log(volArr)
+
+      for (var b=0; b<catSet.length; b++){
         datasets.push({
-          label:categorySet[j],
-          backgroundColor: this.backgroundColor[j],
-          data: volumes.slice(labels.length*j, labels.length*(j+1))
-         })
-       }
-      this.datacollection={
-          labels: labels,
-          datasets: datasets
+          label:catSet[b],
+          backgroundColor: this.backgroundColor[b],
+          data: volArr.slice(dateSet.length*b, dateSet.length*(b+1))
+        })
       }
-      this.options={
+
+      this.datacollection={
+        labels: dateSet,
+        datasets: datasets
+      },
+       this.options={
           responsive:true,
           scales:{
             xAxes:[{
@@ -113,23 +123,16 @@ export default {
             enabled:true,
             callbacks: {
               title: (tooltipItem, data) => data['datasets'][0]['data'][tooltipItem['index']],
+              label:(tooltipItem, data) => {
+                // console.log(data.datasets[tooltipItem.index].label)
+                return data.datasets[tooltipItem.index].label+": "+ tooltipItem.yLabel + 'kg'}
             }
           },
           legend:{
             display:true
           },
-          // plugins:{
-          //   datalabels:{
-          //     formatter: (value)=>{
-          //       return value +"vol"
-          //     }
-          //   }
-          // }
-
       }
-    //   console.log(this.datacollection)
-
-    }
+    },
   },
 
   mounted(){

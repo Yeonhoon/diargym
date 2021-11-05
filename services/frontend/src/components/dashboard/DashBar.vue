@@ -73,10 +73,11 @@ export default {
         catArr.push(a.rsmall)
         volArr.push(a.value)
       }
-      console.log(volArr)
       let dateSet = [...new Set(dateArr)].sort()
       let catSet = [...new Set(catArr)]
-
+      console.log(this.getDashBarData)
+      console.log(volArr)
+      console.log("categry Set: ", catSet)
       for (var b=0; b<catSet.length; b++){
         if (dateSet.length===1){
           datasets.push({
@@ -88,7 +89,7 @@ export default {
           datasets.push({
             label:catSet[b],
             backgroundColor: this.backgroundColor[b],
-            data: volArr.slice(catSet.length*b, catSet.length*(b+1))
+            data: volArr.slice(dateSet.length*b, dateSet.length*(b+1))
           })
         }
       }
@@ -123,11 +124,10 @@ export default {
             callbacks: {
               title: (tooltipItem, data) => data['datasets'][0]['data'][tooltipItem['index']],
               label: (tooltipItem, data) => {
-                var x= tooltipItem.index
-                // console.log(data.datasets[tooltipItem.datasetIndex].label || '')
-                return data.datasets[x].label+ ": "+ Math.round(tooltipItem.yLabel,1).toLocaleString() + 'kg'
+                console.log(data.datasets[tooltipItem.datasetIndex].label || '')
+                // var x= tooltipItem.index
+                return data.datasets[tooltipItem.datasetIndex].label+ ": "+ Math.round(tooltipItem.yLabel,1).toLocaleString() + 'kg'
               }
-              
             }
           },
           legend:{

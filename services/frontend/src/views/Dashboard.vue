@@ -3,15 +3,16 @@ t<template>
     <v-layout>
       <v-flex>
         <v-card class='mt-10 mb-5' elevation="5">
-          <v-card-title  class='mt-5 d-flex justify-center'>
+          <v-card-title class='mt-5 d-flex justify-center'>
             <h3>부위별 세부운동 그래프</h3>
           </v-card-title>
+          <v-card-subtitle class='d-flex justify-center'>
+            단위: 볼륨(중량*반복수)</v-card-subtitle>
           <v-divider class="mx-4"></v-divider>
           <v-card-text>
             <dash-bar
             ></dash-bar>
           </v-card-text>
-
         </v-card>
       </v-flex>
     </v-layout>

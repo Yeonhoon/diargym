@@ -2,7 +2,7 @@
   <v-container>
     <v-layout>
       <v-flex>
-        <v-card height="300" elevation="2">
+        <v-card elevation="2">
           <v-card-title class='d-flex justify-center'>
             <h3 class='mt-2'>운동일지 작성</h3>
           </v-card-title>
@@ -11,7 +11,6 @@
             <diary-input class='d-flex justify-center'>
             </diary-input>
           </v-card-text>
-
         </v-card>
         <v-card height="550" class="mt-10 mb-10">
           <v-card-title class='d-flex justify-center'>

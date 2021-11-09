@@ -3,12 +3,12 @@
     <v-row
       class="justify-center mt-15"
     >
-      <v-dialog
+      <!-- <v-dialog
         v-model="recordDialog"
         max-width="400"
         scrollable
-      >
-        <template v-slot:activator="{on,attrs}">
+      > -->
+        <!-- <template v-slot:activator="{on,attrs}">
           <v-btn
             color="primary"
             text
@@ -19,7 +19,7 @@
             기록 추가
           </v-btn>
 
-        </template>
+        </template> -->
           <!-- show modals -->
           <form-dialog
             :headerTitle=this.headerTitle
@@ -38,16 +38,16 @@
                 min-width="auto"
               >
                 <template v-slot:activator="{on, attrs}">
-                <v-text-field
-                  class="mt-5"
-                  v-model="form.date"
-                  label="운동일자"
-                  prepend-icon="mdi-calendar"
-                  readonly
-                  v-bind="attrs"
-                  v-on="on"
-                >
-                </v-text-field>
+                  <v-text-field
+                    class="mt-5"
+                    v-model="form.date"
+                    label="운동일자"
+                    prepend-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                  </v-text-field>
                 </template>
                   <v-date-picker 
                   width="250"
@@ -175,8 +175,8 @@
 
             </span>
             </template>
-          </form-dialog>
-      </v-dialog>
+        </form-dialog>
+      <!-- </v-dialog> -->
     </v-row>
   </v-form>
 </template>

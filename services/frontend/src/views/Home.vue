@@ -1,7 +1,7 @@
 <template>
   <v-container mt-10 fluid>
     <v-layout col wrap>
-      <v-flex xs12 class='d-flex justify-center'>
+      <v-flex xs12 class='d-flex justify-center mt-15'>
         <h1>DIARGYM</h1>
       </v-flex>
       <v-flex xs12 class="d-flex justify-center">
@@ -16,10 +16,10 @@
       <v-col>
         <div class="text-center">
           <div class="my-2">
-            <v-btn :to="{name:'Diary'}" plain color='red lighten-1' rounded large width="250" >운동일지 작성</v-btn>
+            <v-btn :to="{name:'Diary'}" plain color='red lighten-1' rounded large width="250"><strong>운동일지 작성</strong></v-btn>
           </div>
           <div class="my-2">
-              <v-btn :to="{name:'Dashboard'}" plain color='primary' rounded large width="250">대시보드</v-btn>
+              <v-btn :to="{name:'Dashboard'}" plain color='primary' rounded large width="250"><strong>대시보드</strong></v-btn>
           </div>
         </div>
       </v-col>

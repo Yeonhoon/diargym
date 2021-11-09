@@ -1,3 +1,4 @@
+from datetime import timedelta
 from fastapi import APIRouter, Depends, HTTPException, status, Response
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
@@ -46,7 +47,7 @@ async def login(request: OAuth2PasswordRequestForm = Depends(),
         headers={"WWW-Authenticate": "Bearer"},
       )
     
-    access_token = create_access_token(data={"sub":user.uid})
+    access_token = create_access_token(data={"sub":user.uid}, expire_delta=timedelta(minutes=60))
     token = jsonable_encoder(access_token)
     content = {"message": f"You've successfully logged in. Welcome back, {user.uid}!"}
     response = JSONResponse(content=content)

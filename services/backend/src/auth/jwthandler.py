@@ -16,10 +16,13 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 60
 connect_db = get_db
 # security = OAuth2PasswordBearer(tokenUrl='/login')
 
-def create_access_token(data: dict): 
+def create_access_token(data: dict, expire_delta: Optional[timedelta]=None): 
   # data를 암호화함(encode)
     to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    if expire_delta:
+        expire = datetime.utcnow() + expire_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     
@@ -45,7 +48,7 @@ class OAuth2PasswordBearerCookie(OAuth2):
             if self.auto_error:
                 raise HTTPException(
                     status_code=401,
-                    detail="Not authenticateddddd!!!!!!!!!!!!!",
+                    detail="Not authenticateddddd!",
                     headers={"WWW-Authenticate": "Bearer"},
                 )
             else:

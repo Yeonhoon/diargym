@@ -12,11 +12,6 @@
     >
       <template v-slot:top>
         <v-toolbar flat>
-          <!-- <v-divider
-            vertical
-            inset
-            class='mx-4'
-          ></v-divider> -->
           <v-btn 
             text
             color="green darken-2"

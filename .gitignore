@@ -1,5 +1,5 @@
 node_modules
 /__pychche__
-blog_env
+venv/
 *.pyc
 *.yaml, *.yml

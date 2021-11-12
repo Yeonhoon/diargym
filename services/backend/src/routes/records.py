@@ -3,6 +3,7 @@ from fastapi.responses import HTMLResponse
 from src.database.models import get_db
 from sqlalchemy.orm import Session
 from src.crud.records import (
+    load_wokrout_list,
     get_all_records, 
     add_record, 
     get_tables_record, 
@@ -20,6 +21,11 @@ router = APIRouter(
 )
 
 connect_db = get_db
+@router.get('/workoutlist')
+async def workout_list(db:Session=Depends(connect_db)):
+    df = load_wokrout_list(db)
+    return await df
+
 
 @router.post('/records') 
 async def add_records(request: RecordBase, 

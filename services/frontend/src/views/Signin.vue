@@ -114,7 +114,7 @@ import {mapActions} from 'vuex'
             })
             .catch(err=>{
               this.isLoginError=true
-              console.loG(err)
+              console.log(err)
             })
           }
         }

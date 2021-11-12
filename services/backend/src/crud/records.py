@@ -2,14 +2,22 @@ from fastapi import HTTPException, APIRouter, status, Depends, Response
 from numpy import pi
 from sqlalchemy.sql.expression import true
 from starlette.status import HTTP_202_ACCEPTED, HTTP_204_NO_CONTENT
-from src.database.models import Records, get_db
+from src.database.models import Records, get_db, Workout
 from src.schemas.records import Record, ShowRecord
 from sqlalchemy.orm import Session
 import psycopg2 as pg
 import pandas as pd
 
 connect_db = get_db
-# conn = pg.connect(dbname="postgres", user="postgres",password="postgres")
+
+async def load_wokrout_list(db):
+    rawData = db.query(Workout).all()
+    print(rawData)
+
+    return rawData
+    # df = pd.read_sql(rawData.statement, rawData.session.bind)
+    # print(df)
+
 
 async def get_all_records(current_user, db):
     rawData = db.query(Records).filter(Records.ruserid==current_user.uid)

@@ -6,12 +6,16 @@ const state = {
   tableRawRecords: null,
   rmidRecords: null,
   rsmallRecords: null,
-  category:null,
-  dashLineData:null,
-  dates:null,
+  category: null,
+  dashLineData: null,
+  dates: null,
+  workoutlist: null,
+  workoutWholeList: null,
 }
 
 const getters = {
+  stateWorkoutList: state => state.workoutlist,
+  stateWorkoutWholeList: state => state.workoutWholeList,
   stateChartRecords: state => state.records, //그래프를 위한 운동기록 저장.
   stateTableRecords: state => state.tableRecords, //테이블을 전체기록 운동기록 저장
   stateTableRawRecords: state => state.tableRawRecords,
@@ -24,6 +28,11 @@ const getters = {
 
 const actions = {
   
+  // 운동종목 불러오기
+  async loadWorkoutList({commit}){
+    const {data} = await axios.get('/workoutlist')
+    await commit('setWorkoutList',data)
+  },
   //운동기록 저장
   async submitRecords({dispatch},data){
     console.log(data)
@@ -68,6 +77,23 @@ const actions = {
 }
 
 const mutations = {
+  setWorkoutList(state, payload){
+    var list ={}
+    var allList=[]
+    for (var i = 0; i < payload.length; i++) {
+      var datum = payload[i];
+      if (!list[datum.wcategory]) {
+        list[datum.wcategory] = [];
+      }
+      list[datum.wcategory].push(datum.wname);
+      allList.push(payload[i].wname)
+
+  }
+    state.workoutWholeList = allList;
+    state.workoutlist = list;
+    
+  },
+
   setChartRecords(state, records){
     state.records = records;
   },

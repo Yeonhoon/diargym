@@ -90,7 +90,7 @@
               </div>
             </v-card-text>
             <v-card-actions 
-              v-if="setArr.length===0">
+              v-if="!Object.keys(setFields).includes(value)">
               <v-btn
                 block
                 @click="addSet(value);"
@@ -320,6 +320,7 @@ export default {
     snack:false,
     selectedCategory:null,
     selectedWorkout: [],
+    isSetEmpty: true,
     workoutsheet:false,
     headerTitle:"운동일지 기록",
     workoutlist: null,
@@ -446,26 +447,49 @@ export default {
       this.dialog=false
     },
     addSet(index){
-      console.log(index)
-      this.setcount+=1
-      
-      this.setArr.push({
-        lab1:'weight',
-        weight:"",
-        lab2:"reps",
-        reps:"",
-        unit:"",
-        count:""
-      })
-      this.setFields[index]= new Array()
-      // console.log(this.setArr)
-      this.setFields[index].push(this.setArr)
-      console.log(Object.values())
-      // console.log(this.setFields)
+      if (!Object.keys(this.setFields).includes(index)){
+        this.setFields[index]= new Array()
+        this.setArr.push({
+          lab1:'weight',
+          weight:"",
+          lab2:"reps",
+          reps:"",
+          unit:"",
+          count:""
+        })
+        this.setFields[index].push(this.setArr)
+        // this.setArr=[]
+
+      } else {
+        this.setArr.push({
+          lab1:'weight',
+          weight:"",
+          lab2:"reps",
+          reps:"",
+          unit:"",
+          count:""
+        })
+        var keys=Object.keys(this.setFields)
+        for (var y=0; y< keys.length; y++){
+          if (index === keys[y]){
+            this.setFields[index].push(this.setArr)
+          }
+        }
+        // this.setArr=[]
+      }
+      this.isSetEmpty=false
+      console.log(this.setFields)
+      console.log(this.isSetEmpty)
     },
-    removeSet(){
-      this.setArr.pop();
-      this.dialog=false
+    removeSet(index){
+      this.setFields[index].pop();
+      if (this.setFields[index].length===0){
+        delete this.setFields[index]
+        this.isSetEmpty=true
+      }
+      console.log(this.setFields)
+      console.log(this.isSetEmpty)
+      // this.dialog=false
     },
 
   },

@@ -460,6 +460,7 @@ export default {
       this.setFields[index]= new Array()
       // console.log(this.setArr)
       this.setFields[index].push(this.setArr)
+      console.log(Object.values())
       // console.log(this.setFields)
     },
     removeSet(){

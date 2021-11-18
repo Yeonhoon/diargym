@@ -16,6 +16,7 @@ const state = {
 const getters = {
   stateWorkoutList: state => state.workoutlist,
   stateWorkoutWholeList: state => state.workoutWholeList,
+  stateRecords: state => state.records,
   stateChartRecords: state => state.records, //그래프를 위한 운동기록 저장.
   stateTableRecords: state => state.tableRecords, //테이블을 전체기록 운동기록 저장
   stateTableRawRecords: state => state.tableRawRecords,
@@ -37,6 +38,7 @@ const actions = {
   async submitRecords({dispatch},data){
     console.log(data)
     await axios.post('records',data);
+    await dispatch('getRecords') //운동 세트기록 가져오기
     await dispatch('getChartRecords'); //추가된 기록 가져오기(차트용)
     await dispatch('getTableRecords'); //추가된 기록 가져오기(테이블용)
   },
@@ -47,11 +49,16 @@ const actions = {
     await dispatch('getSpecificDateRecord', data.rdate)
     await dispatch('getChartRecords') // 수정된 기록 가져오기
   },
-  // diary: 운동기록 가져오기
-  async getChartRecords({commit}){
-    let {data} = await axios.get('records');
-    commit('setChartRecords', data);
+  // 이전 운동 세트기록 가져오기
+  async getRecords({commit}){
+    let {data}= await axios.get('records')
+    commit('setRecords',data)
   },
+  // diary: 운동기록 가져오기
+  // async getChartRecords({commit}){
+  //   let {data} = await axios.get('records');
+  //   commit('setChartRecords', data);
+  // },
   
   //테이블 운동기록
   async getTableRecords({commit}){
@@ -92,6 +99,10 @@ const mutations = {
     state.workoutWholeList = allList;
     state.workoutlist = list;
     
+  },
+  
+  setRecords(state,payload){
+    state.records = payload
   },
 
   setChartRecords(state, records){

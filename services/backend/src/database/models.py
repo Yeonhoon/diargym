@@ -42,8 +42,6 @@ class Records(Base):
     rid = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     ruserid = Column(String(length=20), ForeignKey('users.uid'))
     rdate = Column(String)
-    # rlarge = Column(String(length=100), nullable=True)
-    # rmid = Column(String(length=100), nullable=True)
     rsmall = Column(String(length=100), ForeignKey('workout.wname'))
     rweight = Column(Float, nullable=False)
     runit = Column(String, nullable=False)

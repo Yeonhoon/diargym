@@ -62,7 +62,7 @@
                 </v-btn> -->
                 <v-btn 
                   text
-                  color="error"
+                  color="primary"
                   width="100%"
                   @click="login"
                 >

@@ -165,7 +165,7 @@ export default {
       drawerLogins:[
         {title: 'Home', path:'/', icon: 'mdi-home-variant'},
         {title: 'About', path:'/about', icon: 'mdi-information'},
-        {title: 'Diary', path:'/diary', icon: 'mdi-notebook-edit'},
+        {title: 'Diary', path:'/diary', icon: 'mdi-lead-pencil'},
         {title: 'Dashboard', path:'/dashboard', icon: 'mdi-view-dashboard'},
         {title: 'My Page', path:'/profile', icon: 'mdi-weight-lifter'},
       ],

@@ -12,7 +12,7 @@
             </diary-input>
           </v-card-text>
         </v-card>
-        <v-card height="550" class="mt-10 mb-10">
+        <!-- <v-card height="550" class="mt-10 mb-10">
           <v-card-title class='d-flex justify-center'>
              <h3 class="mt-3">일별 운동기록</h3>
           </v-card-title>
@@ -21,9 +21,9 @@
           </v-card-subtitle>
           <v-divider class="mx-4"></v-divider>
           <v-card-text>
-            <!-- <diary-chart></diary-chart> -->
+            <diary-chart></diary-chart>
           </v-card-text>
-        </v-card>
+        </v-card> -->
       </v-flex>
     </v-layout>
   </v-container>
@@ -39,15 +39,20 @@ export default {
     // DiaryChart
   },
   async created(){
-    this.getchart()
+    this.getSetRecords()
     this.loadWorkout()
   },
   methods:{
-    getchart(){
-      this.$store.dispatch("getChartRecords")
-    },
+    // getchart(){
+    //   this.$store.dispatch("getChartRecords")
+    // },
+    // 운동종류 가져오기
     loadWorkout(){
       this.$store.dispatch("loadWorkoutList")
+    },
+    // 운동 세트기록 가져오기
+    getSetRecords(){
+      this.$store.dispatch('getRecords')
     }
   }
   

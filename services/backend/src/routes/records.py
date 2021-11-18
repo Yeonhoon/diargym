@@ -4,6 +4,7 @@ from src.database.models import get_db
 from sqlalchemy.orm import Session
 from src.crud.records import (
     load_wokrout_list,
+    get_set_records,
     get_all_records, 
     add_record, 
     get_tables_record, 
@@ -38,7 +39,7 @@ async def add_records(request: RecordBase,
             response_model=List[ShowRecord],
             response_model_exclude=['ruserid'])
 async def get_records(current_user: ShowUser=Depends(get_current_user), db: Session=Depends(connect_db)):
-    data = get_all_records(current_user,db)
+    data = get_set_records(current_user,db)
     return await data
 
 @router.get('/tables', dependencies=[Depends(get_current_user)],

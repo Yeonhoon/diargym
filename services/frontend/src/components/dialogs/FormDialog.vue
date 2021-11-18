@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-toolbar color="primary" dark>{{ headerTitle }}</v-toolbar>
+    <v-toolbar dark>{{ headerTitle }}</v-toolbar>
     <v-divider></v-divider>
     <v-card-text
       style="height:350px"
@@ -18,7 +18,7 @@
         color="red"
         rounded
         text
-        @click="$emit('remove')"
+        @click="$emit('cancel')"
       >
         취소
       </v-btn>

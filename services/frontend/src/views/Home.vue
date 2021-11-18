@@ -1,5 +1,5 @@
 <template>
-  <v-container mt-10 fluid>
+  <v-container mt-12 fluid>
     <v-layout col wrap>
       <v-flex xs12 class='d-flex justify-center mt-15'>
         <h1>DIARGYM</h1>
@@ -8,7 +8,6 @@
         <blockquote class="blockquote">
           운동기록을 적어두세요!<br>
           체계적으로 관리하세요! 
-          <!-- with Vue.js & FastAPI & PostgreSQL -->
         </blockquote>
       </v-flex>
     </v-layout>
@@ -73,8 +72,5 @@ import {mapActions} from 'vuex'
         this.$router.push("About")
       },
     },
-    // created(){
-    //   this.getData();
-    // }
   }
 </script>

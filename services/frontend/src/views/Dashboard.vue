@@ -25,7 +25,7 @@ t<template>
       </v-flex>
       <v-flex mt-8>
         <v-card>
-          <v-card-title class='d-flex justify-center'>
+          <v-card-title dark class='d-flex justify-center'>
             <h3>운동기록 테이블</h3>
           </v-card-title>
           <v-divider class="mx-4"></v-divider>

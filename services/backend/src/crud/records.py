@@ -10,56 +10,85 @@ import pandas as pd
 
 connect_db = get_db
 
+# 운동 리스트 불러오기
 async def load_wokrout_list(db):
     rawData = db.query(Workout).all()
-    print(rawData)
+    # print(rawData)
 
     return rawData
     # df = pd.read_sql(rawData.statement, rawData.session.bind)
     # print(df)
 
+# 운동 세트정보: 과거운동기록 불러오기 위해
+async def get_set_records(current_user,db):
+    rawData = db.query(Records,Workout)\
+                .join(Workout, Workout.wname == Records.rsmall)\
+                .filter(Records.ruserid==current_user.uid)
+    df = pd.read_sql(rawData.statement, rawData.session.bind)
+    df['rdate'] = pd.to_datetime(df['rdate'],format='%Y-%m-%d')
+    temp = pd.to_datetime(df['rdate'], ).dt.date
+    filtered_date=sorted(list(set(temp)))[-7:] # 최근 7일 데이터만 불러오기
+    df = df[df['rdate'].dt.date.isin(filtered_date)]
+    df['rdate'] = df['rdate'].astype('str')
+    print(df)
+    if len(df)>0:
+        json = df.to_json(orient="records")
+        return Response(content=json, media_type='application/json')
+    else:
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 async def get_all_records(current_user, db):
-    rawData = db.query(Records).filter(Records.ruserid==current_user.uid)
+    rawData = db.query(Records,Workout)\
+                .join(Workout, Workout.wname == Records.rsmall)\
+                .filter(Records.ruserid==current_user.uid)
     df = pd.read_sql(rawData.statement, rawData.session.bind)
+    print(df)
     if(len(df)>0):
-        dataset=df.groupby(['rdate','rmid','rsmall']).sum().reset_index()
+        dataset=df.groupby(['rdate','wcategory','rsmall']).sum().reset_index()
         dataset['volume']=dataset['rweight']*dataset['rrep']
-        
         dataset['rdate'] = pd.to_datetime(dataset['rdate'],format='%Y-%m-%d')
         temp = pd.to_datetime(dataset['rdate'], ).dt.date
         filtered_date=sorted(list(set(temp)))[-7:] # 최근 7일 데이터만 불러오기
         dataset = dataset[dataset['rdate'].dt.date.isin(filtered_date)]
         dataset['rdate'] = dataset['rdate'].astype('str')
-        pivoted= dataset.pivot_table(index='rdate',columns='rmid',values=['rweight','rrep','volume'],fill_value=0).reset_index()
+        # print(dataset)
+        pivoted= dataset.pivot_table(index='rdate',columns=['wcategory','rsmall'],values=['rweight','rrep','volume'],fill_value=0).reset_index()
         melted = pivoted.melt(
                         id_vars=['rdate'],
                         # value_vars=pivoted.columns[1:].tolist(),
                         # var_name = "category",
                         # value_name="volume"
                         )
-        melted.rename(columns={None:'type','rmid':'category'}, inplace=True)
+        # print(melted)
+        melted.rename(columns={None:'type','rsmall':'category'}, inplace=True)
         json = melted.to_json(orient="records")
         return Response(content=json, media_type='application/json')
     else:
         return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 async def get_tables_record(current_user,db):
-    rawData = db.query(Records).filter(Records.ruserid==current_user.uid)
+    rawData = db.query(Records,Workout)\
+                .join(Workout, Workout.wname == Records.rsmall)\
+                .filter(Records.ruserid==current_user.uid)
     df = pd.read_sql(rawData.statement, rawData.session.bind)
     df['rdate'] = df['rdate'].astype('str')
     json = df.to_json(orient="records")
     return Response(content=json, media_type='application/json')
 
 async def get_tables_record_date(current_user,db, rdate):
-    rawData = db.query(Records).filter(Records.ruserid==current_user.uid).filter(Records.rdate == rdate)
+    rawData = db.query(Records,Workout)\
+                .join(Workout, Workout.wname == Records.rsmall)\
+                .filter(Records.ruserid==current_user.uid)\
+                .filter(Records.rdate == rdate)
     df = pd.read_sql(rawData.statement, rawData.session.bind)
     df['rdate'] = df['rdate'].astype('str')
     json = df.to_json(orient="records")
     return Response(content=json, media_type='application/json')
 
 async def dashbar_records(category, current_user, db):
-    rawData = db.query(Records).filter(Records.ruserid==current_user.uid)
+    rawData = db.query(Records,Workout)\
+                .join(Workout, Workout.wname == Records.rsmall)\
+                .filter(Records.ruserid==current_user.uid)
     df = pd.read_sql(rawData.statement, rawData.session.bind)
     df= df[df['rmid']==category]
     df['rdate'] = df['rdate'].astype('str')
@@ -86,13 +115,11 @@ async def add_record(request, current_user, db):
     for i in range(len(weightlist)):
         data = Records(ruserid = current_user.uid,
                   rdate= request.rdate,
-                  rlarge = request.rlarge,
-                  rmid = request.rmid,
                   rsmall = request.rsmall,
                   rweight = weightlist[i],
                   runit = unitlist[i],
                   rrep = replist[i]
-                  )
+                )
     
         if not data:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
@@ -121,8 +148,8 @@ async def update(rid:int, request, current_user, db):
             Records.ruserid : current_user.uid,
             Records.rdate : request.rdate,
             Records.rweight : request.rweight,
-            Records.rlarge : request.rlarge,
-            Records.rmid : request.rmid,
+            # Records.rlarge : request.rlarge,
+            # Records.rmid : request.rmid,
             Records.rsmall : request.rsmall,
             Records.rrep : request.rrep,
             Records.runit : request.runit,

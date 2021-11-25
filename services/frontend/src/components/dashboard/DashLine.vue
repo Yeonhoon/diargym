@@ -27,6 +27,7 @@ export default {
     computed:{
       ...mapGetters(['stateLineChartRecords']),
       ChartRecords(){
+        // console.log(this.stateLineChartRecords)
         return this.stateLineChartRecords
       },
     },

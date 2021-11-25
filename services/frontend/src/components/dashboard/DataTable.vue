@@ -4,9 +4,8 @@
       :headers=headers
       :items=getData
       :search="search"
-      class="elevation-2"
-      sort-by="rdate"
-      loading=true
+      class="elevation-0"
+      loading=true,
       loading-text="운동기록이 존재하지 않습니다."
       mobile-breakpoint="0"
     >
@@ -31,7 +30,6 @@
                 @click="addRecord"
                 v-bind="attrs"
                 v-on="on"
-
               >
                 기록 추가
               </v-btn>
@@ -196,8 +194,8 @@ export default {
     weightunit: ['kg','lb','sec'],
     headers:[
       { text:'일자',align:'center',sortable:true, value:'rdate', width:"110px"},
-      { text: '대분류', value: 'rlarge', width:"100px" },
-      { text: '중분류', value: 'rmid', width:"100px" },
+      // { text: '대분류', value: 'rlarge', width:"100px" },
+      // { text: '중분류', value: 'rmid', width:"100px" },
       { text: '종류', value: 'rsmall', width:"100px" },
       { text: '무게', value: 'rweight', width:"80px" },
       { text: '단위', value: 'runit', width:"80px" },
@@ -309,7 +307,7 @@ export default {
     // },
     // 데이터 가져오기
     getData(){
-      // console.log(this.data)
+    //   console.log(this.stateTableRecords)
       return this.stateTableRecords
     },
     // AllData(){

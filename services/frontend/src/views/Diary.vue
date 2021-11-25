@@ -2,7 +2,7 @@
   <v-container>
     <v-layout>
       <v-flex>
-        <v-card elevation="0" color="#f7f7f7">
+        <v-card elevation="0" class="mt-10">
           <v-card-title class='d-flex justify-center'>
             <h3 class='mt-2'>운동일지 작성</h3>
           </v-card-title>

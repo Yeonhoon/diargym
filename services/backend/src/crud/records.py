@@ -30,7 +30,6 @@ async def get_set_records(current_user,db):
     filtered_date=sorted(list(set(temp)))[-7:] # 최근 7일 데이터만 불러오기
     df = df[df['rdate'].dt.date.isin(filtered_date)]
     df['rdate'] = df['rdate'].astype('str')
-    print(df)
     if len(df)>0:
         json = df.to_json(orient="records")
         return Response(content=json, media_type='application/json')
@@ -42,7 +41,6 @@ async def get_all_records(current_user, db):
                 .join(Workout, Workout.wname == Records.rsmall)\
                 .filter(Records.ruserid==current_user.uid)
     df = pd.read_sql(rawData.statement, rawData.session.bind)
-    print(df)
     if(len(df)>0):
         dataset=df.groupby(['rdate','wcategory','rsmall']).sum().reset_index()
         dataset['volume']=dataset['rweight']*dataset['rrep']
@@ -72,6 +70,8 @@ async def get_tables_record(current_user,db):
                 .filter(Records.ruserid==current_user.uid)
     df = pd.read_sql(rawData.statement, rawData.session.bind)
     df['rdate'] = df['rdate'].astype('str')
+    df=df.sort_values(by="rdate",ascending=False)
+    print(df)
     json = df.to_json(orient="records")
     return Response(content=json, media_type='application/json')
 
@@ -90,15 +90,16 @@ async def dashbar_records(category, current_user, db):
                 .join(Workout, Workout.wname == Records.rsmall)\
                 .filter(Records.ruserid==current_user.uid)
     df = pd.read_sql(rawData.statement, rawData.session.bind)
-    df= df[df['rmid']==category]
+    df= df[df['wcategory']==category]
     df['rdate'] = df['rdate'].astype('str')
     df['volume']=df['rweight']*df['rrep']
-    pivoted= df.pivot_table(index='rdate',columns=['rmid','rsmall'],values=['volume'],fill_value=0, aggfunc='sum').reset_index()
+    # print(df)
+    pivoted= df.pivot_table(index='rdate',columns=['wcategory','rsmall'],values=['volume'],fill_value=0, aggfunc='sum').reset_index()
     print(pivoted)
     melted = pivoted.melt(id_vars=['rdate'])
     melted.rename(columns={None:'type'}, inplace=True)
     melted.sort_values(['rsmall','rdate'], inplace=True)
-    print(melted)
+    # print(melted)
     # print(melted.groupby(['rdate','rmid'])['value'].mean())
     json = melted.to_json(orient="records")
     return Response(content=json, media_type='application/json')

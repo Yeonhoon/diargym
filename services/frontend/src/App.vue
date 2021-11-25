@@ -7,70 +7,24 @@
     >
       <v-main>
         <router-view/>
-        <v-speed-dial
-          v-model="fab"
-          top
-          hover
-          slide-y-reverse-transition
-        >
-            <template v-slot:activator>
-              <v-btn
-                v-model="fab"
-                color="blue darken-2"
-                dark
-                bottom
-                right
-                fab
-              >
-                <v-icon v-if="fab">
-                  mdi-close
-                </v-icon>
-                <v-icon v-else>
-                  mdi-account-circle
-                </v-icon>
-              </v-btn>
-            </template>
-            <v-btn
-              fab
-              dark
-              small
-              color="green"
-              :to="{name:'Home'}"
-            >
-              <v-icon>mdi-home</v-icon>
-            </v-btn>
-            <v-btn
-              fab
-              dark
-              small
-              color="indigo"
-              :to="{name:'Diary'}"
-            >
-              <v-icon>mdi-lead-pencil</v-icon>
-            </v-btn>
-            <v-btn
-              fab
-              dark
-              small
-              color="red"
-              :to="{name:'Dashboard'}"
-            >
-              <v-icon>mdi-view-dashboard</v-icon>
-            </v-btn>
-        </v-speed-dial>
       </v-main>
+      <bottom-navbar></bottom-navbar>
     </v-sheet>
-      <!-- <Footer/> -->
+    <!-- <Footer/> -->
+    
   </v-app>
 </template>
 
 <script>
 import Navbar from '@/components/Navbar.vue'
 // import Footer from '@/components/Footer.vue'
+import BottomNavbar from '@/components/BottomNavbar.vue'
 export default {
   name: 'App',
   components:{
-    Navbar
+    Navbar,
+    BottomNavbar
+    // Footer
   },
   data: ()=>({
     direction: 'top',

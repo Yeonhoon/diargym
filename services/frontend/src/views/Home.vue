@@ -39,13 +39,6 @@
 
       </v-flex>
       <v-flex v-else sm6 offset-sm3 class="d-flex justify-center" mt-5>
-        <v-row>
-          
-        </v-row>
-        <v-row>
-          
-
-        </v-row>
       </v-flex>
   </v-container>
 </template>

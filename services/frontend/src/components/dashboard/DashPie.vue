@@ -20,7 +20,17 @@ export default {
   data: () => ({
       dataCollections:null,
       options:{
-        // maintainAspectRatio:true,
+        tooltips:{
+          enabled:true,
+          callbacks: {
+            title: (tooltipItem, data) => data['datasets'][0]['data'][tooltipItem['index']],
+            label: (tooltipItem, data) => {
+              console.log(data.datasets[tooltipItem.datasetIndex].label || '')
+              // var x= tooltipItem.index
+              return data.datasets[tooltipItem.datasetIndex].label+ ": "+ Math.round(tooltipItem.yLabel,1).toLocaleString() + '회'
+            }
+          }
+        },
       },
       backgroundColor:['#F69588', '#889FF6', '#73C470', '#E6C2EC','#C2ECE9','#747171']
   }),

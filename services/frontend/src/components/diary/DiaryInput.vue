@@ -25,7 +25,8 @@
         </template>
         <v-date-picker 
           width="250"
-          v-model="date" 
+          v-model="date"
+          color="black"
           @input="menu2 = false"  
         >
         </v-date-picker>
@@ -61,11 +62,6 @@
               :key="i"
               class="text-xs-center"
             >
-              <!-- {{checkWorkout}} -->
-              <!-- <p>key:{{key}}</p>
-              <p>val:{{val}}</p> -->
-              <!-- <p>value:{{value}}</p> -->
-              <!-- <p>{{ i }}</p> -->
               <v-row>
                 <v-col cols="5">
                   <v-text-field
@@ -74,6 +70,7 @@
                     outlined
                     clearable
                     small
+                    dense
                     type="number"
                     :label="val.lab1"
                     v-model="val.weight"
@@ -81,7 +78,7 @@
                   >
                   </v-text-field>
                 </v-col>
-                <v-col cols="2">
+                <v-col cols="2" class="mt-3">
                   <p>kg</p>
                   <!-- <v-select
                     label="units"
@@ -98,6 +95,7 @@
                     outlined
                     clearable
                     required
+                    dense
                     type="number"
                     :label="val.lab2"
                     v-model="val.reps"
@@ -113,7 +111,6 @@
                   </v-text-field>
                 </v-col> -->
               </v-row>
-                <v-divider></v-divider>
               </div>
             </v-card-text>
             <v-card-actions 
@@ -180,7 +177,7 @@
     <v-dialog transition="dialog-bottom-transition" v-model="dialog">
       <template v-slot:activator="{on,attrs}">
         <v-btn
-          color="blue lighten-2 white--text"
+          color="grey darken-2 white--text"
           v-bind="attrs"
           v-on="on"
           width=300
@@ -235,7 +232,8 @@
           <v-sheet class="mt-5">
             <v-text-field 
               class="mx-3" 
-              flat 
+              flat
+              :disabled="!selectedCategory"
               placeholder="운동을 검색해보세요"
               outlined
               prepend-inner-icon="search" 
@@ -257,14 +255,15 @@
                 <v-list-item-group
                   multiple
                   color="indigo"
+                  v-model="selectedWorkout"
                 >
                   <!-- v-model="selectedWorkout" -->
                   <v-list-item
                     v-for="(item, i) in getAllList"
                     :key="i"
                     :value="item"
-                    @click="toggleActive(item); snack=true"
                   >
+                    <!-- @click="toggleActive(item); snack=true" -->
                     <v-list-item-content v-text="item"></v-list-item-content>
                     <v-btn 
                       v-if="!isFavorite"
@@ -306,36 +305,38 @@
     </v-dialog>
     <!-- 저장한 운동 불러오는 다이어그램 -->
     <v-dialog
-      hide-overlay
       transition="dialog-bottom-transition"
       v-model="archiveDialog"
+      scrollable
     >
+      <!-- hide-overlay -->
       <template v-slot:activator="{on,attrs}">
         <v-btn
-          class="mt-5 white--text"
+          class="mt-5"
           large
-          color="red lighten-1"
           v-bind="attrs"
           v-on="on"
-          width=300
+          width="300"
           @click="loadSetInfo"
         >
           불러오기
         </v-btn>
       </template>
       <v-card>
-        <v-toolbar dark >운동 불러오기</v-toolbar>
+        <v-toolbar dark >최근 7일 운동 불러오기</v-toolbar>
         <v-card-text>
           <v-list>
             <v-list-group
               v-for="(key,i) in Object.entries(loadedSet)"
               :key="i"
             >
+              <!-- multiple -->
+              <!-- v-model="selectedWorkout" -->
               <template v-slot:activator>
                 <v-list-item-content>
-                  key:{{key}}
-                  i:{{i}}
-                  <v-list-item-title v-text="key[0]"></v-list-item-title>
+                  <v-list-item-title>{{new Date(key[0]).toLocaleDateString('ko-KR',{month:'long',day:'numeric'})}} 
+                    ({{new Date(key[0]).toLocaleDateString('ko-KR',{weekday:'short'}) }})
+                  </v-list-item-title>
                 </v-list-item-content>
               </template>
               <v-list-item
@@ -344,16 +345,16 @@
               >
                 <template >
                   <v-list-item-action>
-                    <v-checkbox 
-                      @change="checkboxUpdate"
+                    <v-checkbox
+                      @change="checkboxUpdate(key[1],name)"
                       :value="name"
                     ></v-checkbox>
                   </v-list-item-action>
                   <v-list-item-content>
-                      <v-list-item-title> {{name}} </v-list-item-title>
+                    <v-list-item-title> {{name}} </v-list-item-title>
                       <v-list-item-content
-                        v-for="set in sets"
-                        :key="set"
+                        v-for="(set,i) in sets"
+                        :key="i"
                       >
                         <v-list-item-subtitle>무게: {{set.rweight}}{{set.runit}} | 횟수: {{set.rrep}}회</v-list-item-subtitle>
                       </v-list-item-content>
@@ -376,7 +377,7 @@
           <v-btn
             text
             color="primary"
-            @click="getPreviousSets"
+            @click="getPreviousSets()"
           >
             불러오기
           </v-btn>
@@ -424,6 +425,7 @@ export default {
     dialog:false,
     archiveDialog:false,
     inputDialog:false,
+    week:['일요일','월요일','화요일', '수요일', '목요일', '금요일', '토요일'],
     catMid:[
       {name: '', value: '즐겨찾기'},
       {name:'가슴', value: '가슴'},
@@ -437,8 +439,9 @@ export default {
     ],
     isFavorite:false,
     snack:false,
-    selectedCategory:null,
+    selectedCategory:null, //선택된 운동 종목
     selectedWorkout: [],
+    selectedFromloadedSet:[],
     isSetEmpty: true,
     workoutsheet:false,
     headerTitle:"운동일지 기록",
@@ -450,6 +453,7 @@ export default {
     setArr:[],
     loadedSet: {},
     setArchive:[],
+    calledSets:[],
     diaryNotFilled: false,
     diarySuccess: false,
     warningMsg:'',
@@ -492,17 +496,21 @@ export default {
     toggleActive(i){
       let pos = this.selectedWorkout.indexOf(i)
       pos === -1 ? this.selectedWorkout.push(i) : this.selectedWorkout.splice(pos,1)
-      console.log(this.selectedWorkout)
+      // console.log(this.selectedWorkout)
     },
     clearSearch (){
       this.search=""
     },
+
+    //운동세트 입력창 초기화
     clearSelectedWorkout(){
       this.selectedWorkout=[]
-      this.$forceUpdate()
+      this.setFields = {}
+      this.loadedSet={}
     },
     //운동세트 기록 가져와 보여주기
     loadSetInfo(){
+      // console.log(this.selectedFromloadedSet)
       var dates = "rdate"
       var names = "wname"
       var result = this.getRecords.reduce((map,obj)=>{
@@ -513,31 +521,56 @@ export default {
         });
         return map
       },{})
-
-      this.loadedSet = result
+      // 역순으로 정렬
+      var x= Object.keys(result).reverse().reduce((r,k)=>{
+          r[k] = result[k];
+          return r;
+      },{})
+      this.loadedSet = x
     },
-    checkboxUpdate(wname){
-      if (wname !== null){
-        this.setArchive.push(wname)
-      } else {
+    // 체크박스 클릭 ==> 기존의 운동정보 가져다 붙이기
+    checkboxUpdate(key,wname){
+      // const setArr = []
+      if(this.setArchive.includes(wname)) {
         this.setArchive.splice(wname,1)
+      } else {
+        this.setArchive.push(wname)
       }
+      const setArr=[]
+      this.calledSets=setArr
       console.log(this.setArchive)
-
+      for(var i=0; i<this.setArchive.length; i++){
+        this.setFields[this.setArchive[i]] = new Array()
+        for(var j=0; j<key[this.setArchive[i]].length; j++){
+          // console.log(key[this.setArchive[i]][j])
+          this.setFields[this.setArchive[i]].push(key[this.setArchive[i]][j])
+        }
+      }
+      let pos = this.selectedWorkout.indexOf(wname)
+      pos === -1 ? this.selectedWorkout.push(wname) : this.selectedWorkout.splice(pos,1)
+      // this.selectedWorkout.push(this.setArchive[i])
+      this.setArchive=[]
+      console.log(this.setFields)
+      console.log(this.selectedWorkout)
     },
     getPreviousSets(){
-
+      this.workoutsheet=true
+      // console.log(this.calledSets)
+      console.log(this.setFields)
+      this.archiveDialog=false
+      // this.loadedSet={}
     },
     hideDialog(){
       this.dialog=false
       this.diarySuccess=false
       this.diaryNotFilled=false
+      this.selectedWorkout=[]
     },
     setWorkout(){
       this.workoutsheet=true //운동정보 입력하는 transition 띄우기
       this.dialog=false
     },
-        ...mapActions(['submitRecords']),
+    ...mapActions(['submitRecords']),
     // async loadWorkout () {
     //   this.loadWorkoutList
     // },
@@ -586,7 +619,7 @@ export default {
       this.$forceUpdate()
       // this.isSetEmpty=false
       console.log(this.setFields)
-      console.log(this.setArr)
+      // console.log(this.setArr)
     },
     removeSet(index){
       this.setFields[index].pop();
@@ -594,6 +627,7 @@ export default {
         delete this.setFields[index]
         this.isSetEmpty=true
       }
+      console.log(this.setFields)
       this.$forceUpdate()
       // console.log(this.setFields)
       // console.log(this.isSetEmpty)
@@ -658,21 +692,7 @@ export default {
         // 화면 새로고침
         // window.location.reload();
       }
-      // if (this.form.small === ""){
-      // }
-      // else if (this.setFields.length === 0){
-      //   this.diaryNotFilled = true
-      //   this.warningMsg = "세트가 입력되지 않았습니다!"
-      // }
-      // else {
-
-        
-      //   
-      //   // console.log(submitData)
-      //   
-      // }
     },
-
   },
   
 }

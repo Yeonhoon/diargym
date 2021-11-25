@@ -8,8 +8,8 @@ const getters ={
 }
 
 const actions = {
-  async importDashBar({ commit },rmid){
-    let {data} = await axios.get("dashbar/"+rmid)
+  async importDashBar({ commit },category){
+    let {data} = await axios.get("dashbar/"+category)
     commit('setDashBar',data)
   }
 }

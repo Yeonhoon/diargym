@@ -1,5 +1,30 @@
-t<template>
+<template>
   <v-container>
+    <v-layout row>
+      <v-flex class="mt-10">
+        <Calendar
+          @date=getDateData
+          :records=getUniqueDateCategory
+        >
+        </Calendar>
+      </v-flex>
+      <v-flex mt-8 pl-5 pr-5>
+        <v-card>
+          <v-toolbar flat color="grey lighten-2" class='d-flex justify-center' >
+            <h2>
+              운동기록 테이블
+            </h2>
+          </v-toolbar>
+          <v-card-text>
+            <data-table
+              title="운동"
+              @allData=getTableRecords
+            >
+            </data-table>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-layout>
     <v-layout>
       <v-flex>
         <v-card class='mt-10 mb-5' elevation="5">
@@ -12,28 +37,6 @@ t<template>
           <v-card-text>
             <dash-bar
             ></dash-bar>
-          </v-card-text>
-        </v-card>
-      </v-flex>
-    </v-layout>
-    <v-layout row>
-      <v-flex class="mt-10">
-        <Calendar
-          @date=getDateData 
-        >
-        </Calendar>
-      </v-flex>
-      <v-flex mt-8>
-        <v-card>
-          <v-card-title dark class='d-flex justify-center'>
-            <h3>운동기록 테이블</h3>
-          </v-card-title>
-          <v-divider class="mx-4"></v-divider>
-          <v-card-text>
-            <data-table
-              @allData=getTableRecords
-            >
-            </data-table>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -69,10 +72,11 @@ import DashBar from '../components/dashboard/DashBar.vue'
 import { mapGetters } from 'vuex'
   export default {
     components:{
-      DataTable, Calendar, 
+      DataTable, 
+      Calendar, 
       PieChart,
       DashLine,
-      DashBar
+      DashBar,
     }, 
     data: () => ({
       search:'',
@@ -87,9 +91,13 @@ import { mapGetters } from 'vuex'
     },
 
     computed:{
-      ...mapGetters(['stateTableRecords']),
+      ...mapGetters(['stateTableRecords','stateDateNcat']),
       getTableData(){
         return this.stateTableRecords
+      },
+      // 운동한 일자 + 그 날 종목
+      getUniqueDateCategory(){
+        return this.stateDateNcat
       },
     },
  

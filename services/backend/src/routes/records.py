@@ -27,7 +27,6 @@ async def workout_list(db:Session=Depends(connect_db)):
     df = load_wokrout_list(db)
     return await df
 
-
 @router.post('/records') 
 async def add_records(request: RecordBase, 
                     current_user:ShowUser=Depends(get_current_user),

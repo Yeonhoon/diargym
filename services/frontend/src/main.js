@@ -4,8 +4,8 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
-// import VueCompositionAPI from '@vue/composition-api'
 import ThankyouDialog from './components/dialogs/ThankyouDialog'
+// import VueCompositionAPI from '@vue/composition-api'
 // import pageTitle from './mixins/pageTitle'
 Vue.config.productionTip = false
 // Vue.mixin(pageTitle)
@@ -22,7 +22,7 @@ axios.interceptors.response.use(undefined, function(error){
 
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'http://localhost:5000/';
+axios.defaults.baseURL = 'http://118.67.132.200:5000';
 
 new Vue({
   router,

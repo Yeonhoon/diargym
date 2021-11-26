@@ -38,7 +38,13 @@ const actions = {
   },
   //운동기록 저장
   async submitRecords({dispatch},data){
-    await axios.post('records',data);
+      await axios.post('records',data)
+      .then(
+        console.log(data)
+      )
+      .catch(e=>{
+          console.log("error: ", e)
+      })
     await dispatch('getRecords') //운동 세트기록 가져오기
     // await dispatch('getChartRecords'); //추가된 기록 가져오기(차트용)
     await dispatch('getTableRecords'); //추가된 기록 가져오기(테이블용)
@@ -104,9 +110,9 @@ const mutations = {
     state.records = payload
   },
 
-  setChartRecords(state, records){
-    state.records = records;
-  },
+//   setChartRecords(state, records){
+//     state.records = records;
+//   },
   // 날짜 click => data table에 그 날짜 데이터 + 그 날짜 차트 그리기
   setOnedayRecord(state, record){
     const tableData=[]
@@ -160,7 +166,6 @@ const mutations = {
         rrep: record[i].rrep,
       })
     }
-    console.log(tableData)
     state.tableRecords = tableData
     state.tableRawRecords = tableData
   },

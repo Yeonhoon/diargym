@@ -23,7 +23,7 @@ async def load_wokrout_list(db):
 async def get_set_records(current_user,db):
     rawData = db.query(Records,Workout)\
                 .join(Workout, Workout.wname == Records.rsmall)\
-                .filter(Records.ruserid==current_user.uid)
+                .filter(Records.ruserid == current_user.uid)
     df = pd.read_sql(rawData.statement, rawData.session.bind)
     df['rdate'] = pd.to_datetime(df['rdate'],format='%Y-%m-%d')
     temp = pd.to_datetime(df['rdate'], ).dt.date
@@ -131,9 +131,6 @@ async def add_record(request, current_user, db):
         db.refresh(data)
     
     return  "기록이 완료되었습니다."
-
-    # x= {c.name: getattr(data, c.name) for c in data.__table__.columns}
-    # print(x['runit'])
 
 
 async def update(rid:int, request, current_user, db):

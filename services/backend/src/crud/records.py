@@ -93,9 +93,13 @@ async def dashbar_records(category, current_user, db):
     df= df[df['wcategory']==category]
     df['rdate'] = df['rdate'].astype('str')
     df['volume']=df['rweight']*df['rrep']
-    # print(df)
+    df['rdate'] = pd.to_datetime(df['rdate'],format='%Y-%m-%d')
+    temp = pd.to_datetime(df['rdate'], ).dt.date
+    filtered_date=sorted(list(set(temp)))[-7:] # 최근 7일 데이터만 불러오기
+    df = df[df['rdate'].dt.date.isin(filtered_date)]
+    df['rdate'] = df['rdate'].astype('str')
+    print(df)
     pivoted= df.pivot_table(index='rdate',columns=['wcategory','rsmall'],values=['volume'],fill_value=0, aggfunc='sum').reset_index()
-    print(pivoted)
     melted = pivoted.melt(id_vars=['rdate'])
     melted.rename(columns={None:'type'}, inplace=True)
     melted.sort_values(['rsmall','rdate'], inplace=True)

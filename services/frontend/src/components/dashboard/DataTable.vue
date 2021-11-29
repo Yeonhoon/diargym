@@ -8,6 +8,10 @@
       loading=true,
       loading-text="운동기록이 존재하지 않습니다."
       mobile-breakpoint="0"
+      :page.sync="page"
+      :item-per-page="itemsPerPage"
+      hide-default-footer
+      @page-count="pageCount = $event"
     >
       <template v-slot:top>
         <v-toolbar flat>
@@ -167,8 +171,13 @@
           mdi-delete
         </v-icon>
       </template>
-      
     </v-data-table>
+    <v-pagination
+    v-model="page"
+    :length="pageCount"
+    >
+
+    </v-pagination>
   </div>
 </template>
 <script>
@@ -183,6 +192,9 @@ export default {
   },
   mixin:[formMixin],
   data: ()=>({
+    page: 1,
+    pageCount: 0,
+    itemsPerPage: 5,
     search:'',
     dialog:false,
     menu2:false,
@@ -193,13 +205,13 @@ export default {
     catSmall:'',
     weightunit: ['kg','lb','sec'],
     headers:[
-      { text:'일자',align:'center',sortable:true, value:'rdate', width:"110px"},
+      { text:'일자',align:'center',sortable:true, value:'rdate', width:"140px"},
       // { text: '대분류', value: 'rlarge', width:"100px" },
       // { text: '중분류', value: 'rmid', width:"100px" },
-      { text: '종류', value: 'rsmall', width:"100px" },
-      { text: '무게', value: 'rweight', width:"80px" },
-      { text: '단위', value: 'runit', width:"80px" },
-      { text: '횟수', value: 'rrep', width:"80px" },
+      { text: '운동', value: 'rsmall', width:"160px" },
+      { text: '무게', value: 'rweight', width:"60px" },
+      { text: '단위', value: 'runit', width:"60px" },
+      { text: '횟수', value: 'rrep', width:"60px" },
       { text: '수정/삭제', value:'actions', sortable:false, width:"100px" },
    ],
     form:{

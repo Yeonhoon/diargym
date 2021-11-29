@@ -123,7 +123,7 @@ const mutations = {
       tableData.push({
         ruserid:record[i].ruserid,
         rid: record[i].rid,
-        rdate: record[i].rdate,
+        rdate: new Date(record[i].rdate).toLocaleDateString('ko-KR',{month:'long',day:'numeric'}) + " (" +new Date(record[i].rdate).toLocaleDateString('ko-KR',{weekday:'short'}) +")",
         wcategory: record[i].wcategory,
         rsmall: record[i].rsmall,
         rweight: record[i].rweight,
@@ -149,6 +149,7 @@ const mutations = {
         lineChartData.push(allTableRecords[j])
       }
     }
+    // console.log(lineChartData)
     state.dashLineData = lineChartData
   },
   

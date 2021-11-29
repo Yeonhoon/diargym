@@ -45,8 +45,10 @@
       <v-flex class="pa-5">
         <v-card height="500px">
           <v-card-title class='d-flex justify-center'>
-            <h3>부위별 반복수 추세</h3>
+            <h3>볼륨 추세</h3>
           </v-card-title>
+          <v-card-subtitle class='d-flex justify-center'>
+            단위: 볼륨(중량*반복수)</v-card-subtitle>
           <v-divider class="mx-4"></v-divider>
           <v-card-text>
             <dash-line></dash-line>

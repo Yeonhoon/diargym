@@ -76,7 +76,7 @@ export default {
       const volArr = []
       const datasets = []
       for(var a of this.getDashBarData) {
-        dateArr.push(a.rdate)
+        dateArr.push(new Date(a.rdate).toLocaleDateString('ko-KR',{month:'long',day:'numeric'}))
         catArr.push(a.rsmall)
         volArr.push(a.value)
       }

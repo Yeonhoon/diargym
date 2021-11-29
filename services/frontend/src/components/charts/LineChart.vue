@@ -33,14 +33,16 @@ export default {
   },
   methods:{
     renderLineChart(){
-      // console.log(this.dataOfChart)
+      console.log(this.dataOfChart)
       for(var i=0; i<this.dataOfChart.length; i++){
+        // new Date(a.rdate).toLocaleDateString('ko-KR',{month:'long',day:'numeric'})
         this.dates.push(this.dataOfChart[i]['rdate'])
         this.chartDatasets.push(this.dataOfChart[i]['rrep'])
         this.chartLabel.push(this.dataOfChart[i]['wcategory'])
       }
       let date = [...new Set(this.dates)].sort()
       let rmidCat = [...new Set(this.chartLabel)]
+      
 
       var outerDict=[]
       var innerDict={}
@@ -48,13 +50,14 @@ export default {
       for(var y=0; y<rmidCat.length;y++){
         for(var x of date){
           for(var z=0; z<this.dataOfChart.length; z++){
-            if(this.dataOfChart[z].rmid === rmidCat[y] && this.dataOfChart[z].rdate===x){
-              count += this.dataOfChart[z].rrep
+            if(this.dataOfChart[z].wcategory === rmidCat[y] && this.dataOfChart[z].rdate===x){
+              count += this.dataOfChart[z].rrep * this.dataOfChart[z].rweight
             }
           }
           innerDict[x]=count
           count = 0
-        } 
+        }
+        console.log(innerDict)
         outerDict.push(innerDict)
         this.datasets.push({
           label:rmidCat[y],
@@ -64,7 +67,7 @@ export default {
         })
         innerDict={}
       }
-
+      console.log(this.datasets)
       var datacollection = {
         datasets:this.datasets,
         labels:date

@@ -178,6 +178,7 @@
       <template v-slot:activator="{on,attrs}">
         <v-btn
           color="grey darken-2 white--text"
+          class="ml-5"
           v-bind="attrs"
           v-on="on"
           width=300
@@ -312,7 +313,7 @@
       <!-- hide-overlay -->
       <template v-slot:activator="{on,attrs}">
         <v-btn
-          class="mt-5"
+          class="mt-5 ml-5"
           large
           v-bind="attrs"
           v-on="on"
@@ -678,6 +679,7 @@ export default {
             await this.submitRecords(submitData)
             .then(
               this.setFields= [],
+              this.selectedWorkout=[],
             )
         }
           // timer

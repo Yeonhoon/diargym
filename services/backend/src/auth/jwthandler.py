@@ -82,6 +82,5 @@ async def get_current_user(token: str= Depends(security), db: Session=Depends(co
   
   return user
 
-# return verify_token(token, credentials_exception, db)
 
 

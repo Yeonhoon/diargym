@@ -176,7 +176,6 @@
     v-model="page"
     :length="pageCount"
     >
-
     </v-pagination>
   </div>
 </template>
@@ -319,7 +318,7 @@ export default {
     // },
     // 데이터 가져오기
     getData(){
-    //   console.log(this.stateTableRecords)
+      console.log(this.stateTableRecords)
       return this.stateTableRecords
     },
     // AllData(){

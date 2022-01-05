@@ -72,8 +72,7 @@
                     small
                     dense
                     type="number"
-                    :label="val.lab1"
-                    v-model="val.weight"
+                    v-model="val.rweight"
                     @click="inputDialog=true"
                   >
                   </v-text-field>
@@ -97,8 +96,7 @@
                     required
                     dense
                     type="number"
-                    :label="val.lab2"
-                    v-model="val.reps"
+                    v-model="val.rrep"
                   >
                   </v-text-field>
                 </v-col>
@@ -140,33 +138,11 @@
         </v-card>
       </transition-group>
     </v-flex>
-    <!-- <v-dialog
-      transition="dialog-bottom-transition"
-    >
-      <template v-slot:default="inputDialog">
-        <v-card>
-          <v-toolbar
-          color="primary" dark>
-            무게, 세트 입력
-          </v-toolbar>
-          <v-card-text>
-            <v-btn>무게추가</v-btn>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn
-              text
-              @click="inputDialog=false"
-            >
-              취소
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </template>
-    </v-dialog> -->
     <v-flex>
     <v-btn
       v-if="this.selectedWorkout.length>=1"
-      class="mb-5 white--text"
+      class="mb-5 ml-5 white--text"
+      
       large
       color="indigo"
       width=300
@@ -398,13 +374,14 @@
           {{ warningMsg }}
         </v-alert>
         <v-alert
+          prominent
           v-if="diarySuccess"
           dense
           text
           type="success"
           :value="diarySuccess"
         >
-          "저장 성공!"
+          저장 성공!
         </v-alert>
       </span>
     </v-layout>
@@ -540,13 +517,17 @@ export default {
       const setArr=[]
       this.calledSets=setArr
       console.log(this.setArchive)
+
+      // 운동 불러와서 집어넣기
       for(var i=0; i<this.setArchive.length; i++){
         this.setFields[this.setArchive[i]] = new Array()
         for(var j=0; j<key[this.setArchive[i]].length; j++){
-          // console.log(key[this.setArchive[i]][j])
+        //   console.log(key[this.setArchive[i]][j].rdate)
           this.setFields[this.setArchive[i]].push(key[this.setArchive[i]][j])
+          console.log(this.setFields[this.setArchive[i]])
         }
       }
+      
       let pos = this.selectedWorkout.indexOf(wname)
       pos === -1 ? this.selectedWorkout.push(wname) : this.selectedWorkout.splice(pos,1)
       // this.selectedWorkout.push(this.setArchive[i])
@@ -637,7 +618,7 @@ export default {
     async submit(){
       console.log(this.setFields)
       let a = Object.keys(this.setFields)[0]
-      if (this.setFields[a][0].weight === "" || this.setFields[a][0].reps === ""){
+      if (this.setFields[a][0].rweight === "" || this.setFields[a][0].rrep === ""){
           this.diaryNotFilled = true
           this.warningMsg = "운동종류가 입력되지 않았습니다!"
       }
@@ -651,11 +632,12 @@ export default {
           var repsArr=[]
           var weightArr =[]
           var unitArr = []
-          for(var k=0; k<this.setFields[j].length; k++){ // 각 종목별 세트 수
-            console.log("weight: ",this.setFields[j][k].weight)
-            console.log("reps: ",this.setFields[j][k].reps)
-            repsArr = repsArr + this.setFields[j][k].reps + " "
-            weightArr = weightArr + this.setFields[j][k].weight + " "
+          console.log(this.setFields[j])
+          for (var k=0; k<this.setFields[j].length; k++){ // 각 종목별 세트 수
+            console.log("weight: ",this.setFields[j][k].rweight)
+            console.log("reps: ",this.setFields[j][k].rrep)
+            repsArr = repsArr + this.setFields[j][k].rrep + " "
+            weightArr = weightArr + this.setFields[j][k].rweight + " "
             unitArr = unitArr + 'kg' + " "
             
             // if(this.setFields[j][k].unit==='lb'){
